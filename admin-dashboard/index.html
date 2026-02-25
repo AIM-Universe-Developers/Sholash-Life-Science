@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ShOlash Admin — Futuristic Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"/>
+</head>
+<body>
+
+<!-- Ambient background orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon-box">
+      <img src="assets/logo.2.png" alt="Sholash Logo" class="brand-logo-img"/>
+    </div>
+    <div class="brand-text">
+      <span class="brand-main">Sholash</span>
+      <span class="brand-sub">Life Science & Skin Care</span>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard',this)">
+      <span class="nav-icon"><i class="ri-dashboard-3-line"></i></span>
+      <span class="nav-label">Dashboard</span>
+      <span class="nav-glow"></span>
+    </a>
+    <a class="nav-item" data-page="orders" onclick="navigate('orders',this)">
+      <span class="nav-icon"><i class="ri-shopping-cart-2-line"></i></span>
+      <span class="nav-label">Orders</span>
+    </a>
+    <a class="nav-item" data-page="products" onclick="navigate('products',this)">
+      <span class="nav-icon"><i class="ri-box-3-line"></i></span>
+      <span class="nav-label">Products</span>
+    </a>
+    <a class="nav-item" data-page="customers" onclick="navigate('customers',this)">
+      <span class="nav-icon"><i class="ri-group-line"></i></span>
+      <span class="nav-label">Customers</span>
+    </a>
+    <a class="nav-item" data-page="analytics" onclick="navigate('analytics',this)">
+      <span class="nav-icon"><i class="ri-bar-chart-grouped-line"></i></span>
+      <span class="nav-label">Analytics</span>
+    </a>
+    <a class="nav-item" data-page="reviews" onclick="navigate('reviews',this)">
+      <span class="nav-icon"><i class="ri-star-line"></i></span>
+      <span class="nav-label">Reviews</span>
+    </a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" data-page="settings" onclick="navigate('settings',this)">
+      <span class="nav-icon"><i class="ri-settings-4-line"></i></span>
+      <span class="nav-label">Settings</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-status">
+      <span class="status-dot"></span><span>All systems live</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ========== MAIN WRAPPER ========== -->
+<div class="main-wrapper">
+  <!-- NAVBAR -->
+  <header class="navbar glass-card">
+    <div class="navbar-left">
+      <button class="menu-btn" onclick="toggleSidebar()"><i class="ri-menu-fold-line"></i></button>
+      <div class="search-wrap glass-input">
+        <i class="ri-search-line"></i>
+        <input type="text" placeholder="Search orders, products, customers…"/>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="icon-btn" title="Notifications">
+        <i class="ri-notification-3-line"></i>
+        <span class="badge">4</span>
+      </button>
+      <button class="icon-btn" title="Messages">
+        <i class="ri-message-3-line"></i>
+        <span class="badge">2</span>
+      </button>
+      <div class="nav-divider-v"></div>
+      <div class="admin-profile">
+        <div class="avatar-ring">
+          <div class="avatar">AD</div>
+        </div>
+        <div class="admin-info">
+          <span class="admin-name">Admin Dev</span>
+          <span class="admin-role">Super Admin</span>
+        </div>
+        <i class="ri-arrow-down-s-line"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== CONTENT PAGES ========== -->
+  <main class="content">
+    <!-- DASHBOARD PAGE -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-sub">Welcome back, Admin. Here's what's happening.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-glass"><i class="ri-calendar-line"></i> Feb 2026</button>
+          <button class="btn-primary"><i class="ri-download-2-line"></i> Export</button>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-grid">
+        <div class="stat-card float-card glass-card" style="--clr:#3B82F6">
+          <div class="stat-icon" style="--bg:rgba(59,130,246,0.15)"><i class="ri-money-dollar-circle-line"></i></div>
+          <div class="stat-body">
+            <span class="stat-label">Total Revenue</span>
+            <span class="stat-value">$248,340</span>
+            <span class="stat-change up"><i class="ri-arrow-up-line"></i>+12.5% this month</span>
+          </div>
+          <div class="stat-sparkline" id="spark1"></div>
+        </div>
+        <div class="stat-card float-card glass-card" style="--clr:#8B5CF6">
+          <div class="stat-icon" style="--bg:rgba(139,92,246,0.15)"><i class="ri-shopping-cart-2-line"></i></div>
+          <div class="stat-body">
+            <span class="stat-label">Total Orders</span>
+            <span class="stat-value">3,842</span>
+            <span class="stat-change up"><i class="ri-arrow-up-line"></i>+8.1% this month</span>
+          </div>
+        </div>
+        <div class="stat-card float-card glass-card" style="--clr:#06B6D4">
+          <div class="stat-icon" style="--bg:rgba(6,182,212,0.15)"><i class="ri-box-3-line"></i></div>
+          <div class="stat-body">
+            <span class="stat-label">Total Products</span>
+            <span class="stat-value">1,204</span>
+            <span class="stat-change down"><i class="ri-arrow-down-line"></i>-2.3% this month</span>
+          </div>
+        </div>
+        <div class="stat-card float-card glass-card" style="--clr:#10B981">
+          <div class="stat-icon" style="--bg:rgba(16,185,129,0.15)"><i class="ri-group-line"></i></div>
+          <div class="stat-body">
+            <span class="stat-label">Total Customers</span>
+            <span class="stat-value">18,920</span>
+            <span class="stat-change up"><i class="ri-arrow-up-line"></i>+5.7% this month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="chart-grid">
+        <div class="chart-card glass-card float-card wide">
+          <div class="card-head">
+            <span class="card-title"><i class="ri-line-chart-line"></i> Revenue Overview</span>
+            <div class="card-tabs">
+              <button class="tab active">Monthly</button>
+              <button class="tab">Weekly</button>
+              <button class="tab">Daily</button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="chart-card glass-card float-card">
+          <div class="card-head">
+            <span class="card-title"><i class="ri-pie-chart-line"></i> Sales by Category</span>
+          </div>
+          <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
+        </div>
+        <div class="chart-card glass-card float-card">
+          <div class="card-head">
+            <span class="card-title"><i class="ri-bar-chart-2-line"></i> Orders Volume</span>
+          </div>
+          <div class="chart-wrap"><canvas id="ordersChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="glass-card float-card table-card">
+        <div class="card-head">
+          <span class="card-title"><i class="ri-list-check-3"></i> Recent Orders</span>
+          <button class="btn-glass sm" onclick="navigate('orders', document.querySelector('[data-page=orders]'))">View All <i class="ri-arrow-right-line"></i></button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Order ID</th><th>Product</th><th>Customer</th><th>Status</th><th>Amount</th></tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDERS PAGE -->
+    <section class="page" id="page-orders">
+      <div class="page-header">
+        <div><h1 class="page-title">Orders</h1><p class="page-sub">Manage and track all customer orders.</p></div>
+        <div class="page-actions">
+          <button class="btn-glass"><i class="ri-filter-3-line"></i> Filter</button>
+          <button class="btn-primary"><i class="ri-add-line"></i> New Order</button>
+        </div>
+      </div>
+      <div class="glass-card float-card table-card">
+        <div class="card-head">
+          <div class="search-wrap glass-input sm"><i class="ri-search-line"></i><input type="text" placeholder="Search orders…"/></div>
+          <div class="card-tabs">
+            <button class="tab active">All</button><button class="tab">Pending</button><button class="tab">Shipped</button><button class="tab">Delivered</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Order ID</th><th>Product</th><th>Customer</th><th>Date</th><th>Status</th><th>Amount</th><th>Actions</th></tr></thead>
+            <tbody id="fullOrdersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS PAGE -->
+    <section class="page" id="page-products">
+      <div class="page-header">
+        <div><h1 class="page-title">Products</h1><p class="page-sub">Manage your product catalog.</p></div>
+        <div class="page-actions">
+          <button class="btn-glass"><i class="ri-filter-3-line"></i> Filter</button>
+        </div>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+      <button class="fab" title="Add Product" onclick="showAddProduct()"><i class="ri-add-line"></i></button>
+    </section>
+
+    <!-- CUSTOMERS PAGE -->
+    <section class="page" id="page-customers">
+      <div class="page-header">
+        <div><h1 class="page-title">Customers</h1><p class="page-sub">View and manage customer accounts.</p></div>
+        <div class="page-actions"><button class="btn-primary"><i class="ri-user-add-line"></i> Add Customer</button></div>
+      </div>
+      <div class="customers-grid" id="customersGrid"></div>
+    </section>
+
+    <!-- ANALYTICS PAGE -->
+    <section class="page" id="page-analytics">
+      <div class="page-header">
+        <div><h1 class="page-title">Analytics</h1><p class="page-sub">Deep dive into your business metrics.</p></div>
+      </div>
+      <div class="analytics-kpi-grid">
+        <div class="kpi-card glass-card float-card"><i class="ri-eye-line kpi-icon"></i><div class="kpi-label">Page Views</div><div class="kpi-val">1.24M</div><div class="kpi-trend up">↑ 18%</div></div>
+        <div class="kpi-card glass-card float-card"><i class="ri-cursor-line kpi-icon"></i><div class="kpi-label">Click Rate</div><div class="kpi-val">4.8%</div><div class="kpi-trend up">↑ 2.1%</div></div>
+        <div class="kpi-card glass-card float-card"><i class="ri-repeat-2-line kpi-icon"></i><div class="kpi-label">Return Rate</div><div class="kpi-val">34.2%</div><div class="kpi-trend down">↓ 1.5%</div></div>
+        <div class="kpi-card glass-card float-card"><i class="ri-timer-line kpi-icon"></i><div class="kpi-label">Avg Session</div><div class="kpi-val">3m 42s</div><div class="kpi-trend up">↑ 0.8%</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card glass-card float-card wide"><div class="card-head"><span class="card-title"><i class="ri-line-chart-line"></i> Traffic Trend</span></div><div class="chart-wrap"><canvas id="trafficChart"></canvas></div></div>
+        <div class="chart-card glass-card float-card"><div class="card-head"><span class="card-title"><i class="ri-map-pin-line"></i> Top Regions</span></div><div class="chart-wrap"><canvas id="regionChart"></canvas></div></div>
+        <div class="chart-card glass-card float-card"><div class="card-head"><span class="card-title"><i class="ri-device-line"></i> Devices</span></div><div class="chart-wrap"><canvas id="deviceChart"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- REVIEWS PAGE -->
+    <section class="page" id="page-reviews">
+      <div class="page-header">
+        <div><h1 class="page-title">Reviews</h1><p class="page-sub">Monitor customer feedback and ratings.</p></div>
+      </div>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+    </section>
+
+    <!-- SETTINGS PAGE -->
+    <section class="page" id="page-settings">
+      <div class="page-header">
+        <div><h1 class="page-title">Settings</h1><p class="page-sub">Configure your admin preferences.</p></div>
+      </div>
+      <div class="settings-layout">
+        <div class="glass-card float-card settings-card">
+          <div class="settings-section-title">Profile Settings</div>
+          <div class="settings-field"><label>Full Name</label><div class="glass-input full"><input type="text" value="Admin Developer"/></div></div>
+          <div class="settings-field"><label>Email Address</label><div class="glass-input full"><input type="email" value="admin@sholash.com"/></div></div>
+          <div class="settings-field"><label>Role</label><div class="glass-input full"><input type="text" value="Super Administrator" readonly/></div></div>
+          <button class="btn-primary mt">Save Changes</button>
+        </div>
+        <div class="glass-card float-card settings-card">
+          <div class="settings-section-title">Notifications</div>
+          <div class="toggle-item"><span>New Order Alerts</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Low Stock Warning</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Customer Reviews</span><label class="toggle"><input type="checkbox"/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Weekly Reports</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+        </div>
+        <div class="glass-card float-card settings-card">
+          <div class="settings-section-title">Appearance</div>
+          <div class="toggle-item"><span>Dark Mode</span><label class="toggle"><input type="checkbox" id="themeToggle" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Floating Animations</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Compact Sidebar</span><label class="toggle"><input type="checkbox"/><span class="slider"></span></label></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box glass-card float-card">
+    <div class="modal-head"><span>Add New Product</span><button onclick="closeModal()"><i class="ri-close-line"></i></button></div>
+    <div class="settings-field"><label>Product Name</label><div class="glass-input full"><input type="text" placeholder="Enter product name"/></div></div>
+    <div class="settings-field"><label>Price ($)</label><div class="glass-input full"><input type="number" placeholder="0.00"/></div></div>
+    <div class="settings-field"><label>Category</label><div class="glass-input full"><input type="text" placeholder="e.g. Skincare"/></div></div>
+    <div class="settings-field"><label>Stock Quantity</label><div class="glass-input full"><input type="number" placeholder="0"/></div></div>
+    <div class="modal-actions">
+      <button class="btn-glass" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="closeModal()"><i class="ri-save-line"></i> Save Product</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
