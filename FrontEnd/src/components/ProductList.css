@@ -1,6 +1,7 @@
 .product-section {
     padding: var(--spacing-xl) 0;
     background: white;
+
 }
 
 .section-header {
@@ -13,7 +14,7 @@
 
 .section-header h2 {
     font-size: 3rem;
-    color: var(--color-primary);
+    color: var(--color-primary-brand);
     margin-bottom: var(--spacing-sm);
 }
 
@@ -40,6 +41,6 @@
 
 .outlined {
     border: solid;
-    font-size:20px;
-    padding:10px;
+    font-size: 20px;
+    padding: 10px;
 }

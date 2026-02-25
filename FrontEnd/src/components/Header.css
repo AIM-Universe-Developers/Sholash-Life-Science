@@ -1,16 +1,26 @@
 .header {
     position: fixed;
-    top: 0;
+    top: 36px;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 100px;
     display: flex;
     align-items: center;
     z-index: 1000;
-    background-color: var(--color-light-green);
-    border-top: 4px solid #2d3e34;
+    background-color: rgba(238, 245, 241, 0.95);
+    /* Light green tint */
     box-shadow: var(--shadow-sm);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-sholash);
 }
 
 .header-content {
@@ -20,11 +30,11 @@
     width: 100%;
 }
 
-.logo {
-    font-size: 1.5rem;
-    letter-spacing: 4px;
-    color: var(--color-primary);
-    font-weight: 600;
+.logo-img {
+    height: 150px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .nav {
@@ -43,12 +53,28 @@
 
 .nav a:hover {
     opacity: 1;
-    color: var(--color-primary);
+    color: var(--color-sholash-blue);
 }
 
 .header-actions {
     display: flex;
     gap: var(--spacing-sm);
+}
+
+.cart-btn {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--color-primary-brand);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
 }
 
 .icon-btn {
@@ -57,7 +83,7 @@
 }
 
 .icon-btn:hover {
-    color: var(--color-primary);
+    color: var(--color-sholash-green);
     transform: translateY(-2px);
 }
 

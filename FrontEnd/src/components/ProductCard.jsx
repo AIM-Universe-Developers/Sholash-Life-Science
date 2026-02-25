@@ -1,7 +1,7 @@
 import React from 'react';
 import './ProductCard.css';
 
-const ProductCard = ({ name, description, category, color, price, rating }) => {
+const ProductCard = ({ name, description, category, color, price, rating, onAddToCart }) => {
     return (
         <div className="product-card fade-in">
             <div className="product-image-container" style={{ '--product-accent': color }}>
@@ -21,7 +21,7 @@ const ProductCard = ({ name, description, category, color, price, rating }) => {
                 <h3 className="product-name serif">{name}</h3>
                 <p className="product-description">{description}</p>
                 <div className="product-footer">
-                    <button className="btn-cart">Add to Cart</button>
+                    <button className="btn-cart" onClick={onAddToCart}>Add to Cart</button>
                 </div>
             </div>
         </div>

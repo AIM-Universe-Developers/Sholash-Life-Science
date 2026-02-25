@@ -1,23 +1,29 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
+import logo from '../assets/logo/logo.png';
 
-const Header = () => {
+const Header = ({ cartCount }) => {
     return (
         <header className="header glass fade-in">
             <div className="container header-content">
-                <div className="logo serif">SHOLASH</div>
+                <div className="logo">
+                    <Link to="/">
+                        <img src={logo} alt="Sholash Life Sciences" className="logo-img" />
+                    </Link>
+                </div>
                 <nav className="nav">
-                    <a href="#home">Home</a>
-                    <a href="#products">Collection</a>
-                    <a href="#about">Our Story</a>
-                    <a href="#contact">Contact</a>
+                    <Link to="/">Home</Link>
+                    <a href="/#products">Collection</a>
+                    <Link to="/about">Our Story</Link>
+                    <Link to="/contact">Contact</Link>
                 </nav>
                 <div className="header-actions">
                     <button className="icon-btn" aria-label="Search">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     </button>
-                    <button className="icon-btn" aria-label="Cart">
+                    <button className="icon-btn cart-btn" aria-label="Cart">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                     </button>
                 </div>
             </div>

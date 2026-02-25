@@ -1,7 +1,21 @@
 .footer {
     padding: var(--spacing-xl) 0 0;
-    background: var(--color-bg);
-    border-top: 1px solid var(--color-border);
+    background: #f4f7f5;
+    /* Subtle brand green tint */
+    position: relative;
+}
+
+
+
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-sholash);
 }
 
 .footer-content {
@@ -11,7 +25,10 @@
     padding-bottom: var(--spacing-lg);
 }
 
-.footer-brand .logo {
+.footer-brand .logo-img {
+    height: 150px;
+    width: auto;
+    object-fit: contain;
     margin-bottom: var(--spacing-sm);
 }
 
@@ -30,8 +47,17 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: var(--color-primary);
+    color: var(--color-sholash-green);
     margin-bottom: var(--spacing-md);
+}
+
+.newsletter-success {
+    background: rgba(0, 166, 80, 0.1);
+    color: var(--color-sholash-green);
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .link-group a {
@@ -42,7 +68,7 @@
 }
 
 .link-group a:hover {
-    color: var(--color-primary);
+    color: var(--color-sholash-blue);
 }
 
 .link-group p {
@@ -66,7 +92,7 @@
 }
 
 .newsletter-form button {
-    background: var(--color-primary);
+    background: var(--gradient-sholash);
     color: white;
     padding: 0.6rem 1.2rem;
     border-radius: 4px;

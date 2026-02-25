@@ -6,6 +6,8 @@
 
 main {
   flex-grow: 1;
+  padding-top: 136px;
+  /* 36px TopBar + 100px Header */
 }
 
 /* Base styles for buttons and interactive elements across the app */

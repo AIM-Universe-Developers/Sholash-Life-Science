@@ -4,16 +4,20 @@
   /* Color Palette - Clean Beauty Aesthetic */
   --color-bg: #fdfbf7;
   --color-surface: #ffffff;
-  --color-primary: #ffffff;
-  /* Deep botanical green */
-  --color-secondary: #c9ada7;
-  /* Dusty rose/beige */
-  --color-accent: #9a8c98;
-  --color-light-green: #eef5f1;
-  /* Light mint/botanical green */
+  --color-primary-brand: #00a650;
+  /* Sholash Green */
+  --color-secondary-brand: #006093;
+  /* Sholash Blue */
+  --color-primary: var(--color-primary-brand);
+  --color-secondary: var(--color-secondary-brand);
   --color-text-main: #222222;
   --color-text-muted: #666666;
   --color-border: #e8e1d9;
+
+  /* Sholash Brand Colors */
+  --color-sholash-blue: #006093;
+  --color-sholash-green: #00a650;
+  --gradient-sholash: linear-gradient(90deg, var(--color-sholash-blue) 0%, var(--color-sholash-green) 100%);
 
   /* Gradints */
   --gradient-soft: linear-gradient(135deg, #fdfbf7 0%, #f5f0e6 100%);

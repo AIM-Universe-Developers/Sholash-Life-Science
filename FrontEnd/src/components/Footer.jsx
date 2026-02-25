@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.css';
+import logo from '../assets/logo/logo.png';
 
 const Footer = () => {
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [email, setEmail] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (email) {
+            setIsSubscribed(true);
+            setEmail('');
+        }
+    };
+
     return (
         <footer className="footer fade-in">
             <div className="container footer-content">
                 <div className="footer-brand">
-                    <div className="logo serif">SHOLASH</div>
+                    <div className="logo">
+                        <img src={logo} alt="Sholash Life Sciences" className="logo-img" />
+                    </div>
                     <p>Scientific skincare for your natural radiance. Dermatologist tested, results driven.</p>
                 </div>
                 <div className="footer-links">
@@ -26,17 +40,29 @@ const Footer = () => {
                     </div>
                     <div className="link-group">
                         <h4>Newsletter</h4>
-                        <p>Join our luminous community for skin tips and early access.</p>
-                        <form className="newsletter-form">
-                            <input type="email" placeholder="Your email" />
-                            <button type="submit">Join</button>
-                        </form>
+                        <p>Join our community for skin tips and early access.</p>
+                        {isSubscribed ? (
+                            <div className="newsletter-success fade-in">
+                                <p>Thank you for subscribing!</p>
+                            </div>
+                        ) : (
+                            <form className="newsletter-form" onSubmit={handleSubmit}>
+                                <input
+                                    type="email"
+                                    placeholder="Your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                                <button type="submit">Join</button>
+                            </form>
+                        )}
                     </div>
                 </div>
             </div>
             <div className="footer-bottom">
                 <div className="container">
-                    <p>&copy; 2026 SHOLASH Skincare. All rights reserved.</p>
+                    <p>&copy; 2026 SHOLASH DEVELOPED BY AIM UNIVERSSE</p>
                 </div>
             </div>
         </footer>

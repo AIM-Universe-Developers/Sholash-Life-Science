@@ -68,12 +68,12 @@ const products = [
     }
 ];
 
-const ProductList = () => {
+const ProductList = ({ onAddToCart }) => {
     return (
         <section id="products" className="product-section">
             <div className="container">
                 <div className="section-header fade-in">
-                    <marquee>this is abishekk </marquee>
+                    <marquee>Sholash Life Sciences</marquee>
                     <span className="subtitle">Curated Care</span>
                     <h2 className="serif">Our Signature Collection</h2>
                     <p className="section-description">
@@ -82,7 +82,11 @@ const ProductList = () => {
                 </div>
                 <div className="product-grid">
                     {products.map(product => (
-                        <ProductCard key={product.id} {...product} />
+                        <ProductCard
+                            key={product.id}
+                            {...product}
+                            onAddToCart={() => onAddToCart(product)}
+                        />
                     ))}
                 </div>
             </div>
