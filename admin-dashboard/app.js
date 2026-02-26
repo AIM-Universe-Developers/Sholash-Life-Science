@@ -4,31 +4,31 @@
 
 // ---- DATA ----
 const ORDERS = [
-  { id:'#SH-10421', product:'Glow Serum 30ml', customer:'Aisha Patel', date:'Feb 24, 2026', status:'delivered', amount:'$48.00' },
-  { id:'#SH-10420', product:'HydraBalance Cream', customer:'Marcus Chen', date:'Feb 24, 2026', status:'shipped', amount:'$65.00' },
-  { id:'#SH-10419', product:'Vitamin C Booster', customer:'Priya Sharma', date:'Feb 23, 2026', status:'pending', amount:'$39.00' },
-  { id:'#SH-10418', product:'Retinol Night Oil', customer:'James Okafor', date:'Feb 23, 2026', status:'delivered', amount:'$82.00' },
-  { id:'#SH-10417', product:'SPF 50+ Sunscreen', customer:'Luna García', date:'Feb 22, 2026', status:'cancelled', amount:'$28.00' },
-  { id:'#SH-10416', product:'Pearl Brightener', customer:'Emily Watson', date:'Feb 22, 2026', status:'shipped', amount:'$75.00' },
-  { id:'#SH-10415', product:'Collagen Peptide', customer:'Raj Murthy', date:'Feb 21, 2026', status:'delivered', amount:'$55.00' },
-  { id:'#SH-10414', product:'Rose Water Toner', customer:'Yuki Tanaka', date:'Feb 21, 2026', status:'pending', amount:'$32.00' },
-  { id:'#SH-10413', product:'Micellar Cleanser', customer:'Chris Adeyemi', date:'Feb 20, 2026', status:'shipped', amount:'$27.00' },
-  { id:'#SH-10412', product:'Eye Lift Serum', customer:'Sarah Kim', date:'Feb 20, 2026', status:'delivered', amount:'$94.00' },
+  { id:'#SH-10421', product:'Glow Serum 30ml', customer:'Aisha Patel', date:'Feb 24, 2026', status:'delivered', amount:'₹48.00' },
+  { id:'#SH-10420', product:'HydraBalance Cream', customer:'Marcus Chen', date:'Feb 24, 2026', status:'shipped', amount:'₹65.00' },
+  { id:'#SH-10419', product:'Vitamin C Booster', customer:'Priya Sharma', date:'Feb 23, 2026', status:'pending', amount:'₹39.00' },
+  { id:'#SH-10418', product:'Retinol Night Oil', customer:'James Okafor', date:'Feb 23, 2026', status:'delivered', amount:'₹82.00' },
+  { id:'#SH-10417', product:'SPF 50+ Sunscreen', customer:'Luna García', date:'Feb 22, 2026', status:'cancelled', amount:'₹28.00' },
+  { id:'#SH-10416', product:'Pearl Brightener', customer:'Emily Watson', date:'Feb 22, 2026', status:'shipped', amount:'₹75.00' },
+  { id:'#SH-10415', product:'Collagen Peptide', customer:'Raj Murthy', date:'Feb 21, 2026', status:'delivered', amount:'₹55.00' },
+  { id:'#SH-10414', product:'Rose Water Toner', customer:'Yuki Tanaka', date:'Feb 21, 2026', status:'pending', amount:'₹32.00' },
+  { id:'#SH-10413', product:'Micellar Cleanser', customer:'Chris Adeyemi', date:'Feb 20, 2026', status:'shipped', amount:'₹27.00' },
+  { id:'#SH-10412', product:'Eye Lift Serum', customer:'Sarah Kim', date:'Feb 20, 2026', status:'delivered', amount:'₹94.00' },
 ];
 
 const PRODUCTS = [
-  { emoji:'🌿', name:'Glow Serum 30ml', price:'$48.00', stock:142, low:false },
-  { emoji:'💧', name:'HydraBalance Cream', price:'$65.00', stock:89, low:false },
-  { emoji:'☀️', name:'Vitamin C Booster', price:'$39.00', stock:17, low:true },
-  { emoji:'🌙', name:'Retinol Night Oil', price:'$82.00', stock:204, low:false },
-  { emoji:'🛡️', name:'SPF 50+ Sunscreen', price:'$28.00', stock:8,  low:true },
-  { emoji:'✨', name:'Pearl Brightener', price:'$75.00', stock:56, low:false },
-  { emoji:'💎', name:'Collagen Peptide', price:'$55.00', stock:120, low:false },
-  { emoji:'🌹', name:'Rose Water Toner', price:'$32.00', stock:233, low:false },
-  { emoji:'🫧', name:'Micellar Cleanser', price:'$27.00', stock:310, low:false },
-  { emoji:'👁️', name:'Eye Lift Serum', price:'$94.00', stock:44, low:false },
-  { emoji:'🧴', name:'Exfoliating Scrub', price:'$36.00', stock:12, low:true },
-  { emoji:'🍯', name:'Honey Mask', price:'$42.00', stock:98, low:false },
+  { emoji:'🌿', name:'Glow Serum 30ml', price:'₹48.00', stock:142, low:false },
+  { emoji:'💧', name:'HydraBalance Cream', price:'₹65.00', stock:89, low:false },
+  { emoji:'☀️', name:'Vitamin C Booster', price:'₹39.00', stock:17, low:true },
+  { emoji:'🌙', name:'Retinol Night Oil', price:'₹82.00', stock:204, low:false },
+  { emoji:'🛡️', name:'SPF 50+ Sunscreen', price:'₹28.00', stock:8,  low:true },
+  { emoji:'✨', name:'Pearl Brightener', price:'₹75.00', stock:56, low:false },
+  { emoji:'💎', name:'Collagen Peptide', price:'₹55.00', stock:120, low:false },
+  { emoji:'🌹', name:'Rose Water Toner', price:'₹32.00', stock:233, low:false },
+  { emoji:'🫧', name:'Micellar Cleanser', price:'₹27.00', stock:310, low:false },
+  { emoji:'👁️', name:'Eye Lift Serum', price:'₹94.00', stock:44, low:false },
+  { emoji:'🧴', name:'Exfoliating Scrub', price:'₹36.00', stock:12, low:true },
+  { emoji:'🍯', name:'Honey Mask', price:'₹42.00', stock:98, low:false },
 ];
 
 const CUSTOMERS = [
@@ -311,12 +311,85 @@ function updateChartsTheme() {
   });
 }
 
+// ---- TOASTS ----
+function showToast(msg) {
+  let container = document.querySelector('.toast-container');
+  if(!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<i class="ri-checkbox-circle-line" style="color:var(--green)"></i> ${msg}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('fade-out');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// ---- SETTINGS & PERSISTENCE ----
+const SETTINGS_KEYS = {
+  orderAlerts: 'sholash-alerts-orders',
+  stockWarning: 'sholash-alerts-stock',
+  reviews: 'sholash-alerts-reviews',
+  reports: 'sholash-alerts-reports',
+  animations: 'sholash-animations',
+  compactSidebar: 'sholash-compact-sidebar'
+};
+
+function initSettings() {
+  initTheme();
+  
+  // Load Checkbox States
+  Object.keys(SETTINGS_KEYS).forEach(key => {
+    const saved = localStorage.getItem(SETTINGS_KEYS[key]);
+    const el = document.getElementById(`toggle-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+    if (el && saved !== null) {
+      el.checked = saved === 'true';
+    }
+  });
+
+  // Apply initial states
+  const animsOn = localStorage.getItem(SETTINGS_KEYS.animations) !== 'false';
+  document.body.classList.toggle('no-animations', !animsOn);
+  
+  const compactOn = localStorage.getItem(SETTINGS_KEYS.compactSidebar) === 'true';
+  document.getElementById('sidebar').classList.toggle('collapsed', compactOn);
+}
+
+function handleSettingChange(id, key, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('change', (e) => {
+    const val = e.target.checked;
+    localStorage.setItem(key, val);
+    
+    if (id === 'toggle-animations') {
+      document.body.classList.toggle('no-animations', !val);
+    } else if (id === 'toggle-compact-sidebar') {
+      document.getElementById('sidebar').classList.toggle('collapsed', val);
+    }
+    
+    showToast(`${msg}: ${val ? 'Enabled' : 'Disabled'}`);
+  });
+}
+
 // ---- INIT ----
 window.addEventListener('DOMContentLoaded', ()=>{
-  initTheme();
+  initSettings();
   
   const themeToggle = document.getElementById('themeToggle');
   if (themeToggle) themeToggle.addEventListener('change', toggleTheme);
+
+  // Setup other toggle listeners
+  handleSettingChange('toggle-order-alerts', SETTINGS_KEYS.orderAlerts, 'Order Alerts');
+  handleSettingChange('toggle-stock-warning', SETTINGS_KEYS.stockWarning, 'Stock Warnings');
+  handleSettingChange('toggle-reviews', SETTINGS_KEYS.reviews, 'Review Notifications');
+  handleSettingChange('toggle-reports', SETTINGS_KEYS.reports, 'Weekly Reports');
+  handleSettingChange('toggle-animations', SETTINGS_KEYS.animations, 'Animations');
+  handleSettingChange('toggle-compact-sidebar', SETTINGS_KEYS.compactSidebar, 'Compact Sidebar');
 
   renderDashboardOrders();
   renderFullOrders();
@@ -330,7 +403,6 @@ window.addEventListener('DOMContentLoaded', ()=>{
       initRevenueChart();
       initSalesChart();
       initOrdersChart();
-      // Apply correct theme colors to newly created charts
       updateChartsTheme();
     });
   });

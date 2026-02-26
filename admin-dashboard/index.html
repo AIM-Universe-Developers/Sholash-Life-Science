@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ShOlash Admin — Futuristic Dashboard</title>
+<link rel="icon" type="image/png" href="assets/logo.2.png"/>
+<link rel="apple-touch-icon" href="assets/logo.2.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -121,7 +123,7 @@
           <div class="stat-icon" style="--bg:rgba(59,130,246,0.15)"><i class="ri-money-dollar-circle-line"></i></div>
           <div class="stat-body">
             <span class="stat-label">Total Revenue</span>
-            <span class="stat-value">$248,340</span>
+            <span class="stat-value">₹248,340</span>
             <span class="stat-change up"><i class="ri-arrow-up-line"></i>+12.5% this month</span>
           </div>
           <div class="stat-sparkline" id="spark1"></div>
@@ -283,16 +285,16 @@
         </div>
         <div class="glass-card float-card settings-card">
           <div class="settings-section-title">Notifications</div>
-          <div class="toggle-item"><span>New Order Alerts</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-item"><span>Low Stock Warning</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-item"><span>Customer Reviews</span><label class="toggle"><input type="checkbox"/><span class="slider"></span></label></div>
-          <div class="toggle-item"><span>Weekly Reports</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>New Order Alerts</span><label class="toggle"><input type="checkbox" id="toggle-order-alerts" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Low Stock Warning</span><label class="toggle"><input type="checkbox" id="toggle-stock-warning" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Customer Reviews</span><label class="toggle"><input type="checkbox" id="toggle-reviews"/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Weekly Reports</span><label class="toggle"><input type="checkbox" id="toggle-reports" checked/><span class="slider"></span></label></div>
         </div>
         <div class="glass-card float-card settings-card">
           <div class="settings-section-title">Appearance</div>
           <div class="toggle-item"><span>Dark Mode</span><label class="toggle"><input type="checkbox" id="themeToggle" checked/><span class="slider"></span></label></div>
-          <div class="toggle-item"><span>Floating Animations</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-item"><span>Compact Sidebar</span><label class="toggle"><input type="checkbox"/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Floating Animations</span><label class="toggle"><input type="checkbox" id="toggle-animations" checked/><span class="slider"></span></label></div>
+          <div class="toggle-item"><span>Compact Sidebar</span><label class="toggle"><input type="checkbox" id="toggle-compact-sidebar"/><span class="slider"></span></label></div>
         </div>
       </div>
     </section>
@@ -304,7 +306,7 @@
   <div class="modal-box glass-card float-card">
     <div class="modal-head"><span>Add New Product</span><button onclick="closeModal()"><i class="ri-close-line"></i></button></div>
     <div class="settings-field"><label>Product Name</label><div class="glass-input full"><input type="text" placeholder="Enter product name"/></div></div>
-    <div class="settings-field"><label>Price ($)</label><div class="glass-input full"><input type="number" placeholder="0.00"/></div></div>
+    <div class="settings-field"><label>Price (₹)</label><div class="glass-input full"><input type="number" placeholder="0.00"/></div></div>
     <div class="settings-field"><label>Category</label><div class="glass-input full"><input type="text" placeholder="e.g. Skincare"/></div></div>
     <div class="settings-field"><label>Stock Quantity</label><div class="glass-input full"><input type="number" placeholder="0"/></div></div>
     <div class="modal-actions">
