@@ -76,7 +76,7 @@
       <button class="menu-btn" onclick="toggleSidebar()"><i class="ri-menu-fold-line"></i></button>
       <div class="search-wrap glass-input">
         <i class="ri-search-line"></i>
-        <input type="text" placeholder="Search orders, products, customers…"/>
+        <input type="text" id="navbar-search-input" placeholder="Search orders, products, customers…"/>
       </div>
     </div>
     <div class="navbar-right">
@@ -209,7 +209,7 @@
       </div>
       <div class="glass-card float-card table-card">
         <div class="card-head">
-          <div class="search-wrap glass-input sm"><i class="ri-search-line"></i><input type="text" placeholder="Search orders…"/></div>
+          <div class="search-wrap glass-input sm"><i class="ri-search-line"></i><input type="text" id="orders-search-input" placeholder="Search orders…"/></div>
           <div class="card-tabs">
             <button class="tab active">All</button><button class="tab">Pending</button><button class="tab">Shipped</button><button class="tab">Delivered</button>
           </div>
@@ -299,6 +299,32 @@
       </div>
     </section>
   </main>
+</div>
+
+<!-- ORDER VIEW/EDIT MODAL -->
+<div class="modal-overlay" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
+  <div class="modal-box glass-card float-card">
+    <div class="modal-head"><span id="orderModalTitle">Order Details</span><button onclick="closeOrderModal()"><i class="ri-close-line"></i></button></div>
+    <div class="settings-field"><label>Order ID</label><div class="glass-input full"><input type="text" id="view-order-id" readonly/></div></div>
+    <div class="settings-field"><label>Product</label><div class="glass-input full"><input type="text" id="view-order-product" readonly/></div></div>
+    <div class="settings-field"><label>Customer</label><div class="glass-input full"><input type="text" id="view-order-customer" readonly/></div></div>
+    <div class="settings-field"><label>Amount</label><div class="glass-input full"><input type="text" id="view-order-amount" readonly/></div></div>
+    <div class="settings-field">
+      <label>Status</label>
+      <div class="glass-input full">
+        <select id="edit-order-status" style="width:100%; background:transparent; color:var(--text-primary); border:none; outline:none; cursor:pointer;">
+          <option value="delivered">Delivered</option>
+          <option value="shipped">Shipped</option>
+          <option value="pending">Pending</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-glass" onclick="closeOrderModal()">Close</button>
+      <button class="btn-primary" id="saveOrderBtn" onclick="saveOrderStatus()"><i class="ri-save-line"></i> Save Changes</button>
+    </div>
+  </div>
 </div>
 
 <!-- ADD PRODUCT MODAL -->

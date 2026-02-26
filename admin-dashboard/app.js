@@ -83,14 +83,21 @@ function renderDashboardOrders() {
       <td>${o.customer}</td>
       <td>${statusBadge(o.status)}</td>
       <td style="font-weight:600;color:var(--text-primary);">${o.amount}</td>
+      <td>
+        <button class="btn-glass sm" onclick="openOrderModal('${o.id}', false)"><i class="ri-eye-line"></i></button>
+      </td>
     </tr>`).join('');
 }
 
 // Full orders page
-function renderFullOrders() {
+function renderFullOrders(filtered = ORDERS) {
   const tbody = document.getElementById('fullOrdersBody');
   if(!tbody) return;
-  tbody.innerHTML = ORDERS.map(o=>`
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">No orders found matching your search.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(o=>`
     <tr>
       <td><code style="color:var(--blue);font-size:.8rem;">${o.id}</code></td>
       <td>${o.product}</td>
@@ -99,17 +106,21 @@ function renderFullOrders() {
       <td>${statusBadge(o.status)}</td>
       <td style="font-weight:600;color:var(--text-primary);">${o.amount}</td>
       <td>
-        <button class="btn-glass sm"><i class="ri-eye-line"></i></button>
-        <button class="btn-glass sm" style="margin-left:4px;"><i class="ri-edit-line"></i></button>
+        <button class="btn-glass sm" onclick="openOrderModal('${o.id}', false)"><i class="ri-eye-line"></i></button>
+        <button class="btn-glass sm" style="margin-left:4px;" onclick="openOrderModal('${o.id}', true)"><i class="ri-edit-line"></i></button>
       </td>
     </tr>`).join('');
 }
 
 // Products
-function renderProducts() {
+function renderProducts(filtered = PRODUCTS) {
   const grid = document.getElementById('productsGrid');
   if(!grid) return;
-  grid.innerHTML = PRODUCTS.map(p=>`
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);font-size:1.1rem;">No products found matching your search.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p=>`
     <div class="product-card glass-card float-card">
       <div class="product-img">${p.emoji}</div>
       <div class="product-name">${p.name}</div>
@@ -122,10 +133,14 @@ function renderProducts() {
 }
 
 // Customers
-function renderCustomers() {
+function renderCustomers(filtered = CUSTOMERS) {
   const grid = document.getElementById('customersGrid');
   if(!grid) return;
-  grid.innerHTML = CUSTOMERS.map(c=>`
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);font-size:1.1rem;">No customers found matching your search.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(c=>`
     <div class="customer-card glass-card float-card">
       <div class="cust-avatar" style="background:linear-gradient(135deg,${c.colors[0]},${c.colors[1]})">${c.initials}</div>
       <div class="cust-name">${c.name}</div>
@@ -136,10 +151,14 @@ function renderCustomers() {
 }
 
 // Reviews
-function renderReviews() {
+function renderReviews(filtered = REVIEWS) {
   const grid = document.getElementById('reviewsGrid');
   if(!grid) return;
-  grid.innerHTML = REVIEWS.map(r=>`
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);font-size:1.1rem;">No reviews found matching your search.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(r=>`
     <div class="review-card glass-card float-card">
       <div class="review-top">
         <div class="review-av" style="background:linear-gradient(135deg,${r.colors[0]},${r.colors[1]})">${r.author.split(' ').map(w=>w[0]).join('')}</div>
@@ -231,7 +250,50 @@ function initAnalyticsCharts() {
   if(dc) { new Chart(dc,{ type:'doughnut', data:{ labels:['Mobile','Desktop','Tablet'], datasets:[{ data:[58,32,10], backgroundColor:['#3B82F6','#7C3AED','#06B6D4'], borderWidth:0, hoverOffset:8 }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ position:'bottom', labels:{ color:'#94A3B8', font:{size:11}, boxWidth:10, usePointStyle:true } }, tooltip: commonChartDefaults.plugins.tooltip } } }); }
 }
 
-// ---- MODAL ----
+// ---- ORDER MODAL ----
+let currentEditingOrderId = null;
+
+function openOrderModal(orderId, isEdit) {
+  const order = ORDERS.find(o => o.id === orderId);
+  if (!order) return;
+
+  currentEditingOrderId = orderId;
+  document.getElementById('orderModalTitle').innerText = isEdit ? 'Edit Order Status' : 'Order Details';
+  document.getElementById('view-order-id').value = order.id;
+  document.getElementById('view-order-product').value = order.product;
+  document.getElementById('view-order-customer').value = order.customer;
+  document.getElementById('view-order-amount').value = order.amount;
+  
+  const statusSelect = document.getElementById('edit-order-status');
+  statusSelect.value = order.status;
+  statusSelect.disabled = !isEdit;
+  
+  const saveBtn = document.getElementById('saveOrderBtn');
+  saveBtn.style.display = isEdit ? 'inline-flex' : 'none';
+
+  document.getElementById('orderModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function saveOrderStatus() {
+  if (!currentEditingOrderId) return;
+  const newStatus = document.getElementById('edit-order-status').value;
+  const order = ORDERS.find(o => o.id === currentEditingOrderId);
+  if (order) {
+    order.status = newStatus;
+    showToast(`Order ${currentEditingOrderId} updated to ${newStatus}`);
+    renderDashboardOrders();
+    renderFullOrders();
+    closeOrderModal();
+  }
+}
+
+// ---- PRODUCT MODAL ----
 function showAddProduct() {
   document.getElementById('productModal').classList.add('open');
   document.body.style.overflow='hidden';
@@ -240,9 +302,16 @@ function closeModal() {
   document.getElementById('productModal').classList.remove('open');
   document.body.style.overflow='';
 }
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-// ---- TAB CLICKS (generic) ----
+// Global Escape listener for all modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeOrderModal();
+  }
+});
+
+// ---- CHART.JS DEFAULTS ----
 document.addEventListener('click', e=>{
   const tab = e.target.closest('.tab');
   if(!tab) return;
@@ -376,6 +445,53 @@ function handleSettingChange(id, key, msg) {
   });
 }
 
+// ---- SEARCH LOGIC ----
+function handleSearch(inputId, type) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  input.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    
+    // Fallback search type detection for navbar
+    let currentType = type;
+    if (type === 'auto') {
+      const activePage = document.querySelector('.page.active').id;
+      if (activePage === 'page-orders') currentType = 'orders';
+      else if (activePage === 'page-products') currentType = 'products';
+      else if (activePage === 'page-customers') currentType = 'customers';
+      else if (activePage === 'page-reviews') currentType = 'reviews';
+      else return; // Don't search on dashboard for now
+    }
+
+    if (currentType === 'orders') {
+      const filtered = ORDERS.filter(o => 
+        o.id.toLowerCase().includes(query) || 
+        o.product.toLowerCase().includes(query) || 
+        o.customer.toLowerCase().includes(query) ||
+        o.status.toLowerCase().includes(query)
+      );
+      renderFullOrders(filtered);
+    } else if (currentType === 'products') {
+      const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(query));
+      renderProducts(filtered);
+    } else if (currentType === 'customers') {
+      const filtered = CUSTOMERS.filter(c => 
+        c.name.toLowerCase().includes(query) || 
+        c.email.toLowerCase().includes(query)
+      );
+      renderCustomers(filtered);
+    } else if (currentType === 'reviews') {
+      const filtered = REVIEWS.filter(r => 
+        r.author.toLowerCase().includes(query) || 
+        r.product.toLowerCase().includes(query) || 
+        r.text.toLowerCase().includes(query)
+      );
+      renderReviews(filtered);
+    }
+  });
+}
+
 // ---- INIT ----
 window.addEventListener('DOMContentLoaded', ()=>{
   initSettings();
@@ -390,6 +506,10 @@ window.addEventListener('DOMContentLoaded', ()=>{
   handleSettingChange('toggle-reports', SETTINGS_KEYS.reports, 'Weekly Reports');
   handleSettingChange('toggle-animations', SETTINGS_KEYS.animations, 'Animations');
   handleSettingChange('toggle-compact-sidebar', SETTINGS_KEYS.compactSidebar, 'Compact Sidebar');
+
+  // Setup search listeners
+  handleSearch('navbar-search-input', 'auto');
+  handleSearch('orders-search-input', 'orders');
 
   renderDashboardOrders();
   renderFullOrders();
