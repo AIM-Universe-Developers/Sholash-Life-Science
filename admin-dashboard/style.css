@@ -34,13 +34,17 @@
   --shadow-card: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3);
   --orb-opacity: 0.08;
   --sidebar-bg: rgba(15,23,42,0.75);
+  --modal-overlay: rgba(2,6,23,0.85);
+  --input-bg: rgba(255,255,255,0.04);
+  --toggle-track: rgba(255,255,255,0.1);
+  --toggle-border: rgba(255,255,255,0.04);
 }
 
 /* Theme: Light */
 :root[data-theme="light"] {
   --bg-deep: #F8FAFC;
   --bg-base: #FFFFFF;
-  --glass: rgba(255,255,255,0.7);
+  --glass: #FFFFFF;
   --glass-border: rgba(0,0,0,0.08);
   --glass-hover: rgba(59,130,246,0.05);
   --text-primary: #0F172A;
@@ -50,6 +54,10 @@
   --shadow-card: 0 4px 20px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.02);
   --orb-opacity: 0.05;
   --sidebar-bg: rgba(255,255,255,0.75);
+  --modal-overlay: rgba(255,255,255,0.7);
+  --input-bg: rgba(0,0,0,0.03);
+  --toggle-track: rgba(0,0,0,0.08);
+  --toggle-border: rgba(0,0,0,0.05);
 }
 
 /* ---- RESET ---- */
@@ -247,12 +255,26 @@ body.no-animations .float-card:hover {
 .menu-btn:hover { color:var(--blue); background:rgba(59,130,246,0.12); }
 .glass-input {
   display:flex; align-items:center; gap:10px;
-  background:rgba(255,255,255,0.04); border:1px solid var(--glass-border);
+  background: var(--input-bg); border: 1px solid var(--glass-border);
   border-radius:10px; padding:0 14px; height:40px; color:var(--text-secondary); font-size:.875rem;
   transition: all var(--transition);
 }
 .glass-input:focus-within { border-color:rgba(59,130,246,0.5); box-shadow:0 0 0 3px rgba(59,130,246,0.12); color:var(--text-primary); }
 .glass-input input { flex:1; font-size:.875rem; }
+.glass-select {
+  width: 100%;
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-weight: 500;
+  padding-right: 20px;
+}
+.glass-select option {
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
 .glass-input kbd { font-size:.7rem; background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); border-radius:5px; padding:1px 6px; color:var(--text-muted); }
 .glass-input.sm { height:36px; }
 .glass-input.full { width:100%; }
@@ -451,18 +473,18 @@ body.no-animations .float-card:hover {
 .settings-section-title { font-size:.95rem; font-weight:700; margin-bottom:18px; border-bottom:1px solid var(--glass-border); padding-bottom:12px; }
 .settings-field { margin-bottom:14px; }
 .settings-field label { display:block; font-size:.76rem; color:var(--text-muted); margin-bottom:6px; font-weight:500; }
-.toggle-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:.84rem; color:var(--text-secondary); }
+.toggle-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--toggle-border); font-size:.84rem; color:var(--text-secondary); }
 .toggle { position:relative; width:38px; height:21px; flex-shrink:0; }
 .toggle input { opacity:0; width:0; height:0; }
-.slider { position:absolute; inset:0; background:rgba(255,255,255,0.1); border-radius:99px; cursor:pointer; transition:all var(--transition); }
+.slider { position:absolute; inset:0; background: var(--toggle-track); border-radius:99px; cursor:pointer; transition:all var(--transition); }
 .slider::before { content:''; position:absolute; width:15px; height:15px; border-radius:50%; background:#fff; left:3px; top:3px; transition:all var(--transition); }
 .toggle input:checked + .slider { background:linear-gradient(135deg,var(--blue),var(--purple)); }
 .toggle input:checked + .slider::before { transform:translateX(17px); }
 
 /* ---- MODAL ---- */
-.modal-overlay { position:fixed; inset:0; background:rgba(2,6,23,0.75); backdrop-filter:blur(8px); display:none; place-items:center; z-index:500; }
+.modal-overlay { position:fixed; inset:0; background: var(--modal-overlay); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); display:none; place-items:center; z-index:500; }
 .modal-overlay.open { display:grid; }
-.modal-box { padding:28px; width:100%; max-width:440px; animation:fadeUpIn .3s ease; }
+.modal-box { padding:28px; width:100%; max-width:440px; animation:fadeUpIn .3s ease; box-shadow: var(--shadow-float); }
 .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; font-weight:700; font-size:1rem; }
 .modal-head button { background:var(--glass); border:1px solid var(--glass-border); border-radius:8px; width:30px; height:30px; display:grid; place-items:center; color:var(--text-secondary); font-size:1.1rem; }
 .modal-actions { display:flex; gap:10px; margin-top:22px; justify-content:flex-end; }
