@@ -1,6 +1,6 @@
 .healthy-skin-section {
     padding: var(--spacing-xl) 0;
-    background-color: #fff;
+    background-color: var(--color-bg);
     overflow: hidden;
 }
 
@@ -12,64 +12,72 @@
 }
 
 .healthy-skin-content h2 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    color: var(--color-primary-brand);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    color: var(--color-text-main);
     margin-bottom: var(--spacing-md);
+    background: var(--gradient-ocean);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .main-description {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--color-text-muted);
-    line-height: 1.6;
-    margin-bottom: var(--spacing-lg);
-    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-xl);
+    max-width: 650px;
 }
 
 .features-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-xl);
 }
 
 .feature-item {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    border: 1px solid rgba(14, 165, 233, 0.05);
+    transition: all 0.4s ease;
+}
+
+.feature-item:hover {
+    background: white;
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-aqua);
 }
 
 .feature-icon {
-    color: var(--color-primary-brand);
+    color: var(--color-primary-aqua);
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
 
 .feature-text h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: var(--color-primary-brand);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-secondary-deep);
 }
 
 .feature-text p {
     font-size: 0.95rem;
     color: var(--color-text-muted);
-    line-height: 1.5;
-}
-
-/* Right Side Wrap */
-.healthy-skin-visual {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    line-height: 1.6;
 }
 
 .trendy-image-wrapper {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    height: 600px;
+    max-width: 550px;
+    height: 650px;
     z-index: 1;
 }
 
@@ -77,30 +85,30 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 40px 10px 40px 10px;
-    box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.05);
+    border-radius: 60px 20px 60px 20px;
+    box-shadow: var(--shadow-lg);
     z-index: 2;
     position: relative;
+    border: 8px solid white;
 }
 
-/* Colorful Blobs for Trendy Vibe */
 .color-blob {
     position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255, 182, 193, 0.4) 0%, transparent 70%);
-    top: -50px;
-    right: -50px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
     z-index: 0;
-    filter: blur(40px);
-    animation: pulse 8s infinite alternate;
+    filter: blur(60px);
+    animation: pulse 10s infinite alternate;
 }
 
 .color-blob.secondary {
-    background: radial-gradient(circle, rgba(144, 238, 144, 0.3) 0%, transparent 70%);
-    bottom: -50px;
-    left: -50px;
-    animation-delay: -4s;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    animation-delay: -5s;
 }
 
 @keyframes pulse {

@@ -21,7 +21,7 @@ const Footer = () => {
                     <div className="logo">
                         <img src={logo} alt="Sholash Life Sciences" className="logo-img" />
                     </div>
-                    <p>Scientific skincare for your natural radiance. Dermatologist tested, results driven.</p>
+                    <p>Sholash Life Sciences is dedicated to advancing health through innovative research, quality products, and a commitment to scientific excellence.</p>
                 </div>
                 <div className="footer-links">
                     <div className="link-group">
