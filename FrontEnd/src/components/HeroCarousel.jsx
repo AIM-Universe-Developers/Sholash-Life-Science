@@ -18,7 +18,7 @@ const offers = [
         desc: "Flat 20% OFF",
         image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=1200",
         btn: "Shop Now",
-        color: "#e6f2ed"
+        color: "#9400D3"
     },
     {
         id: 2,
@@ -26,7 +26,7 @@ const offers = [
         desc: "Use code HURRY20",
         image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&q=80&w=1200",
         btn: "Try Now",
-        color: "#f5eceb"
+        color: "#32CD32"
     },
     {
         id: 3,
@@ -34,7 +34,7 @@ const offers = [
         desc: "Buy 1 Get 1 Free",
         image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d538?auto=format&fit=crop&q=80&w=1200",
         btn: "Explore",
-        color: "#eef5f1"
+        color: "#F4A460"
     }
 ];
 
