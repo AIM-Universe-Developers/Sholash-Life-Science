@@ -76,7 +76,11 @@ const ProductDetail = ({ onAddToCart }) => {
                                 <button onClick={() => setQuantity(q => q + 1)}>+</button>
                             </div>
                             <button className="btn-add-large" onClick={handleAddToCart}>
-                                Add to Cart • ₹{product.price * quantity}
+                                Add to Cart{product.quantity}
+                            </button>
+                            
+                            <button className="btn-add-large" onClick={handleAddToCart}>
+                                BUY 
                             </button>
                         </div>
 
