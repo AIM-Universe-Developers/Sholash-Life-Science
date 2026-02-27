@@ -80,11 +80,11 @@
       </div>
     </div>
     <div class="navbar-right">
-      <button class="icon-btn" title="Notifications">
+      <button class="icon-btn" title="Notifications" onclick="togglePanel('notif-panel')">
         <i class="ri-notification-3-line"></i>
         <span class="badge">4</span>
       </button>
-      <button class="icon-btn" title="Messages">
+      <button class="icon-btn" title="Messages" onclick="togglePanel('msg-panel')">
         <i class="ri-message-3-line"></i>
         <span class="badge">2</span>
       </button>
@@ -113,7 +113,7 @@
         </div>
         <div class="page-actions">
           <button class="btn-glass"><i class="ri-calendar-line"></i> Feb 2026</button>
-          <button class="btn-primary"><i class="ri-download-2-line"></i> Export</button>
+          <button class="btn-primary" onclick="handleExport()"><i class="ri-download-2-line"></i> Export</button>
         </div>
       </div>
 
@@ -327,18 +327,82 @@
   </div>
 </div>
 
-<!-- ADD PRODUCT MODAL -->
-<div class="modal-overlay" id="productModal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-box glass-card float-card">
-    <div class="modal-head"><span>Add New Product</span><button onclick="closeModal()"><i class="ri-close-line"></i></button></div>
-    <div class="settings-field"><label>Product Name</label><div class="glass-input full"><input type="text" placeholder="Enter product name"/></div></div>
-    <div class="settings-field"><label>Price (₹)</label><div class="glass-input full"><input type="number" placeholder="0.00"/></div></div>
-    <div class="settings-field"><label>Category</label><div class="glass-input full"><input type="text" placeholder="e.g. Skincare"/></div></div>
-    <div class="settings-field"><label>Stock Quantity</label><div class="glass-input full"><input type="number" placeholder="0"/></div></div>
-    <div class="modal-actions">
-      <button class="btn-glass" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="closeModal()"><i class="ri-save-line"></i> Save Product</button>
+<!-- SIDE PANELS -->
+<div class="panel-overlay" id="panel-overlay" onclick="closeAllPanels()"></div>
+
+<div class="side-panel glass-card" id="notif-panel">
+  <div class="panel-head">
+    <span>Notifications</span>
+    <button class="close-panel" onclick="closeAllPanels()"><i class="ri-close-line"></i></button>
+  </div>
+  <div class="panel-content">
+    <div class="dropdown-item">
+      <div class="notif-icon green"><i class="ri-shopping-bag-line"></i></div>
+      <div class="notif-details">
+        <span class="notif-text">New order #SH-10422 received</span>
+        <span class="notif-time">2 mins ago</span>
+      </div>
     </div>
+    <div class="dropdown-item">
+      <div class="notif-icon amber"><i class="ri-error-warning-line"></i></div>
+      <div class="notif-details">
+        <span class="notif-text">Low stock: Vitamin C Booster</span>
+        <span class="notif-time">45 mins ago</span>
+      </div>
+    </div>
+    <div class="dropdown-item">
+      <div class="notif-icon blue"><i class="ri-user-follow-line"></i></div>
+      <div class="notif-details">
+        <span class="notif-text">New customer registered: Sarah J.</span>
+        <span class="notif-time">2 hours ago</span>
+      </div>
+    </div>
+    <div class="dropdown-item">
+      <div class="notif-icon purple"><i class="ri-star-line"></i></div>
+      <div class="notif-details">
+        <span class="notif-text">New 5-star review from Raj M.</span>
+        <span class="notif-time">5 hours ago</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn-glass full" style="justify-content:center;">View All Notifications</button>
+  </div>
+</div>
+
+<div class="side-panel glass-card" id="msg-panel">
+  <div class="panel-head">
+    <span>Messages</span>
+    <button class="close-panel" onclick="closeAllPanels()"><i class="ri-close-line"></i></button>
+  </div>
+  <div class="panel-content">
+    <div class="dropdown-item">
+      <div class="msg-avatar">AP</div>
+      <div class="msg-details">
+        <span class="msg-author">Aisha Patel</span>
+        <span class="msg-text">Do you have the Glow Serum in stock for our next shipment? We need 50 units.</span>
+        <span class="msg-time">10:42 AM</span>
+      </div>
+    </div>
+    <div class="dropdown-item">
+      <div class="msg-avatar">MC</div>
+      <div class="msg-details">
+        <span class="msg-author">Marcus Chen</span>
+        <span class="msg-text">The delivery was really fast, thanks! The packaging also looks very premium.</span>
+        <span class="msg-time">Yesterday</span>
+      </div>
+    </div>
+    <div class="dropdown-item">
+      <div class="msg-avatar">PS</div>
+      <div class="msg-details">
+        <span class="msg-author">Priya Sharma</span>
+        <span class="msg-text">Help with my recent order? It shows delivered but I haven't received it.</span>
+        <span class="msg-time">2 days ago</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn-primary full" style="justify-content:center;">Open Message Center</button>
   </div>
 </div>
 

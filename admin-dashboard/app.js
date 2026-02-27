@@ -303,9 +303,73 @@ function closeModal() {
   document.body.style.overflow='';
 }
 
-// Global Escape listener for all modals
+// ---- EXPORT FUNCTIONALITY ----
+function handleExport() {
+  if (!ORDERS || ORDERS.length === 0) {
+    showToast("No data available to export");
+    return;
+  }
+
+  // Define CSV headers
+  const headers = ["Order ID", "Product", "Customer", "Date", "Status", "Amount"];
+  
+  // Convert orders data to CSV rows
+  const csvRows = ORDERS.map(order => [
+    order.id,
+    `"${order.product}"`, // Quote product name in case it contains commas
+    `"${order.customer}"`,
+    order.date,
+    order.status,
+    order.amount.replace('₹', '') // Remove currency symbol for cleaner data
+  ].join(','));
+
+  // Combine headers and rows
+  const csvContent = [headers.join(','), ...csvRows].join('\n');
+  
+  // Create a Blob and trigger download
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  
+  const timestamp = new Date().toISOString().split('T')[0];
+  link.setAttribute("href", url);
+  link.setAttribute("download", `sholash_report_${timestamp}.csv`);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  showToast("Report exported successfully!");
+}
+
+// ---- SIDE PANEL LOGIC ----
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  const overlay = document.getElementById('panel-overlay');
+  const isOpen = panel.classList.contains('open');
+  
+  // Close everything first
+  closeAllPanels();
+  
+  if (!isOpen) {
+    panel.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+  }
+}
+
+function closeAllPanels() {
+  document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('open'));
+  const overlay = document.getElementById('panel-overlay');
+  if (overlay) overlay.classList.remove('active');
+  document.body.style.overflow = ''; // Restore scroll
+}
+
+// Close panels on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
+    closeAllPanels();
     closeModal();
     closeOrderModal();
   }
