@@ -331,11 +331,11 @@ body.no-animations .float-card:hover {
 /* ---- BUTTONS ---- */
 .btn-primary {
   display:inline-flex; align-items:center; gap:7px; padding:9px 18px;
-  background:linear-gradient(135deg,var(--blue),var(--purple));
+  background: linear-gradient(90deg, #10B981, #3B82F6);
   border:none; border-radius:10px; color:#fff; font-size:.84rem; font-weight:600;
-  transition:all var(--transition); box-shadow:0 4px 16px rgba(59,130,246,0.3);
+  transition:all var(--transition); box-shadow:0 4px 16px rgba(16, 185, 129, 0.3);
 }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(59,130,246,0.45); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(16, 185, 129, 0.45), 0 0 20px rgba(59, 130, 246, 0.4); }
 .btn-glass {
   display:inline-flex; align-items:center; gap:7px; padding:9px 16px;
   background:var(--glass); border:1px solid var(--glass-border); border-radius:10px;
@@ -478,7 +478,7 @@ body.no-animations .float-card:hover {
 .toggle input { opacity:0; width:0; height:0; }
 .slider { position:absolute; inset:0; background: var(--toggle-track); border-radius:99px; cursor:pointer; transition:all var(--transition); }
 .slider::before { content:''; position:absolute; width:15px; height:15px; border-radius:50%; background:#fff; left:3px; top:3px; transition:all var(--transition); }
-.toggle input:checked + .slider { background:linear-gradient(135deg,var(--blue),var(--purple)); }
+.toggle input:checked + .slider { background: linear-gradient(90deg, #10B981, #3B82F6); }
 .toggle input:checked + .slider::before { transform:translateX(17px); }
 
 /* ---- MODAL ---- */
