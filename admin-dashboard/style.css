@@ -238,6 +238,9 @@ body.no-animations .float-card:hover {
   transition: margin-left var(--transition);
   position:relative; z-index:1;
 }
+.sidebar.collapsed ~ .main-wrapper {
+  margin-left: calc(72px + 32px);
+}
 
 /* ---- NAVBAR ---- */
 .navbar {
