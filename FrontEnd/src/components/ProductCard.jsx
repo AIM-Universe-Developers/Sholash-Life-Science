@@ -2,13 +2,20 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductCard.css';
 
-const ProductCard = ({ id, name, description, category, color, price, rating, reviewsCount, onAddToCart }) => {
+const ProductCard = ({ id, name, description, category, color, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
     const navigate = useNavigate();
 
     const handleAddToCartClick = (e) => {
         e.stopPropagation(); // Prevent navigating to product detail page
         if (onAddToCart) {
             onAddToCart({ id, name, price, rating, reviewsCount, category, color, description });
+        }
+    };
+
+    const handleBuyClick = (e) => {
+        e.stopPropagation();
+        if (onBuyClick) {
+            onBuyClick({ id, name, price, rating, reviewsCount, category, color, description });
         }
     };
 
@@ -32,7 +39,7 @@ const ProductCard = ({ id, name, description, category, color, price, rating, re
                 <h3 className="product-name serif">{name}</h3>
                 <p className="product-description">{description}</p>
                 <div className="product-footer">
-                    <button className="btn-cart">BUY</button>
+                    <button className="btn-cart" onClick={handleBuyClick}>BUY</button>
                     <button className="btn-cart" onClick={handleAddToCartClick}>ADD CART</button>
                 </div>
             </div>

@@ -14,11 +14,19 @@ import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import OurProducts from './components/OurProducts';
 import WhatsAppButton from './components/WhatsAppButton';
+import AuthModal from './components/AuthModal';
 import './App.css';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authProduct, setAuthProduct] = useState(null);
+
+  const handleBuyClick = (product) => {
+    setAuthProduct(product);
+    setIsAuthOpen(true);
+  };
 
   const handleAddToCart = (product, quantity = 1) => {
     setCart(prevCart => {
@@ -72,6 +80,7 @@ function App() {
                   <ProductList
                     onAddToCart={handleAddToCart}
                     searchQuery={searchQuery}
+                    onBuyClick={handleBuyClick}
                   />
                 </div>
                 <div id="skin-types">
@@ -94,11 +103,16 @@ function App() {
                 onRemoveFromCart={handleRemoveFromCart}
               />
             } />
-            <Route path="/product/:id" element={<ProductDetail onAddToCart={handleAddToCart} />} />
+            <Route path="/product/:id" element={<ProductDetail onAddToCart={handleAddToCart} onBuyClick={handleBuyClick} />} />
           </Routes>
         </main>
         <Footer />
         <WhatsAppButton />
+        <AuthModal
+          isOpen={isAuthOpen}
+          onClose={() => setIsAuthOpen(false)}
+          product={authProduct}
+        />
       </div>
     </Router>
   );

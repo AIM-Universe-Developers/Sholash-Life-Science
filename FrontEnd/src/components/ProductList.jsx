@@ -3,7 +3,7 @@ import ProductCard from './ProductCard';
 import { products } from '../data/products';
 import './ProductList.css';
 
-const ProductList = ({ searchQuery = '', onAddToCart }) => {
+const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -28,6 +28,7 @@ const ProductList = ({ searchQuery = '', onAddToCart }) => {
                                 key={product.id}
                                 {...product}
                                 onAddToCart={onAddToCart}
+                                onBuyClick={onBuyClick}
                             />
                         ))}
                     </div>

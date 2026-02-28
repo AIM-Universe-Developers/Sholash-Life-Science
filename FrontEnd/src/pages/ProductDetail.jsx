@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import './ProductDetail.css';
 
-const ProductDetail = ({ onAddToCart }) => {
+const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
@@ -78,9 +78,9 @@ const ProductDetail = ({ onAddToCart }) => {
                             <button className="btn-add-large" onClick={handleAddToCart}>
                                 Add to Cart{product.quantity}
                             </button>
-                            
-                            <button className="btn-add-large" onClick={handleAddToCart}>
-                                BUY 
+
+                            <button className="btn-add-large" onClick={() => onBuyClick && onBuyClick(product)}>
+                                BUY
                             </button>
                         </div>
 
