@@ -14,7 +14,7 @@
 .healthy-skin-content h2 {
     font-size: clamp(2.5rem, 5vw, 4.5rem);
     color: var(--color-text-main);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
     background: var(--gradient-ocean);
     -webkit-background-clip: text;
     background-clip: text;
@@ -25,14 +25,14 @@
     font-size: 1.2rem;
     color: var(--color-text-muted);
     line-height: 1.7;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-sm);
     max-width: 650px;
 }
 
 .features-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-sm);
 }
 
 .feature-item {
