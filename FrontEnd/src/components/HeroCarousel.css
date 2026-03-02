@@ -263,9 +263,9 @@
 
 .marquee-item {
     flex: 0 0 auto;
-    width: 150px;
-    height: 100px;
-    margin: 0 30px;
+    width: 200px;
+    height: 160px;
+    margin: 0 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,11 +295,11 @@
 
 @media (max-width: 992px) {
     .image-marquee-container {
-        height: 100px;
+        height: 140px;
     }
 
     .marquee-item {
-        width: 120px;
-        margin: 0 15px;
+        width: 160px;
+        margin: 0 20px;
     }
 }

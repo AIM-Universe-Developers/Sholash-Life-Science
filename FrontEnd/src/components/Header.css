@@ -100,13 +100,25 @@
     text-decoration: none;
 }
 
-.cart-text {
+.cart-text,
+.account-text {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--color-text-main);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-right: 4px;
+}
+
+.account-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .cart-badge {
