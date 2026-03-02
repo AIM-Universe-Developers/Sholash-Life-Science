@@ -67,6 +67,7 @@ function App() {
           cartCount={cart.length}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
+          onAuthClick={() => setIsAuthOpen(true)}
         />
         <main>
           <Routes>
