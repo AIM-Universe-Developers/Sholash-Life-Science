@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
+import ProductAccordion from '../components/ProductAccordion';
 import './ProductDetail.css';
 
 const ProductDetail = ({ onAddToCart, onBuyClick }) => {
@@ -101,6 +102,8 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     </div>
                 </div>
             </div>
+
+            <ProductAccordion product={product} />
         </div>
     );
 };
