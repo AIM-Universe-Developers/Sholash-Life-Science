@@ -5,110 +5,15 @@ const ProductAccordion = ({ product }) => {
     const [openSection, setOpenSection] = useState(null);
     const [openSubSection, setOpenSubSection] = useState('acne'); // Default open subsection
 
-    const sectionContent = {
-        benefits: [
-            {
-                id: 'acne',
-                title: 'Reduces Acne & Breakouts',
-                content: 'Aloe vera gel works wonders on acne. Dab a little on the spot, and watch it disappear. It also helps fade acne scars, leaving your skin looking clear and refreshed.'
-            },
-            {
-                id: 'healing',
-                title: 'Accelerates Healing',
-                content: 'Its natural properties support skin regeneration, helping minor cuts, burns, and blemishes heal faster and more effectively.'
-            },
-            {
-                id: 'soothing',
-                title: 'Soothes & Calms Skin',
-                content: 'Instantly cools and calms irritated or sunburnt skin, reducing redness and discomfort while providing deep hydration.'
-            },
-            {
-                id: 'hair',
-                title: "Hair's Superhero",
-                content: 'Conditions the scalp, reduces dandruff, and promotes healthier, shinier hair by locking in moisture without feeling greasy.'
-            }
-        ],
-        ingredients: [
-            {
-                id: 'key-ingredients',
-                title: 'Key Active Ingredients',
-                content: 'Contains Purified Water, Aloe Barbadensis Leaf Extract, Carbomer, Triethanolamine, and Methylparaben for optimal skin health.'
-            },
-            {
-                id: 'natural-extracts',
-                title: 'Natural Extracts',
-                content: 'Enriched with Vitamin E and botanical extracts that provide antioxidant protection and deep nourishment.'
-            }
-        ],
-        'before-after': [
-            {
-                id: 'results-1',
-                title: 'Visible Results after 2 Weeks',
-                content: 'Users reported a 40% reduction in redness and improved skin texture within the first 14 days of consistent use.'
-            },
-            {
-                id: 'results-2',
-                title: 'Long-term Benefits',
-                content: 'After 8 weeks, 95% of participants saw a significant improvement in skin hydration and overall radiance.'
-            }
-        ],
-        usage: [
-            {
-                id: 'daily-routine',
-                title: 'How to Apply',
-                content: 'Apply a generous amount to clean skin. Massage gently in upward circular motions until fully absorbed. Use twice daily.'
-            },
-            {
-                id: 'pro-tips',
-                title: 'Pro Tips',
-                content: 'For an extra cooling effect, store the gel in the refrigerator before application, especially for sunburnt skin.'
-            }
-        ],
-        faq: [
-            {
-                id: 'suitable-for',
-                title: 'Is it suitable for sensitive skin?',
-                content: 'Yes, our formula is dermatologist-tested and specifically designed to be gentle on all skin types, including sensitive skin.'
-            },
-            {
-                id: 'sticky-residue',
-                title: 'Does it leave a sticky residue?',
-                content: 'No, the lightweight formula absorbs quickly into the skin without leaving any greasy or sticky feeling.'
-            }
-        ],
-        other: [
-            {
-                id: 'storage',
-                title: 'Storage Instructions',
-                content: 'Keep in a cool, dry place away from direct sunlight. Ensure the cap is tightly closed after each use.'
-            },
-            {
-                id: 'precautions',
-                title: 'Precautions',
-                content: 'For external use only. Avoid contact with eyes. If irritation occurs, discontinue use and consult a dermatologist.'
-            }
-        ],
-        legal: [
-            {
-                id: 'manufacturer',
-                title: 'Manufacturer Details',
-                content: 'Manufactured by Sholash Life Science Pvt. Ltd. at our state-of-the-art facility adhering to international quality standards.'
-            },
-            {
-                id: 'compliance',
-                title: 'Regulatory Compliance',
-                content: 'Approved by relevant health authorities. All ingredients are listed in accordance with legal metrology requirements.'
-            }
-        ]
-    };
+    const details = product?.details || {};
 
     const toggleSection = (sectionId) => {
         if (openSection === sectionId) {
             setOpenSection(null);
         } else {
             setOpenSection(sectionId);
-            // Reset subsection when switching main sections
-            setOpenSubSection(sectionContent[sectionId]?.[0]?.id || null);
+            // Reset subsection to the first available one when switching main sections
+            setOpenSubSection(details[sectionId]?.[0]?.id || null);
         }
     };
 
@@ -153,24 +58,30 @@ const ProductAccordion = ({ product }) => {
                                             )}
                                         </div>
                                         <div className="benefits-sub-accordion">
-                                            {sectionContent[section.id]?.map((item) => (
-                                                <div key={item.id} className="sub-accordion-item">
-                                                    <button
-                                                        className="sub-accordion-header"
-                                                        onClick={() => toggleSubSection(item.id)}
-                                                    >
-                                                        <span className="sub-accordion-title">{item.title}</span>
-                                                        <span className="sub-accordion-icon">
-                                                            {openSubSection === item.id ? '−' : '+'}
-                                                        </span>
-                                                    </button>
-                                                    {openSubSection === item.id && (
-                                                        <div className="sub-accordion-content fade-in">
-                                                            <p>{item.content}</p>
-                                                        </div>
-                                                    )}
+                                            {details[section.id] && details[section.id].length > 0 ? (
+                                                details[section.id].map((item) => (
+                                                    <div key={item.id} className="sub-accordion-item">
+                                                        <button
+                                                            className="sub-accordion-header"
+                                                            onClick={() => toggleSubSection(item.id)}
+                                                        >
+                                                            <span className="sub-accordion-title">{item.title}</span>
+                                                            <span className="sub-accordion-icon">
+                                                                {openSubSection === item.id ? '−' : '+'}
+                                                            </span>
+                                                        </button>
+                                                        {openSubSection === item.id && (
+                                                            <div className="sub-accordion-content fade-in">
+                                                                <p>{item.content}</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="sub-accordion-content fade-in">
+                                                    <p>Specific details for {section.title.toLowerCase()} are currently being updated.</p>
                                                 </div>
-                                            ))}
+                                            )}
                                         </div>
                                     </div>
                                 </div>
