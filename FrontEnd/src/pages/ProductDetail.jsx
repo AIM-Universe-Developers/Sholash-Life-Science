@@ -50,12 +50,12 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         <h1 className="serif">{product.name}</h1>
 
                         <div className="detail-meta">
+                            <div className="detail-price">₹{product.price}</div>
                             <div className="detail-rating">
                                 <span className="star">★</span>
                                 <span className="rating-val">{product.rating}</span>
                                 <span className="rev-count">({product.reviewsCount} verified reviews)</span>
                             </div>
-                            <div className="detail-price">₹{product.price}</div>
                         </div>
 
                         <p className="detail-desc">{product.description}</p>

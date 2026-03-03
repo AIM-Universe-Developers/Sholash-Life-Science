@@ -1,11 +1,11 @@
 .product-detail-page {
-    padding: 160px 0 100px;
+    padding: 50px 0 100px;
     background: var(--color-bg);
     min-height: 100vh;
 }
 
 .breadcrumb {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
     font-size: 0.9rem;
     color: var(--color-text-muted);
 }
