@@ -26,7 +26,7 @@ const offers = [
         desc: "Use code HURRY20",
         image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&q=80&w=1200",
         btn: "Try Now",
-        color: "#32CD32"
+        color: "#91c8f5ff"
     },
     {
         id: 3,

@@ -81,7 +81,7 @@ export const products = [
     },
     {
         id: 3,
-        name: "Glazzium- antiacne detoxofying tace wash",
+        name: "Glazzium- antiacne detoxofying face wash",
         image: glazziumImg,
         description: "Gentle yet effective cleanser that removes toxins and prevents breakouts.",
         category: "Cleanser",
