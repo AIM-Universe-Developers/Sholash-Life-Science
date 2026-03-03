@@ -41,12 +41,13 @@
 
 /* Hero */
 .contact-hero {
-    height: 300px;
+    height: 350px;
     background: var(--gradient-sholash);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: black;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -99,6 +100,7 @@
 .contact-grid-section {
     padding: var(--spacing-xl) 0;
     position: relative;
+    background: linear-gradient(180deg, transparent 0%, rgba(224, 242, 254, 0.3) 100%);
 }
 
 .contact-main-grid {

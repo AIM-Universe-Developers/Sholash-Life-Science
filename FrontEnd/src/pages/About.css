@@ -41,7 +41,7 @@
 .blob-3 {
     width: 400px;
     height: 400px;
-    background: #f3e5f5;
+    background: #6c1d78;
     /* Light Purple */
     bottom: -50px;
     right: 10%;
@@ -88,7 +88,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: black;
     text-align: center;
     position: relative;
     overflow: hidden;

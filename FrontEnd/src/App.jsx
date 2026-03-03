@@ -15,6 +15,7 @@ import ProductDetail from './pages/ProductDetail';
 import OurProducts from './components/OurProducts';
 import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="app">
         <TopBar />
         <Header
