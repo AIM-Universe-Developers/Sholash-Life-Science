@@ -24,6 +24,7 @@
   --gradient-deep-sea: linear-gradient(135deg, #075985 0%, #0c4a6e 100%);
   --gradient-soft-aqua: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 100%);
+  --gradient-sholash: linear-gradient(135deg, #eef7f2 0%, #e0f2fe 100%);
 
   /* Typography */
   --font-serif: 'Playfair Display', serif;
