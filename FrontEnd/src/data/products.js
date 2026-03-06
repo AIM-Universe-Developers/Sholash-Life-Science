@@ -1,30 +1,32 @@
-import uvinorImg from '../assets/images/sunscreen.png';
+import uvinorImg from '../assets/images/tablets.png';
 import ceramoizImg from '../assets/images/Moisturizing lotion.png';
 import glazziumImg from '../assets/images/glazzium.png';
-import acnevorImg from '../assets/images/Acnevor.png';
-import acnevorCnImg from '../assets/images/clindamycin gel.png';
-import sertaFreeImg from '../assets/images/seriaFree.png';
-import cabGroImg from '../assets/images/tablets.png';
+import acnevorImg from '../assets/images/sunscreen.png';
+import acnevorCnImg from '../assets/images/seriaFree.png';
+import sertaFreeImg from '../assets/images/clindamycin gel.png';
+import cabGroImg from '../assets/images/Acnevor.png';
 
 export const products = [
     {
         id: 1,
-        name: "Uvinor-clear rediance skin brightening sunscreen",
+        name: "Calgro™ – Nutraceutical Tablets",
+        tagline:" Complete Nutritional Support for Stronger Bones, Better Energy, and Overall Wellness.",
         image: uvinorImg,
-        description: "Advanced UV protection with skin-brightening agents for a clear, radiant complexion.",
+
+        description: "Calgro™ is a nutraceutical supplement formulated with vitamins, minerals, amino acids,and botanical extracts to support overall health and nutrition.",
         category: "Protection",
         color: "#e6f2ed",
-        price: 29,
+        price: 499,
         rating: 4.8,
-        reviewsCount: 124,
-        features: ["SPF 50+ Protection", "Skin Brightening", "Non-greasy Formula", "Dermatologist Tested"],
+        reviewsCount: 6,
+        features: ["Supports bone strength and joint health", "Supports overall nutritional balance", "Helps maintain energy levels and metabolism", "Helps improve general wellness"],
         details: {
             benefits: [
                 { id: 'uv-protection', title: 'Superior UV Protection', content: 'Broad-spectrum SPF 50+ PA+++ protects against both UVA and UVB rays, preventing sunburn and premature aging.' },
                 { id: 'brightening', title: 'Skin Brightening', content: 'Formulated with Niacinamide and Vitamin C to help fade dark spots and even out skin tone.' }
             ],
             ingredients: [
-                { id: 'actives', title: 'Key Actives', content: 'Zinc Oxide, Octinoxate, Niacinamide, and Vitamin C.' }
+                { id: 'actives', title: 'Key Actives', content: 'Calgro™ contains a balanced blend of:\n\nVitamins\n•	Vitamin C\n•	Vitamin B5\n•	Vitamin B3\n•	Vitamin B6\n•	Vitamin B2\n•	Folic Acid\n\nMinerals\n•	Calcium\n•	Magnesium\n•	Iron\n•	Zinc\n•	Manganese\n•	Copper\n\nEssential Amino Acids\n•	L-Leucine\n•	L-Isoleucine\n•	L-Valine\n•	L-Lysine\n•	L-Threonine\n•	L-Tryptophan\n•	L-Histidine\n•	L-Phenylalanine\n\nBotanical Extracts\n•	Soy Isoflavones\n•	Grape Seed Extract\n•	Green Tea Extract\n•	Beetroot Extract\n•	Choline Bitartrate' }
             ],
             'before-after': [
                 { id: 'sunburn', title: 'Prevention of Sunburn', content: 'Clinical tests show 99% protection against UVB rays when applied correctly.' }
@@ -45,14 +47,14 @@ export const products = [
     },
     {
         id: 2,
-        name: "Ceramoiz- uitra nourishing moisturizing lotion",
+        name: "Ceramois™ – Ultra Nourishing Moisturizing Lotion",
         image: ceramoizImg,
         description: "Strengthens the skin barrier while providing intense, long-lasting hydration.",
         category: "Moisturizer",
         color: "#f5eceb",
-        price: 29,
+        price: 299,
         rating: 4.9,
-        reviewsCount: 156,
+        reviewsCount: 6,
         features: ["Ceramide Enriched", "24h Hydration", "Fragrance Free", "Deep Nourishment"],
         details: {
             benefits: [
@@ -81,14 +83,14 @@ export const products = [
     },
     {
         id: 3,
-        name: "Glazzium- antiacne detoxofying face wash",
+        name: "Glazzium™ – Anti-Acne Detoxifying Face Wash",
         image: glazziumImg,
         description: "Gentle yet effective cleanser that removes toxins and prevents breakouts.",
         category: "Cleanser",
         color: "#e8f0f2",
-        price: 29,
+        price: 698,
         rating: 4.7,
-        reviewsCount: 98,
+        reviewsCount: 6,
         features: ["Detoxifying Action", "Oil Control", "Gentle Cleansing", "Anti-acne Properties"],
         details: {
             benefits: [
@@ -117,14 +119,14 @@ export const products = [
     },
     {
         id: 4,
-        name: "Acnevor- adapalene & clindamycin phosphate gel",
+        name: "Uvinor™ – Clear Radiance Skin Brightening Sunscreen SPF 50+",
         image: acnevorImg,
         description: "Powerful treatment that controls sebum and minimizes the appearance of pores.",
         category: "Treatment",
         color: "#f0f0f0",
-        price: 29,
+        price: 659,
         rating: 4.6,
-        reviewsCount: 112,
+        reviewsCount: 6,
         features: ["Clinical Grade", "Pore Minimizing", "Sebum Control", "Fast Acting"],
         details: {
             benefits: [
@@ -153,14 +155,14 @@ export const products = [
     },
     {
         id: 5,
-        name: "Acnevor cn-clindamycin phosphate nicotinamide gel",
+        name: "SertaFree™ – Sertaconazole Nitrate Cream",
         image: acnevorCnImg,
         description: "Reduces inflammation and improves overall skin texture for smoother skin.",
         category: "Treatment",
         color: "#ebf2f5",
-        price: 29,
+        price: 270,
         rating: 4.8,
-        reviewsCount: 143,
+        reviewsCount: 6,
         features: ["Anti-inflammatory", "Texture Improvement", "Soothing Effect", "Dermatological Solution"],
         details: {
             benefits: [
@@ -189,14 +191,14 @@ export const products = [
     },
     {
         id: 6,
-        name: "Serta free™-sertaconazole nitrate cream",
+        name: "Acnevor CN™ – Clindamycin & Nicotinamide Gel",
         image: sertaFreeImg,
         description: "Effective relief and restoration for various skin sensitivities and conditions.",
         category: "Special Care",
         color: "#f2f5e9",
-        price: 29,
+        price: 480,
         rating: 4.9,
-        reviewsCount: 187,
+        reviewsCount: 6,
         features: ["Fast Relief", "Skin Restoration", "Intensive Care", "Safe for Sensitive Skin"],
         details: {
             benefits: [
@@ -225,14 +227,14 @@ export const products = [
     },
     {
         id: 7,
-        name: "Cab gro- nutraceutical",
+        name: "Acnevor™ – Adapalene & Clindamycin Phosphate Gel",
         image: cabGroImg,
         description: "Complete nutrition for skin and hair health from within.",
         category: "Nutraceutical",
         color: "#f5f0e6",
-        price: 29,
+        price: 689,
         rating: 4.5,
-        reviewsCount: 84,
+        reviewsCount: 6,
         features: ["Internal Nutrition", "Hair & Skin Health", "Vitamins & Minerals", "Complete Daily Supplement"],
         details: {
             benefits: [
