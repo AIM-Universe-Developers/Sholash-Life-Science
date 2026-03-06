@@ -22,11 +22,10 @@ const ProductAccordion = ({ product }) => {
     };
 
     const sections = [
-        { id: 'benefits', title: 'Benefits' },
         { id: 'ingredients', title: 'Ingredients' },
+        { id: 'benefits', title: 'Benefits' },
         { id: 'before-after', title: 'Before/After' },
         { id: 'usage', title: 'Usage' },
-        { id: 'faq', title: 'Honest Answers for Common Questions' },
         { id: 'other', title: 'Other Information' },
         { id: 'legal', title: 'Legal Metrology' },
     ];
