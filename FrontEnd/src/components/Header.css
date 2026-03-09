@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     z-index: 1000;
-    background-color: rgba(238, 245, 241, 0.95);
+    background-color: rgba(130, 178, 91, 0.95);
     /* Light green tint */
     box-shadow: var(--shadow-sm);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -35,11 +35,13 @@
     width: auto;
     object-fit: contain;
     display: block;
+   
 }
 
 .nav {
     display: flex;
     gap: var(--spacing-md);
+
 }
 
 .nav a {
@@ -73,7 +75,7 @@
 }
 
 .search-container:focus-within {
-    background: white;
+    background: rgb(255, 255, 255);
     border-color: var(--color-primary-brand);
     box-shadow: 0 0 15px rgba(18, 102, 110, 0.1);
 }
