@@ -12,6 +12,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
+import PaymentProcess from './pages/PaymentProcess';
 import OurProducts from './components/OurProducts';
 import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
@@ -106,6 +107,7 @@ function App() {
                 onRemoveFromCart={handleRemoveFromCart}
               />
             } />
+            <Route path="/payment" element={<PaymentProcess cart={cart} />} />
             <Route path="/product/:id" element={<ProductDetail onAddToCart={handleAddToCart} onBuyClick={handleBuyClick} />} />
           </Routes>
         </main>

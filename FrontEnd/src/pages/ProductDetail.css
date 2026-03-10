@@ -244,3 +244,7 @@
         height: 400px;
     }
 }
+.tag {
+    font-size: 18px;
+    color: black;
+}

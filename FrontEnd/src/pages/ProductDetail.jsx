@@ -48,6 +48,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     <div className="detail-info fade-in">
                         <span className="detail-category">{product.category}</span>
                         <h1 className="serif">{product.name}</h1>
+                        <h2 className='tag'>{product.tagline}</h2>
 
                         <div className="detail-meta">
                             <div className="detail-price">₹{product.price}</div>

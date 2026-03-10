@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Cart.css';
 
 const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
+    const navigate = useNavigate();
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -64,7 +65,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
                                 <span>Total</span>
                                 <span>₹{total}</span>
                             </div>
-                            <button className="btn-checkout">Proceed to Checkout</button>
+                            <button className="btn-checkout" onClick={() => navigate('/payment')}>Proceed to Checkout</button>
                             <Link to="/" className="continue-shopping">Continue Shopping</Link>
                         </aside>
                     </div>
