@@ -80,13 +80,13 @@ function App() {
                   <HeroCarousel />
                 </div>
                 <OurProducts />
-                <div id="products">
+                {/* <div id="products">
                   <ProductList
                     onAddToCart={handleAddToCart}
                     searchQuery={searchQuery}
                     onBuyClick={handleBuyClick}
                   />
-                </div>
+                </div> */}
                 <div id="skin-types">
                   <SkinTypes />
                 </div>

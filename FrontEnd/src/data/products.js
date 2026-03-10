@@ -1,17 +1,17 @@
-import uvinorImg from '../assets/images/tablets.png';
-import ceramoizImg from '../assets/images/Moisturizing lotion.png';
-import glazziumImg from '../assets/images/glazzium.png';
-import acnevorImg from '../assets/images/sunscreen.png';
-import acnevorCnImg from '../assets/images/seriaFree.png';
-import sertaFreeImg from '../assets/images/clindamycin gel.png';
-import cabGroImg from '../assets/images/Acnevor.png';
+import calgroImg from '../assets/images/tablets.png';
+import ceramoisImg from '../assets/PRODUCT HOME IMAGE/lotion.png';
+import glazziumImg from '../assets/PRODUCT HOME IMAGE/glazzium face wash.png';
+import uvinorImg from '../assets/PRODUCT HOME IMAGE/Sunscreen2.png';
+import sertafreeImg from '../assets/PRODUCT HOME IMAGE/Serta Free.png';
+import acnevorCnImg from '../assets/PRODUCT HOME IMAGE/Acnevor CN.png';
+import acnevorImg from '../assets/PRODUCT HOME IMAGE/Acnevor Gel.png';
 
 export const products = [
     {
         id: 1,
         name: "Calgro™ – Nutraceutical Tablets",
         tagline: " Complete Nutritional Support for Stronger Bones, Better Energy, and Overall Wellness.",
-        image: uvinorImg,
+        image: calgroImg,
 
         description: "Calgro™ is a nutraceutical supplement formulated with vitamins, minerals, amino acids,and botanical extracts to support overall health and nutrition.",
         category: "Protection",
@@ -48,8 +48,8 @@ export const products = [
     {
         id: 2,
         name: "Ceramois™ – Ultra Nourishing Moisturizing Lotion",
-        tagline:"Deep Hydration. Stronger Skin Barrier. All-Day Moisture.",
-        image: ceramoizImg,
+        tagline: "Deep Hydration. Stronger Skin Barrier. All-Day Moisture.",
+        image: ceramoisImg,
         description: "Strengthens the skin barrier while providing intense, long-lasting hydration.",
         category: "Moisturizer",
         color: "#f5eceb",
@@ -85,7 +85,7 @@ export const products = [
     {
         id: 3,
         name: "Glazzium™ – Anti-Acne Detoxifying Face Wash",
-        tagline:" Deep Clean. Oil Control. Clear & Healthy Skin.",
+        tagline: " Deep Clean. Oil Control. Clear & Healthy Skin.",
         image: glazziumImg,
         description: "Gentle yet effective cleanser that removes toxins and prevents breakouts.",
         category: "Cleanser",
@@ -122,8 +122,8 @@ export const products = [
     {
         id: 4,
         name: "Uvinor™ – Clear Radiance Skin Brightening Sunscreen SPF 50+",
-        tagline:"Powerful Sun Protection with Hydration and Skin Brightening.",
-        image: acnevorImg,
+        tagline: "Powerful Sun Protection with Hydration and Skin Brightening.",
+        image: uvinorImg,
         description: "Powerful treatment that controls sebum and minimizes the appearance of pores.",
         category: "Treatment",
         color: "#f0f0f0",
@@ -159,8 +159,8 @@ export const products = [
     {
         id: 5,
         name: "SertaFree™ – Sertaconazole Nitrate Cream",
-        tagline:" Effective Relief from Fungal Skin Infections",
-        image: acnevorCnImg,
+        tagline: " Effective Relief from Fungal Skin Infections",
+        image: sertafreeImg,
         description: "Reduces inflammation and improves overall skin texture for smoother skin.",
         category: "Treatment",
         color: "#ebf2f5",
@@ -196,8 +196,8 @@ export const products = [
     {
         id: 6,
         name: "Acnevor CN™ – Clindamycin & Nicotinamide Gel",
-        tagline:" Targeted Treatment for Acne & Skin Inflammation.",
-        image: sertaFreeImg,
+        tagline: " Targeted Treatment for Acne & Skin Inflammation.",
+        image: acnevorCnImg,
         description: "Effective relief and restoration for various skin sensitivities and conditions.",
         category: "Special Care",
         color: "#f2f5e9",
@@ -233,8 +233,8 @@ export const products = [
     {
         id: 7,
         name: "Acnevor™ – Adapalene & Clindamycin Phosphate Gel",
-        tagline:"Advanced Dual Action Acne Therapy",
-        image: cabGroImg,
+        tagline: "Advanced Dual Action Acne Therapy",
+        image: acnevorImg,
         description: "Complete nutrition for skin and hair health from within.",
         category: "Nutraceutical",
         color: "#f5f0e6",

@@ -39,9 +39,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                 <div className="detail-container">
                     <div className="detail-visual fade-in">
                         <div className="detail-image-wrapper glass" style={{ '--product-accent': product.color }}>
-                            <div className="detail-placeholder">
-                                <div className="product-silhouette"></div>
-                            </div>
+                            <img src={product.image} alt={product.name} className="detail-image" />
                         </div>
                     </div>
 

@@ -2,29 +2,27 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductCard.css';
 
-const ProductCard = ({ id, name, description, category, color, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
+const ProductCard = ({ id, name, description, category, color, image, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
     const navigate = useNavigate();
 
     const handleAddToCartClick = (e) => {
         e.stopPropagation(); // Prevent navigating to product detail page
         if (onAddToCart) {
-            onAddToCart({ id, name, price, rating, reviewsCount, category, color, description });
+            onAddToCart({ id, name, price, rating, reviewsCount, category, color, description, image });
         }
     };
 
     const handleBuyClick = (e) => {
         e.stopPropagation();
         if (onBuyClick) {
-            onBuyClick({ id, name, price, rating, reviewsCount, category, color, description });
+            onBuyClick({ id, name, price, rating, reviewsCount, category, color, description, image });
         }
     };
 
     return (
         <div className="product-card fade-in" onClick={() => navigate(`/product/${id}`)}>
             <div className="product-image-container" style={{ '--product-accent': color }}>
-                <div className="product-placeholder">
-                    <div className="product-silhouette"></div>
-                </div>
+                <img src={image} alt={name} className="product-image" />
                 <div className="product-badge">{category}</div>
             </div>
             <div className="product-info">
