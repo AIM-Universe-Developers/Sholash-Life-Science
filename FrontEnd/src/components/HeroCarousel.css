@@ -244,6 +244,33 @@
     }
 }
 
+/* Full Image Slide */
+.slide.full-image {
+    cursor: pointer;
+    background-color: white !important;
+}
+
+.full-banner-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.full-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide.full-image:hover .full-banner-img {
+    transform: scale(1.02);
+}
+
 /* Image Marquee */
 .image-marquee-container {
     width: 100%;

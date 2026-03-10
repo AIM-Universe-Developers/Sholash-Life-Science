@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HeroCarousel.css';
 
 import img1 from '../assets/images/Acnevor.png';
@@ -8,10 +9,21 @@ import img4 from '../assets/images/glazzium.png';
 import img5 from '../assets/images/seriaFree.png';
 import img6 from '../assets/images/sunscreen.png';
 import img7 from '../assets/images/tablets.png';
+import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
 
 const marqueeImages = [img1, img2, img3, img4, img5, img6, img7];
 
 const offers = [
+    {
+        id: 0,
+        title: "Limited Edition Collection",
+        desc: "Special Launch Offer",
+        image: heroBanner,
+        btn: "Discover Now",
+        color: "#f8f9fa",
+        isFullImage: true,
+        link: "/product/2"
+    },
     {
         id: 1,
         title: "Brightening Serum for Indian Skin",
@@ -36,9 +48,12 @@ const offers = [
         btn: "Explore",
         color: "#a79484ff"
     }
+
+
 ];
 
 const HeroCarousel = () => {
+    const navigate = useNavigate();
     const [current, setCurrent] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const length = offers.length;
@@ -78,23 +93,30 @@ const HeroCarousel = () => {
 
                 {offers.map((slide, index) => (
                     <div
-                        className={index === current ? 'slide active' : 'slide'}
+                        className={`${index === current ? 'slide active' : 'slide'} ${slide.isFullImage ? 'full-image' : ''}`}
                         key={slide.id}
                         style={{ backgroundColor: slide.color }}
+                        onClick={() => slide.link && navigate(slide.link)}
                     >
                         {index === current && (
-                            <div className="container carousel-content">
-                                <div className="carousel-text fade-in">
-                                    <h1 className="serif">{slide.title}</h1>
-                                    <p className="offer-desc">{slide.desc}</p>
-                                    <button className="btn-carousel">{slide.btn}</button>
+                            slide.isFullImage ? (
+                                <div className="full-banner-wrapper">
+                                    <img src={slide.image} alt={slide.title} className="full-banner-img" />
                                 </div>
-                                <div className="carousel-image fade-in">
-                                    <div className="image-wrapper glass">
-                                        <img src={slide.image} alt={slide.title} />
+                            ) : (
+                                <div className="container carousel-content">
+                                    <div className="carousel-text fade-in">
+                                        <h1 className="serif">{slide.title}</h1>
+                                        <p className="offer-desc">{slide.desc}</p>
+                                        <button className="btn-carousel">{slide.btn}</button>
+                                    </div>
+                                    <div className="carousel-image fade-in">
+                                        <div className="image-wrapper glass">
+                                            <img src={slide.image} alt={slide.title} />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            )
                         )}
                     </div>
                 ))}
