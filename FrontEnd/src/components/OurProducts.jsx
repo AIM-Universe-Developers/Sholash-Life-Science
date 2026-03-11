@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import './OurProducts.css';
 
-const OurProducts = () => {
+const OurProducts = ({ searchQuery = '' }) => {
     const navigate = useNavigate();
     const sectionRef = useRef(null);
 
@@ -29,30 +29,49 @@ const OurProducts = () => {
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [searchQuery]);
 
-    // Selecting specific core products to match the requested 3x2 grid look
-    const coreProducts = products.filter(p => [1, 2, 3, 4, 5, 6].includes(p.id));
+    // Filtering logic
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // If search is empty, show the core 3x2 grid (original behavior)
+    // Otherwise show all matching products
+    const displayProducts = searchQuery.trim() === ''
+        ? products.filter(p => [1, 2, 3, 4, 5, 6].includes(p.id))
+        : filteredProducts;
 
     return (
-        <section className="products-section our-products-section" ref={sectionRef}>
+        <section id="products" className="products-section our-products-section" ref={sectionRef}>
             <div className="container">
                 <marquee>Ceramoiz || Glazzium || Uvinor || Acnevor CN || Acnevor || SertaFree</marquee>
-                <h2 className="our-products-title serif">Our Product</h2>
-                <div className="our-products-grid">
-                    {coreProducts.map(product => (
-                        <div
-                            key={product.id}
-                            className="our-product-card"
-                            onClick={() => navigate(`/product/${product.id}`)}
-                        >
-                            <div className="our-product-image-container">
-                                <img src={product.image} alt={product.name} className="our-product-image" />
+                <h2 className="our-products-title serif">
+                    {searchQuery.trim() === '' ? 'Our Product' : 'Search Results'}
+                </h2>
+
+                {displayProducts.length > 0 ? (
+                    <div className="our-products-grid">
+                        {displayProducts.map(product => (
+                            <div
+                                key={product.id}
+                                className="our-product-card"
+                                onClick={() => navigate(`/product/${product.id}`)}
+                            >
+                                <div className="our-product-image-container">
+                                    <img src={product.image} alt={product.name} className="our-product-image" />
+                                </div>
+                                <h3 className="our-product-name">{product.name.split('-')[0]}</h3>
                             </div>
-                            <h3 className="our-product-name">{product.name.split('-')[0]}</h3>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="no-results" style={{ textAlign: 'center', padding: '3rem 0', opacity: 0.7 }}>
+                        <h3 className="serif">No products found for "{searchQuery}"</h3>
+                        <p>Try searching for a different product or category.</p>
+                    </div>
+                )}
             </div>
         </section>
     );
