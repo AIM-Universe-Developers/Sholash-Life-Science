@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 //1. Register USER
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
     try {
         const {name, email, password} = req.body; 
         
@@ -16,9 +16,6 @@ exports.register = async (req, res) => {
         //Hash Password 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        //Create User
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         //Create and Save User 
         const newUser = await User.create ({name , email, password: hashPassword});
         res.status(201).json({message: "User Registered Successfully", user: { id: newUser._id, name, email } });
@@ -30,7 +27,7 @@ exports.register = async (req, res) => {
 };
 
 //2. Login USER
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -57,3 +54,32 @@ exports.login = async (req, res) => {
     }
 };
 
+// 3. Get User Profile
+export const getUserProfile = async (req, res) => {
+    res.status(501).json({ message: "Not implemented" });
+};
+
+// 4. Update User Profile
+export const updateUserProfile = async (req, res) => {
+    res.status(501).json({ message: "Not implemented" });
+};
+
+// 5. Get All Users (Admin)
+export const getAllUsers = async (req, res) => {
+    res.status(501).json({ message: "Not implemented" });
+};
+
+// 6. Get User By ID (Admin)
+export const getUserById = async (req, res) => {
+    res.status(501).json({ message: "Not implemented" });
+};
+
+// 7. Update User By ID (Admin)
+export const updateUserById = async (req, res) => {
+    res.status(501).json({ message: "Not implemented" });
+};
+
+// 8. Delete User By ID (Admin)
+export const deleteUserById = async (req, res) => {
+    res.status(501).json({ message: "Not implemented" });
+};

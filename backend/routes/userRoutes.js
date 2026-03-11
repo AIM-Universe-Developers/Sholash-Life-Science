@@ -1,7 +1,7 @@
 import express from "express";
-import router from "express";
-import userController from "../controllers/userController";
-import { protect, admin } from "../middleware/authMiddleware";
+const router = express.Router();
+import * as userController from "../controllers/userController.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 
 //----PUBLIC ROUTES ----
