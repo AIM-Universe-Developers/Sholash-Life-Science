@@ -22,8 +22,11 @@ const protect = async (req, res, next) => {
             res.status(401).json({ message: 'Not authorized to access this route' })
         }
 
+<<<<<<< HEAD
     } else {
         res.status(401).json({ message: 'Not authorized, no token' })
+=======
+>>>>>>> d19f2668ad1c2c7e483807071a0bf0b2e052a2b2
     }
 };
 
@@ -36,4 +39,8 @@ const admin = (req, res, next) => {
     }
 };
 
+<<<<<<< HEAD
 module.exports = { protect, admin };
+=======
+export { protect, admin };
+>>>>>>> d19f2668ad1c2c7e483807071a0bf0b2e052a2b2

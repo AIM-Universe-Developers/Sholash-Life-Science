@@ -1,3 +1,8 @@
+.products-section {
+    background: #FAFAFA;
+    padding: 80px 0;
+}
+
 .our-products-section {
     padding: var(--spacing-xl) 0;
     background-color: #ffffff;
@@ -19,11 +24,20 @@
 .our-product-card {
     cursor: pointer;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: all 0.4s ease;
+    /* Scroll reveal — hidden by default */
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.our-product-card.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .our-product-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 .our-product-image-container {
@@ -47,7 +61,7 @@
 }
 
 .our-product-card:hover .our-product-image {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .our-product-name {

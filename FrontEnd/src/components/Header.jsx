@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/logo/logo.png';
@@ -5,6 +6,20 @@ import logo from '../assets/logo/logo.png';
 const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -32,7 +47,7 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     };
 
     return (
-        <header className="header glass fade-in">
+        <header className={`header glass fade-in ${scrolled ? 'scrolled' : ''}`}>
             <div className="container header-content">
                 <div className="logo">
                     <Link to="/">
