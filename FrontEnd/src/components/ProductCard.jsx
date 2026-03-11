@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductCard.css';
 
 const ProductCard = ({ id, name, description, category, color, image, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
     const navigate = useNavigate();
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+        const el = cardRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    el.classList.add('show');
+                    observer.unobserve(el);
+                }
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     const handleAddToCartClick = (e) => {
         e.stopPropagation(); // Prevent navigating to product detail page
@@ -20,7 +37,7 @@ const ProductCard = ({ id, name, description, category, color, image, price, rat
     };
 
     return (
-        <div className="product-card fade-in" onClick={() => navigate(`/product/${id}`)}>
+        <div className="product-card" ref={cardRef} onClick={() => navigate(`/product/${id}`)}>
             <div className="product-image-container" style={{ '--product-accent': color }}>
                 <img src={image} alt={name} className="product-image" />
                 <div className="product-badge">{category}</div>
