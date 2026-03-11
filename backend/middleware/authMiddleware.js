@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+const jwt = require("jsonwebtoken");
+const User = require("../models/User.js");
 
 //Protect Routes : Verifies the JWT Token
 const protect = async (req, res, next) => {
@@ -9,7 +9,7 @@ const protect = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             // Get token from string
-            token = req.headers.authorization.spilt(' ')[1];
+            token = req.headers.authorization.split(' ')[1];
 
             //Verify token
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -22,16 +22,18 @@ const protect = async (req, res, next) => {
             res.status(401).json({ message: 'Not authorized to access this route' })
         }
 
-    };
-
-    //Admin MiddleWare Checks if user is admin
-    const admin = (req, res, next) => {
-        if (req.user && req.user.role === 'admin') {
-            next();
-        } else {
-            res.status(401).json({ message: 'Not authorized to access this route' })
-        }
+    } else {
+        res.status(401).json({ message: 'Not authorized, no token' })
     }
 };
 
-module.exports = { protect, admin }; 
+//Admin MiddleWare Checks if user is admin
+const admin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        res.status(401).json({ message: 'Not authorized to access this route' })
+    }
+};
+
+module.exports = { protect, admin };

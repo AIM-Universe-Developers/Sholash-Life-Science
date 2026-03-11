@@ -15,6 +15,7 @@ const adminRoutes    = require("./routes/adminRoutes");
 const productRoutes  = require("./routes/productRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const orderRoutes    = require("./routes/orderRoutes");
+const userRoutes     = require("./routes/userRoutes");
 
 // ─── Database ─────────────────────────────────────────────────────────────────
 connectDB();
@@ -51,6 +52,7 @@ app.use("/api/admin",      adminRoutes);
 app.use("/api/products",   productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders",     orderRoutes);
+app.use("/api/users",      userRoutes);
 
 // ─── Error Handling ───────────────────────────────────────────────────────────
 app.use(notFound);
@@ -60,4 +62,4 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`✅  Server running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`);
-});
+});

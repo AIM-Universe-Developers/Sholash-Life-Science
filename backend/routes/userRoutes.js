@@ -1,7 +1,7 @@
-import express from "express";
-import router from "express";
-import userController from "../controllers/userController";
-import { protect, admin } from "../middleware/authMiddleware";
+const express = require("express");
+const router = express.Router();
+const userController = require("../controllers/userController");
+const { protect, admin } = require("../middleware/authMiddleware");
 
 
 //----PUBLIC ROUTES ----
@@ -21,4 +21,4 @@ router.get('/admin/user/:id', admin, userController.getUserById);
 router.put('/admin/user/:id', admin, userController.updateUserById);
 router.delete('/admin/user/:id', admin, userController.deleteUserById);
 
-export default router; 
+module.exports = router; 
