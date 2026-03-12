@@ -31,6 +31,10 @@ const OurProducts = ({ searchQuery = '' }) => {
         return () => observer.disconnect();
     }, [searchQuery]);
 
+<<<<<<< HEAD
+    // Selecting specific core products to match the requested 3x2 grid look
+    const coreProducts = products.filter(p => [1, 2, 3, 4, 5, 6,7].includes(p.id));
+=======
     // Filtering logic
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -42,6 +46,7 @@ const OurProducts = ({ searchQuery = '' }) => {
     const displayProducts = searchQuery.trim() === ''
         ? products.filter(p => [1, 2, 3, 4, 5, 6].includes(p.id))
         : filteredProducts;
+>>>>>>> 4416eeae627f0d7ec79cc34d7cf02495f2fdf674
 
     return (
         <section id="products" className="products-section our-products-section" ref={sectionRef}>

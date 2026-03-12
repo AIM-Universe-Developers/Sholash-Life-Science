@@ -247,7 +247,7 @@
 /* Full Image Slide */
 .slide.full-image {
     cursor: pointer;
-    background-color: white !important;
+    background-color: rgb(255, 255, 255) !important;
 }
 
 .full-banner-wrapper {
