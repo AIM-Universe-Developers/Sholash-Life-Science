@@ -22,7 +22,7 @@ export const products = [
         features: ["Supports bone strength and joint health", "Supports overall nutritional balance", "Helps maintain energy levels and metabolism", "Helps improve general wellness"],
         details: {
             benefits: [
-                { id: 'uv-protection', title: 'Superior UV Protection', content: 'Broad-spectrum SPF 50+ PA+++ protects against both UVA and UVB rays, preventing sunburn and premature aging.' },
+                { id: 'uv-protection', title: 'Superior UV Protection', content: 'Calcium & Magnesium \n•Support bone strength and improve skeletal health.\n\n Vitamin C\n•Boosts immunity and helps in antioxidant protection.' },
                 { id: 'brightening', title: 'Skin Brightening', content: 'Formulated with Niacinamide and Vitamin C to help fade dark spots and even out skin tone.' }
             ],
             ingredients: [

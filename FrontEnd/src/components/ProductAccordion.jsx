@@ -27,7 +27,7 @@ const ProductAccordion = ({ product }) => {
         { id: 'before-after', title: 'Before/After' },
         { id: 'usage', title: 'Usage' },
         { id: 'other', title: 'Other Information' },
-        { id: 'legal', title: 'Legal Metrology' },
+        // { id: 'legal', title: 'Legal Metrology' },
     ];
 
     return (
