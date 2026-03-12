@@ -47,6 +47,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         <span className="detail-category">{product.category}</span>
                         <h1 className="serif">{product.name}</h1>
                         <h2 className='tag'>{product.tagline}</h2>
+                        
 
                         <div className="detail-meta">
                             <div className="detail-price">₹{product.price}</div>
@@ -58,7 +59,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         </div>
 
                         <p className="detail-desc">{product.description}</p>
-
+                           <h3 className='target'>{product.Target}</h3>
                         <div className="detail-features">
                             <h3>Key Benefits:</h3>
                             <ul>
@@ -72,9 +73,9 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <div className="purchase-controls">
                             <div className="quantity-selector">
-                                <button onClick={() => setQuantity(q => Math.max(0, q - 1))}>-</button>
+                                <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
                                 <span>{quantity}</span>
-                                <button onClick={() => setQuantity(q => q + 1)}>+</button>
+                                <button onClick={() => setQuantity(q => q + 1 )}>+</button>
                             </div>
                             <button className="btn-add-large" onClick={handleAddToCart}>
                                 Add to Cart{product.quantity}
@@ -87,15 +88,15 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <div className="detail-trust-badges">
                             <div className="badge-item">
-                                <span className="badge-icon">🛡️</span>
+                                <span className="badge-icon">👩‍⚕️</span>
                                 <span>Dermatologist Tested</span>
                             </div>
                             <div className="badge-item">
-                                <span className="badge-icon">🌿</span>
+                                <span className="badge-icon">🍃</span>
                                 <span>Natural Ingredients</span>
                             </div>
                             <div className="badge-item">
-                                <span className="badge-icon">🐇</span>
+                                <span className="badge-icon">❤️</span>
                                 <span>Cruelty Free</span>
                             </div>
                         </div>

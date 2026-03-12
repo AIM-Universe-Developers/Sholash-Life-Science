@@ -19,20 +19,21 @@ export const products = [
         price: 499,
         rating: 4.8,
         reviewsCount: 6,
+        Target:["Target Consumer Group:\n\t ✤For Adults (Moderate Men & Women)"],
         features: ["Supports bone strength and joint health", "Supports overall nutritional balance", "Helps maintain energy levels and metabolism", "Helps improve general wellness"],
         details: {
             benefits: [
-                { id: 'uv-protection', title: 'Superior UV Protection', content: 'Calcium & Magnesium \n•Support bone strength and improve skeletal health.\n\n Vitamin C\n•Boosts immunity and helps in antioxidant protection.' },
+                { id: 'hair-growth', title: 'Hair Growth', content: 'Biotin and amino acids promote stronger, thicker hair growth from the roots.' },
                 { id: 'brightening', title: 'Skin Brightening', content: 'Formulated with Niacinamide and Vitamin C to help fade dark spots and even out skin tone.' }
             ],
             ingredients: [
-                { id: 'actives', title: 'Key Actives', content: 'Calgro™ contains a balanced blend of:\n\nVitamins\n•	Vitamin C\n•	Vitamin B5\n•	Vitamin B3\n•	Vitamin B6\n•	Vitamin B2\n•	Folic Acid\n\nMinerals\n•	Calcium\n•	Magnesium\n•	Iron\n•	Zinc\n•	Manganese\n•	Copper\n\nEssential Amino Acids\n•	L-Leucine\n•	L-Isoleucine\n•	L-Valine\n•	L-Lysine\n•	L-Threonine\n•	L-Tryptophan\n•	L-Histidine\n•	L-Phenylalanine\n\nBotanical Extracts\n•	Soy Isoflavones\n•	Grape Seed Extract\n•	Green Tea Extract\n•	Beetroot Extract\n•	Choline Bitartrate' }
+                { id: 'actives', title: 'Key Ingredients', content:'Calgro™ – Nutraceutical Tablets:\n• Vitamins\n\t◦ Boosts immunity and helps in antioxidant protection.\n\t◦ Support metabolism and energy production.\n\n• Minerals\n\t◦ Supports hair growth and strength\n\t◦ Improves scalp nourishment\n\t◦ Provides essential minerals for overall hair health\n\n• Amino Acid With Isoflavones and Grape Seed Extract Tablets\n\t◦ Grape seed extract helps protect hair with antioxidants\n\t◦ Improves hair thickness and volume.' }
             ],
             'before-after': [
                 { id: 'sunburn', title: 'Prevention of Sunburn', content: 'Clinical tests show 99% protection against UVB rays when applied correctly.' }
             ],
             usage: [
-                { id: 'apply', title: 'Application', content: 'Apply liberally to face and neck 15 minutes before sun exposure.' }
+                { id: 'apply', title: 'How to Use', content: '• Hair Gummies: Take 1 gummy per day.\n• Hair Health Booster: Take 1 tablet after breakfast and 1 tablet after dinner with water.\n• Minoxidil: Apply 2 ml daily for 30 days.' }
             ],
             faq: [
                 { id: 'white-cast', title: 'Does it leave a white cast?', content: 'No, the ultra-sheer formula blends seamlessly into all skin tones.' }
@@ -244,7 +245,7 @@ export const products = [
         features: ["Internal Nutrition", "Hair & Skin Health", "Vitamins & Minerals", "Complete Daily Supplement"],
         details: {
             benefits: [
-                { id: 'hair-growth', title: 'Hair Growth', content: 'Biotin and amino acids promote stronger, thicker hair growth from the roots.' },
+                { id: 'uv-protection', title: 'Superior UV Protection', content: 'alcium & Magnesium \n•Support bone strength and improve skeletal health.\n\n Vitamin C\n•Boosts immunity and helps in antioxidant protection.' },
                 { id: 'skin-health', title: 'Skin Radiance', content: 'Antioxidants protect skin from internal stress and improve glow.' }
             ],
             ingredients: [
