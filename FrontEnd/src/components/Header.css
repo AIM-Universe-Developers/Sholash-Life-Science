@@ -7,12 +7,7 @@
     display: flex;
     align-items: center;
     z-index: 1000;
-<<<<<<< HEAD
-    background-color: rgba(17, 17, 17, 0.6);
-    /* Light green tint */
-=======
     background-color: #ffffff;
->>>>>>> 4f207c5a0985e4457481d57ed0d4af257e8a03c0
     box-shadow: var(--shadow-sm);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
