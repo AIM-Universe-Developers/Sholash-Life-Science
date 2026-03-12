@@ -4,10 +4,10 @@ import './HeroCarousel.css';
 
 import img1 from '../assets/IMG CART/p1.jpeg';
 import img2 from '../assets/IMG CART/p2.jpeg';
-import img3 from '../assets/IMG CART/p3.jpeg';
-import img4 from '../assets/IMG CART/p4.jpeg';
+import img3 from '../assets/IMG CART/p3.png';
+import img4 from '../assets/IMG CART/p4.png';
 import img5 from '../assets/IMG CART/p5.jpeg';
-import img6 from '../assets/IMG CART/p6.jpeg';
+import img6 from '../assets/IMG CART/p6.png';
 import img7 from '../assets/IMG CART/p7.jpeg';
 import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
 
