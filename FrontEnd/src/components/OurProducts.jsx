@@ -31,22 +31,26 @@ const OurProducts = ({ searchQuery = '' }) => {
         return () => observer.disconnect();
     }, [searchQuery]);
 
+<<<<<<< HEAD
     // Filtering logic
+=======
+    // Filtering logic based on search query
+>>>>>>> 4f207c5a0985e4457481d57ed0d4af257e8a03c0
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // If search is empty, show the core 3x2 grid (original behavior)
+    // If search is empty, show the core products (original 3x2+1 grid look)
     // Otherwise show all matching products
     const displayProducts = searchQuery.trim() === ''
-        ? products.filter(p => [1, 2, 3, 4, 5, 6].includes(p.id))
+        ? products.filter(p => [1, 2, 3, 4, 5, 6, 7].includes(p.id))
         : filteredProducts;
 
     return (
         <section id="products" className="products-section our-products-section" ref={sectionRef}>
             <div className="container">
-                <marquee>Ceramoiz || Glazzium || Uvinor || Acnevor CN || Acnevor || SertaFree</marquee>
+                <marquee>Calgro™ || Ceramois™ || Glazzium™ || Uvinor™ || Acnevor CN™ || Acnevor™ || SertaFree™</marquee>
                 <h2 className="our-products-title serif">
                     {searchQuery.trim() === '' ? 'Our Product' : 'Search Results'}
                 </h2>
