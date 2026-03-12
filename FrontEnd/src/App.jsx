@@ -79,7 +79,7 @@ function App() {
                 <div id="home">
                   <HeroCarousel />
                 </div>
-                <OurProducts />
+                <OurProducts searchQuery={searchQuery} />
                 {/* <div id="products">
                   <ProductList
                     onAddToCart={handleAddToCart}
