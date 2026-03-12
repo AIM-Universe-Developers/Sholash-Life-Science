@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -20,16 +19,11 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-<<<<<<< HEAD
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.3.0",
-=======
     "express-rate-limit": "^8.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.0",
     "multer": "^2.1.1",
->>>>>>> 4416eeae627f0d7ec79cc34d7cf02495f2fdf674
     "nodemailer": "^8.0.1"
   },
   "devDependencies": {

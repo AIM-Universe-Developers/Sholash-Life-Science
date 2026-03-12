@@ -1,13 +1,4 @@
 .header {
-<<<<<<< HEAD
-  position:fixed;
-top:0;
-left:0;
-width:100%;
-background:#ffffff;
-transition:all 0.3s ease;
-z-index:1000;
-=======
     position: fixed;
     top: 36px;
     left: 0;
@@ -16,12 +7,11 @@ z-index:1000;
     display: flex;
     align-items: center;
     z-index: 1000;
-    background-color: rgba(17, 17, 17, 0.6);
->>>>>>> 4416eeae627f0d7ec79cc34d7cf02495f2fdf674
-    /* Light green tint */
+    background-color: #ffffff;
     box-shadow: var(--shadow-sm);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+
 .header.scrolled{
 background:rgba(255,255,255,0.9);
 backdrop-filter:blur(10px);
@@ -59,7 +49,7 @@ transition: height 0.3s ease;
 .nav {
     display: flex;
     gap: var(--spacing-md);
-   
+}
 
 .nav a {
     font-size: 1rem;
@@ -68,7 +58,6 @@ transition: height 0.3s ease;
     letter-spacing: 0.8px;
     text-transform: uppercase;
     transition: all 0.3s ease;
-}
 }
 
 /* Hover lift effect */
