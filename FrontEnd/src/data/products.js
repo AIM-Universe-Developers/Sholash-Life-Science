@@ -1,4 +1,4 @@
-import calgroImg from '../assets/images/tablets.png';
+import calgroImg from '../assets/product image/tablet box.png';
 import ceramoisImg from '../assets/PRODUCT HOME IMAGE/lotion.png';
 import glazziumImg from '../assets/PRODUCT HOME IMAGE/glazzium face wash.png';
 import uvinorImg from '../assets/PRODUCT HOME IMAGE/Sunscreen2.png';

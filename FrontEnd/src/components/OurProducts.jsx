@@ -32,7 +32,7 @@ const OurProducts = () => {
     }, []);
 
     // Selecting specific core products to match the requested 3x2 grid look
-    const coreProducts = products.filter(p => [1, 2, 3, 4, 5, 6].includes(p.id));
+    const coreProducts = products.filter(p => [1, 2, 3, 4, 5, 6,7].includes(p.id));
 
     return (
         <section className="products-section our-products-section" ref={sectionRef}>
