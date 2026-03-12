@@ -1,4 +1,4 @@
-import calgroImg from '../assets/images/tablets.png';
+import calgroImg from '../assets/product image/tablet box.png';
 import ceramoisImg from '../assets/PRODUCT HOME IMAGE/lotion.png';
 import glazziumImg from '../assets/PRODUCT HOME IMAGE/glazzium face wash.png';
 import uvinorImg from '../assets/PRODUCT HOME IMAGE/Sunscreen2.png';
@@ -19,26 +19,31 @@ export const products = [
         price: 499,
         rating: 4.8,
         reviewsCount: 6,
+        Target:["Target Consumer Group:\n✤ For Adults (Moderate Men & Women)\n"],
         features: ["Supports bone strength and joint health", "Supports overall nutritional balance", "Helps maintain energy levels and metabolism", "Helps improve general wellness"],
         details: {
             benefits: [
-                { id: 'uv-protection', title: 'Superior UV Protection', content: 'Broad-spectrum SPF 50+ PA+++ protects against both UVA and UVB rays, preventing sunburn and premature aging.' },
-                { id: 'brightening', title: 'Skin Brightening', content: 'Formulated with Niacinamide and Vitamin C to help fade dark spots and even out skin tone.' }
+                { id: 'hair-growth', title: 'Hair Growth', content: 'Calgro™ – Nutraceutical Tablets:\n• Vitamins\n\t◦ Boosts immunity and helps in antioxidant protection.\n\t◦ Support metabolism and energy production.\n\n• Minerals\n\t◦ Supports hair growth and strength\n\t◦ Improves scalp nourishment\n\t◦ Provides essential minerals for overall hair health\n\n• Amino Acid With Isoflavones and Grape Seed Extract Tablets\n\t◦ Grape seed extract helps protect hair with antioxidants\n\t◦ Improves hair thickness and volume.' },
+                
             ],
             ingredients: [
-                { id: 'actives', title: 'Key Actives', content: 'Calgro™ contains a balanced blend of:\n\nVitamins\n•	Vitamin C\n•	Vitamin B5\n•	Vitamin B3\n•	Vitamin B6\n•	Vitamin B2\n•	Folic Acid\n\nMinerals\n•	Calcium\n•	Magnesium\n•	Iron\n•	Zinc\n•	Manganese\n•	Copper\n\nEssential Amino Acids\n•	L-Leucine\n•	L-Isoleucine\n•	L-Valine\n•	L-Lysine\n•	L-Threonine\n•	L-Tryptophan\n•	L-Histidine\n•	L-Phenylalanine\n\nBotanical Extracts\n•	Soy Isoflavones\n•	Grape Seed Extract\n•	Green Tea Extract\n•	Beetroot Extract\n•	Choline Bitartrate' }
+                { id: 'actives', title: 'Ingredients', content:'Biotin and amino acids promote stronger, thicker hair growth from the roots.' },
+                { id: 'other', title: 'Other Ingredients', content:'• Binder (INS 1420 and 460(i))\n• Diluent (INS 341(ii))\n• Stabilizer (INS 1202)\n• Anti-caking Agent (INS 553(iii) and INS 470(iii))\n• Solvent for coating (MDC and IPA)\n• Class II Preservative (INS 219 and INS 216)\n• Contains Permitted Synthetic Food Colours.(INS 17).'},
             ],
             'before-after': [
-                { id: 'sunburn', title: 'Prevention of Sunburn', content: 'Clinical tests show 99% protection against UVB rays when applied correctly.' }
+                { id: 'Before ', title: 'Before Use', content: '• Excessive hair fall and breakage\n• Weak hair follicles and poor scalp nutrition\n• Thin, lifeless hair with low volume\n• Slow or uneven hair growth\n• Dull, unhealthy-looking hair' },
+                {id: 'After', title:'After Use', content:'•Noticeable reduction in hair fall\n• Stronger, healthier hair follicles\n• Thicker, fuller hair with improved volume\n• Enhanced hair growth cycle\n•Healthier, shinier, and more resilient hair'},
             ],
             usage: [
-                { id: 'apply', title: 'Application', content: 'Apply liberally to face and neck 15 minutes before sun exposure.' }
+                { id: 'apply', title: 'How to Use', content: '• Take 1 tablet twice daily\n• Consume after breakfast and dinner\n• Swallow with a glass of water\n• Use daily for best hair growth results\n• Follow the recommended dosage ' },
             ],
             faq: [
                 { id: 'white-cast', title: 'Does it leave a white cast?', content: 'No, the ultra-sheer formula blends seamlessly into all skin tones.' }
             ],
             other: [
-                { id: 'water-resistant', title: 'Water Resistance', content: 'Water-resistant for up to 80 minutes.' }
+                { id: 'other information', title: 'Dosage', content: 'One tablet daily or directed bu the Health Practitioner.\n\n•KEEP OUT F REACH OF CHILDREN' },
+                { id: 'storage', title:'Storage', content: '• Store below 25°C,\n• A cool & dry place\n• Protect from direct light\n• heart & moisture'},
+                
             ],
             legal: [
                 { id: 'mfg', title: 'Manufacturer', content: 'Sholash Life Science Pvt. Ltd.' }
@@ -244,7 +249,7 @@ export const products = [
         features: ["Internal Nutrition", "Hair & Skin Health", "Vitamins & Minerals", "Complete Daily Supplement"],
         details: {
             benefits: [
-                { id: 'hair-growth', title: 'Hair Growth', content: 'Biotin and amino acids promote stronger, thicker hair growth from the roots.' },
+                { id: 'uv-protection', title: 'Superior UV Protection', content: 'alcium & Magnesium \n•Support bone strength and improve skeletal health.\n\n Vitamin C\n•Boosts immunity and helps in antioxidant protection.' },
                 { id: 'skin-health', title: 'Skin Radiance', content: 'Antioxidants protect skin from internal stress and improve glow.' }
             ],
             ingredients: [
