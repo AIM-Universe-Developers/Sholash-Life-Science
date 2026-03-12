@@ -2,13 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HeroCarousel.css';
 
-import img1 from '../assets/images/Acnevor.png';
-import img2 from '../assets/images/Moisturizing lotion.png';
-import img3 from '../assets/images/clindamycin gel.png';
-import img4 from '../assets/images/glazzium.png';
-import img5 from '../assets/images/seriaFree.png';
-import img6 from '../assets/images/sunscreen.png';
-import img7 from '../assets/images/tablets.png';
+import img1 from '../assets/IMG CART/p1.jpeg';
+import img2 from '../assets/IMG CART/p2.jpeg';
+import img3 from '../assets/IMG CART/p3.jpeg';
+import img4 from '../assets/IMG CART/p4.jpeg';
+import img5 from '../assets/IMG CART/p5.jpeg';
+import img6 from '../assets/IMG CART/p6.jpeg';
+import img7 from '../assets/IMG CART/p7.jpeg';
 import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
 
 const marqueeImages = [img1, img2, img3, img4, img5, img6, img7];
@@ -73,6 +73,14 @@ const HeroCarousel = () => {
         }
     }, [nextSlide, isPaused]);
 
+    const scrollToProducts = (e) => {
+        if (e) e.stopPropagation();
+        const element = document.getElementById('products');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     if (!Array.isArray(offers) || offers.length <= 0) {
         return null;
     }
@@ -96,7 +104,7 @@ const HeroCarousel = () => {
                         className={`${index === current ? 'slide active' : 'slide'} ${slide.isFullImage ? 'full-image' : ''}`}
                         key={slide.id}
                         style={{ backgroundColor: slide.color }}
-                        onClick={() => slide.link && navigate(slide.link)}
+                        onClick={() => slide.link ? navigate(slide.link) : scrollToProducts()}
                     >
                         {index === current && (
                             slide.isFullImage ? (
@@ -108,7 +116,12 @@ const HeroCarousel = () => {
                                     <div className="carousel-text fade-in">
                                         <h1 className="serif">{slide.title}</h1>
                                         <p className="offer-desc">{slide.desc}</p>
-                                        <button className="btn-carousel">{slide.btn}</button>
+                                        <button
+                                            className="btn-carousel"
+                                            onClick={scrollToProducts}
+                                        >
+                                            {slide.btn}
+                                        </button>
                                     </div>
                                     <div className="carousel-image fade-in">
                                         <div className="image-wrapper glass">

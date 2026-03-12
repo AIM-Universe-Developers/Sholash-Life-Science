@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.OTP_PORT || 4000;
 
 app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:3000'] }));
 app.use(express.json());

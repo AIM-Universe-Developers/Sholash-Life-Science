@@ -279,13 +279,14 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-top:10px;
 }
 
 .image-marquee {
     display: flex;
     width: max-content;
     animation: scroll 30s linear infinite;
+    border-radius: 20px;
 }
 
 .marquee-item {
@@ -296,13 +297,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 20px;
 }
 
 .marquee-item img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
     transition: transform 0.3s ease;
 }
 

@@ -72,7 +72,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <div className="purchase-controls">
                             <div className="quantity-selector">
-                                <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
+                                <button onClick={() => setQuantity(q => Math.max(0, q - 1))}>-</button>
                                 <span>{quantity}</span>
                                 <button onClick={() => setQuantity(q => q + 1)}>+</button>
                             </div>

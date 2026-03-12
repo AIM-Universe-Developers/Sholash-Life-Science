@@ -1,8 +1,7 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
-import * as userController from "../controllers/userController.js";
-import { protect, admin } from "../middleware/authMiddleware.js";
-
+const userController = require("../controllers/userController");
+const { protect, admin } = require("../middleware/authMiddleware");
 
 //----PUBLIC ROUTES ----
 //Anyone can register or log in 
@@ -21,4 +20,4 @@ router.get('/admin/user/:id', admin, userController.getUserById);
 router.put('/admin/user/:id', admin, userController.updateUserById);
 router.delete('/admin/user/:id', admin, userController.deleteUserById);
 
-export default router; 
+module.exports = router;
