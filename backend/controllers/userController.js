@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 //1. Register USER
-export const register = async (req, res) => {
+const register = async (req, res) => {
     try {
         const {name, email, password} = req.body; 
         
@@ -27,7 +27,7 @@ export const register = async (req, res) => {
 };
 
 //2. Login USER
-export const login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -53,8 +53,9 @@ export const login = async (req, res) => {
         res.status(500).json({message: "Internal Server Error"});
     }
 };
+
 // 3. Get User Profile
-exports.getUserProfile = async (req, res) => {
+const getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (user) {
@@ -72,9 +73,8 @@ exports.getUserProfile = async (req, res) => {
     }
 };
 
-<<<<<<< HEAD
 // 4. Update User Profile
-exports.updateUserProfile = async (req, res) => {
+const updateUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (user) {
@@ -100,7 +100,7 @@ exports.updateUserProfile = async (req, res) => {
 };
 
 // 5. Admin: Get All Users
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({});
         res.status(200).json(users);
@@ -110,7 +110,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // 6. Admin: Get User By ID
-exports.getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id).select("-password");
         if (user) {
@@ -124,7 +124,7 @@ exports.getUserById = async (req, res) => {
 };
 
 // 7. Admin: Update User By ID
-exports.updateUserById = async (req, res) => {
+const updateUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (user) {
@@ -143,7 +143,7 @@ exports.updateUserById = async (req, res) => {
 };
 
 // 8. Admin: Delete User By ID
-exports.deleteUserById = async (req, res) => {
+const deleteUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (user) {
@@ -155,34 +155,15 @@ exports.deleteUserById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error" });
     }
-=======
-// 3. Get User Profile
-export const getUserProfile = async (req, res) => {
-    res.status(501).json({ message: "Not implemented" });
 };
 
-// 4. Update User Profile
-export const updateUserProfile = async (req, res) => {
-    res.status(501).json({ message: "Not implemented" });
-};
-
-// 5. Get All Users (Admin)
-export const getAllUsers = async (req, res) => {
-    res.status(501).json({ message: "Not implemented" });
-};
-
-// 6. Get User By ID (Admin)
-export const getUserById = async (req, res) => {
-    res.status(501).json({ message: "Not implemented" });
-};
-
-// 7. Update User By ID (Admin)
-export const updateUserById = async (req, res) => {
-    res.status(501).json({ message: "Not implemented" });
-};
-
-// 8. Delete User By ID (Admin)
-export const deleteUserById = async (req, res) => {
-    res.status(501).json({ message: "Not implemented" });
->>>>>>> d19f2668ad1c2c7e483807071a0bf0b2e052a2b2
+module.exports = {
+    register,
+    login,
+    getUserProfile,
+    updateUserProfile,
+    getAllUsers,
+    getUserById,
+    updateUserById,
+    deleteUserById
 };
