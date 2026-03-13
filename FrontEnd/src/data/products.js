@@ -19,7 +19,7 @@ export const products = [
         price: 499,
         rating: 4.8,
         reviewsCount: 6,
-        Target:["Target Consumer Group:\n✤ For Adults (Moderate Men & Women)\n"],
+        Target:["Target Consumer Group:For Adults (Moderate Men & Women)"],
         features: ["Supports bone strength and joint health", "Supports overall nutritional balance", "Helps maintain energy levels and metabolism", "Helps improve general wellness"],
         details: {
             benefits: [
@@ -27,7 +27,7 @@ export const products = [
                 
             ],
             ingredients: [
-                { id: 'actives', title: 'Ingredients', content:'Biotin and amino acids promote stronger, thicker hair growth from the roots.' },
+                { id: 'actives', title: 'Ingredients', content:'\t• Vitamins (C, B3, B5, B6, B2, Folic Acid)\n\t• Minerals (Calcium, Magnesium, Iron, Zinc, Copper, Manganese)\n\t• Amino acids\n\t•Soy Isoflavones\n\t•Grape Seed Extract\n\t•Green Tea Extract' },
                 { id: 'other', title: 'Other Ingredients', content:'• Binder (INS 1420 and 460(i))\n• Diluent (INS 341(ii))\n• Stabilizer (INS 1202)\n• Anti-caking Agent (INS 553(iii) and INS 470(iii))\n• Solvent for coating (MDC and IPA)\n• Class II Preservative (INS 219 and INS 216)\n• Contains Permitted Synthetic Food Colours.(INS 17).'},
             ],
             'before-after': [
@@ -55,7 +55,7 @@ export const products = [
         name: "Ceramois™ – Ultra Nourishing Moisturizing Lotion",
         tagline: "Deep Hydration. Stronger Skin Barrier. All-Day Moisture.",
         image: ceramoisImg,
-        description: "Strengthens the skin barrier while providing intense, long-lasting hydration.",
+        description: "Ceramois lotion this moisturizing lotion helps improve the health of dry skin. It helps prevent & protect dry skin for full 24 hours.",
         category: "Moisturizer",
         color: "#f5eceb",
         price: 299,
@@ -64,23 +64,24 @@ export const products = [
         features: ["Ceramide Enriched", "24h Hydration", "Fragrance Free", "Deep Nourishment"],
         details: {
             benefits: [
-                { id: 'barrier', title: 'Barrier Repair', content: 'Ceramides 1, 3, and 6-II help restore the skin\'s natural protective barrier.' },
-                { id: 'hydration', title: 'Deep Hydration', content: 'Hyaluronic acid locks in moisture for 24-hour hydration.' }
+                { id: 'barrier', title: 'Key Benefits', content: '\t•Provides deep and long-lasting hydration for dry skin \n\t• Improves skin texture for smoother, softer skin \n\t• Strengthens the skin’s natural barrier \n\t• Nourishes and restores dry, dull skin \n\t• Leaves skin healthy, supple, and well-moisturized' },
+                
             ],
             ingredients: [
-                { id: 'ceramides', title: 'Ceramide Complex', content: 'Essential ceramides and fatty acids for skin health.' }
+                { id: 'ceramides', title: 'Ingredients', content: '\t•Aqua\n\t•White petroleum\n\t•Jelly\n\t•Olive oil\n\t•Glycerin\n\t•Isopropyl myristate\n\t•Shea Butter\n\t•Sunflower Oil\n\t•Cetomacrogol 1000\n\t•Emulsifying Wax\n\t•Almond Oil\n\t•Bees Wax\n\t•Ceto Stearyl Alcohol\n\t•YUZU Ceramind B (Butylene Glycol (and) Water (and)\n\t•Citrus Junos Fruit Extract)\n\t•Dimethicone\n\t•Phenoxyethanol and Ethylhexylglycerin\n\t•Cerbomer\n\t•Triethanolamine\n\t•GMS SE\n\t•Niacinamide\n\t•Betaine\n\t•Hyaluronic Acid\n\t•Aloe vera Juice\n\t•Jojoba Oil\n\t•Vit\n\t•E Acerate\n\t•ESTA\n\t•Fragrance' }
             ],
             'before-after': [
-                { id: 'dryness', title: 'Dryness Relief', content: 'Visible reduction in skin flakiness after just one use.' }
+                { id: 'dryness', title: 'Before Use', content: '\t•Dry and rough skin texture\n\t•Lack of moisture and dull appearance\n\t•Weak skin barrier\n\t•Tight and uncomfortable skin\n\t•Visible dryness and flakiness ' },
+                {id: 'dryness1', title: 'After Use', content:'\t•Deeply hydrated and moisturized skin\n\t•Smoother and softer skin texture\n\t•Strengthened skin barrier\n\t•Healthy, nourished skin feel\n\t•Radiant and well-balanced skin'},
             ],
             usage: [
-                { id: 'daily', title: 'Daily Use', content: 'Apply morning and night to clean, dry skin.' }
+                { id: 'daily', title: 'Usage', content: '\t•Apply a small amount of lotion to clean, dry skin\n\t•Gently massage until fully absorbed\n\t•Use twice daily (morning and night) for best results\n\t•Apply on dry or rough areas for extra hydration\n\t•Use regularly to maintain soft, healthy skin' }
             ],
             faq: [
                 { id: 'face-body', title: 'Can I use it on my face?', content: 'Yes, it is non-comedogenic and safe for both face and body.' }
             ],
             other: [
-                { id: 'texture', title: 'Non-Greasy', content: 'Absorbs quickly without leaving any oily residue.' }
+                { id: 'texture', title: 'Storage', content: 'Stroe in a cool and dry place below 30°C.\n\t•It is mandatory to perform a patch test before applying this product.\n\t•Do not use on cracked skin or open wounds.\n\t•In  case any irritation occurs stop the use of product with immediate effect and consult your dermatologist.\n\t•KEEP OUT OF REACH OF CHILDREN. ' }
             ],
             legal: [
                 { id: 'reg', title: 'Regulatory', content: 'Complaint with cosmetic standards.' }
