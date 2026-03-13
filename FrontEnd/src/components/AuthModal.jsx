@@ -1,42 +1,73 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { UserContext } from '../context/UserContext';
+import logo from '../assets/logo/logo.png';
 import './AuthModal.css';
 
-const OTP_SERVER = 'http://localhost:4001/api';
+const OTP_SERVER = 'http://localhost:4001';
 
 const AuthModal = ({ isOpen, onClose, product }) => {
-    const [step, setStep] = useState(1); // 1: method, 2: input, 3: otp, 4: success
-    const [method, setMethod] = useState('mobile'); // 'mobile' | 'email'
+    const [step, setStep] = useState(2); // Start directly at input (Step 2)
+    const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
+    const [method, setMethod] = useState('mobile'); 
     const [inputValue, setInputValue] = useState('');
     const [userName, setUserName] = useState('');
     const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [resendTimer, setResendTimer] = useState(0);
+    const [user, setUser] = useState(null);
     const otpRefs = useRef([]);
+
+    // Check for existing session on mount and when modal opens
+    useEffect(() => {
+        const savedUser = localStorage.getItem('sholash_user');
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
+        }
+    }, [isOpen]);
 
     // Reset state whenever modal opens
     useEffect(() => {
         if (isOpen) {
-            setStep(1);
+            const savedUser = localStorage.getItem('sholash_user');
+            if (savedUser) {
+                setStep(5); // 5 is "Logged In" state
+                const parsed = JSON.parse(savedUser);
+                setUserName(parsed.name || '');
+                setUser(parsed);
+            } else {
+                setStep(2);
+                setInputValue('');
+                setUserName('');
+                setOtpDigits(['', '', '', '', '', '']);
+                setAuthMode('login'); // Default to login on fresh open
+            }
             setMethod('mobile');
-            setInputValue('');
-            setUserName('');
-            setOtpDigits(['', '', '', '', '', '']);
             setError('');
             setLoading(false);
             setResendTimer(0);
         }
     }, [isOpen]);
 
-    // Resend countdown timer
+    // Timer for resending OTP
     useEffect(() => {
-        if (resendTimer > 0) {
-            const t = setTimeout(() => setResendTimer(r => r - 1), 1000);
-            return () => clearTimeout(t);
+        let interval;
+        if (timer > 0) {
+            interval = setInterval(() => setTimer(t => t - 1), 1000);
         }
-    }, [resendTimer]);
+        return () => clearInterval(interval);
+    }, [timer]);
 
     if (!isOpen) return null;
+
+    const logout = () => {
+        localStorage.removeItem('sholash_user');
+        setUser(null);
+        setStep(2);
+        setUserName('');
+        setInputValue('');
+        setAuthMode('login');
+    };
 
     const validate = () => {
         if (method === 'mobile') {
@@ -50,8 +81,10 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 return false;
             }
         }
-        if (!userName.trim()) {
-            setError('Please enter your name.');
+        
+        // Name is only required in Register mode
+        if (authMode === 'register' && !userName.trim()) {
+            setError('Please enter your name for registration.');
             return false;
         }
         return true;
@@ -68,8 +101,8 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 : `${OTP_SERVER}/send-otp/email`;
 
             const body = method === 'mobile'
-                ? { mobile: inputValue, name: userName }
-                : { email: inputValue, name: userName };
+                ? { mobile: inputValue, name: authMode === 'register' ? userName : 'Customer' }
+                : { email: inputValue, name: authMode === 'register' ? userName : 'Customer' };
 
             const res = await fetch(endpoint, {
                 method: 'POST',
@@ -85,148 +118,273 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             } else {
                 setError(data.message || 'Failed to send OTP. Please try again.');
             }
-        } catch (err) {
-            console.error('OTP Send Error:', err);
-            setError('Cannot reach OTP server. Make sure the OTP server is running on port 4001.');
+        } catch {
+            setError('Cannot reach OTP server. Make sure the backend is running on port 4000.');
         } finally {
             setLoading(false);
         }
     };
 
-    const handleOtpChange = (index, value) => {
-        if (!/^\d?$/.test(value)) return;
-        const newDigits = [...otpDigits];
-        newDigits[index] = value;
-        setOtpDigits(newDigits);
-        setError('');
-        if (value && index < 5) {
-            otpRefs.current[index + 1]?.focus();
-        }
-    };
+    // ─── Actions ──────────────────────────────────────────────────────────────
 
-    const handleOtpKeyDown = (index, e) => {
-        if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
-            otpRefs.current[index - 1]?.focus();
-        }
-    };
-
-    const handleOtpPaste = (e) => {
+    // 1. LOGIN
+    const handleLogin = async (e) => {
         e.preventDefault();
-        const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-        const newDigits = [...otpDigits];
-        pasted.split('').forEach((ch, i) => { newDigits[i] = ch; });
-        setOtpDigits(newDigits);
-        otpRefs.current[Math.min(pasted.length, 5)]?.focus();
-    };
-
-    const handleVerifyOtp = async () => {
-        const enteredOtp = otpDigits.join('');
-        if (enteredOtp.length < 6) {
-            setError('Please enter all 6 digits of the OTP.');
-            return;
-        }
+        setError('');
+        if (!email || !password) return setError('Please enter both email and password.');
+        
         setLoading(true);
-
         try {
-            const key = method === 'mobile' ? inputValue : inputValue;
             const res = await fetch(`${OTP_SERVER}/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key, otp: enteredOtp })
+                body: JSON.stringify({ key: inputValue, otp: enteredOtp })
             });
-
             const data = await res.json();
-
             if (data.success) {
+                const userData = { 
+                    name: authMode === 'register' ? userName : (userName || 'Customer'), 
+                    contact: inputValue, 
+                    method,
+                    mode: authMode
+                };
+                localStorage.setItem('sholash_user', JSON.stringify(userData));
+                setUser(userData);
                 setStep(4);
             } else {
-                setError(data.message || 'Invalid OTP. Please try again.');
-                setOtpDigits(['', '', '', '', '', '']);
-                otpRefs.current[0]?.focus();
+                setError(data.message || 'Invalid email or password.');
             }
         } catch (err) {
-            console.error('OTP Verify Error:', err);
-            setError('Cannot reach OTP server. Make sure the OTP server is running on port 4001.');
+            setError('Server connection error.');
         } finally {
             setLoading(false);
         }
     };
 
-    const handleResend = () => {
-        if (resendTimer > 0) return;
-        setOtpDigits(['', '', '', '', '', '']);
+    // 2. REQUEST REGISTRATION (Send OTP)
+    const handleRequestRegister = async (e) => {
+        e.preventDefault();
         setError('');
-        sendOtp();
+        if (!name || !email || !password) return setError('All fields are required.');
+        if (password !== confirmPassword) return setError('Passwords do not match.');
+        if (password.length < 6) return setError('Password must be at least 6 characters.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/request-register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setView('VERIFY_REG');
+                setTimer(30);
+            } else {
+                setError(data.message || 'Failed to send verification code.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 3. COMPLETE REGISTRATION (Verify OTP)
+    const handleVerifyRegister = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!otp) return setError('Please enter the OTP sent to your email.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, otp })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setSuccessMsg('Account created successfully!');
+                onAuthSuccess(data);
+            } else {
+                setError(data.message || 'Verification failed.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 4. FORGOT PASSWORD - REQUEST RESET
+    const handleRequestReset = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!email) return setError('Please enter your email.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setView('FORGOT_RESET');
+                setTimer(30);
+            } else {
+                setError(data.message || 'User not found.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 5. COMPLETE PASSWORD RESET
+    const handleResetPassword = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!otp || !newPassword) return setError('Please enter OTP and new password.');
+        if (newPassword !== confirmPassword) return setError('Passwords do not match.');
+        if (newPassword.length < 6) return setError('Password must be at least 6 characters.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/reset-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, otp, newPassword })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setSuccessMsg('Password reset successful! Please sign in.');
+                setTimeout(() => {
+                    resetForms();
+                    setView('LOGIN');
+                }, 2000);
+            } else {
+                setError(data.message || 'Reset failed.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const onAuthSuccess = (data) => {
+        login({ 
+            _id: data._id, 
+            name: data.name, 
+            contact: data.email,
+            token: data.token 
+        });
+        setTimeout(() => onClose(), 1500);
     };
 
     const handleBackdropClick = (e) => {
         if (e.target.classList.contains('auth-modal-backdrop')) onClose();
     };
 
+    // ─── Render View Helpers ──────────────────────────────────────────────────
+
+    const renderHeader = (title) => (
+        <div className="auth-modal-header" style={{ textAlign: 'center', marginBottom: '15px' }}>
+            <div className="auth-modal-logo" style={{ marginBottom: '10px' }}>
+                <img src={logo} alt="Sholash" width="100px" />
+            </div>
+            <h2 className="serif" style={{ fontSize: '24px', fontWeight: 'bold' }}>{title}</h2>
+        </div>
+    );
+
+    const renderError = () => error && (
+        <div className="auth-error-msg" style={{ background: '#fef2f2', border: '1px solid #fca5a5', padding: '12px', borderRadius: '8px', color: '#b91c1c', marginBottom: '20px', fontSize: '13px', display: 'flex', gap: '8px' }}>
+            <span>⚠️</span> {error}
+        </div>
+    );
+
+    const renderSuccess = () => successMsg && (
+        <div className="auth-success-body" style={{ textAlign: 'center', padding: '20px 0' }}>
+            <div style={{ fontSize: '48px', marginBottom: '15px' }}>✅</div>
+            <h3 className="serif">{successMsg}</h3>
+        </div>
+    );
+
     return (
         <div className="auth-modal-backdrop" onClick={handleBackdropClick}>
-            <div className={`auth-modal-card ${isOpen ? 'auth-modal-enter' : ''}`} role="dialog" aria-modal="true">
-                {/* Close button */}
-                <button className="auth-modal-close" onClick={onClose} aria-label="Close">
+            <div className="auth-modal-card auth-modal-enter" style={{ maxWidth: '400px', padding: '30px' }}>
+                <button className="auth-modal-close" onClick={onClose}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                 </button>
 
                 {/* Header */}
                 <div className="auth-modal-header">
-                    <div className="auth-modal-logo"><img src="assets/logo.2.png" alt="Sholash Logo" width="100px" height="100px" /></div>
+                    <div className="auth-modal-logo">
+                        <img src={logo} alt="Sholash Logo" className="auth-logo-img" />
+                    </div>
                     <h2 className="serif auth-modal-title">
-                        {step === 4 ? 'Welcome!' : step === 3 ? 'Verify OTP' : 'Sign In / Register'}
+                        {step === 5 ? 'Welcome Back!' : step === 4 ? 'Welcome!' : step === 3 ? 'Verify OTP' : (authMode === 'register' ? 'Create Account' : 'Sign In')}
                     </h2>
                     <p className="auth-modal-subtitle">
-                        {step === 1 && 'Choose how you want to continue'}
-                        {step === 2 && `Enter your ${method === 'mobile' ? 'mobile number' : 'email address'}`}
+                        {step === 5 && `You are currently logged in as ${userName}`}
+                        {step === 2 && (authMode === 'register' ? 'Join Sholash Life Science today' : 'Access your account with ease')}
                         {step === 3 && `We sent a 6-digit OTP to ${inputValue}`}
                         {step === 4 && `You're logged in and ready to shop!`}
                     </p>
                 </div>
 
-                {/* Step 1 — Choose method */}
-                {step === 1 && (
+                {/* Step 2 — Unified Input */}
+                {(step === 1 || step === 2) && (
                     <div className="auth-modal-body">
+                        {/* Login/Register Toggle */}
+                        <div className="auth-mode-toggle">
+                            <button 
+                                className={`auth-mode-btn ${authMode === 'login' ? 'active' : ''}`}
+                                onClick={() => { setAuthMode('login'); setError(''); }}
+                            >
+                                Login
+                            </button>
+                            <button 
+                                className={`auth-mode-btn ${authMode === 'register' ? 'active' : ''}`}
+                                onClick={() => { setAuthMode('register'); setError(''); }}
+                            >
+                                Register
+                            </button>
+                        </div>
+
                         <div className="auth-method-tabs">
                             <button
                                 className={`auth-tab ${method === 'mobile' ? 'active' : ''}`}
-                                onClick={() => setMethod('mobile')}
+                                onClick={() => { setMethod('mobile'); setError(''); }}
                             >
-                                📱 Mobile Number
+                                📱 Mobile
                             </button>
                             <button
                                 className={`auth-tab ${method === 'email' ? 'active' : ''}`}
-                                onClick={() => setMethod('email')}
+                                onClick={() => { setMethod('email'); setError(''); }}
                             >
-                                ✉️ Email Address
+                                ✉️ Email
                             </button>
                         </div>
-                        <div className="auth-method-desc">
-                            {method === 'mobile'
-                                ? 'We will send a one-time password (OTP) via SMS to your mobile number.'
-                                : 'We will send a one-time password (OTP) to your email inbox.'}
-                        </div>
-                        <button className="auth-btn-primary" onClick={() => setStep(2)}>
-                            Continue with {method === 'mobile' ? 'Mobile' : 'Email'} →
-                        </button>
-                    </div>
-                )}
 
-                {/* Step 2 — Input details */}
-                {step === 2 && (
-                    <div className="auth-modal-body">
-                        <div className="auth-input-group">
-                            <label className="auth-label">Your Name</label>
-                            <input
-                                className="auth-input"
-                                type="text"
-                                placeholder="Enter your full name"
-                                value={userName}
-                                onChange={e => { setUserName(e.target.value); setError(''); }}
-                                autoFocus
-                            />
-                        </div>
+                        {authMode === 'register' && (
+                            <div className="auth-input-group auth-fade-in">
+                                <label className="auth-label">Your Name</label>
+                                <input
+                                    className="auth-input"
+                                    type="text"
+                                    placeholder="Enter your full name"
+                                    value={userName}
+                                    onChange={e => { setUserName(e.target.value); setError(''); }}
+                                    autoFocus
+                                />
+                            </div>
+                        )}
+
                         <div className="auth-input-group">
                             <label className="auth-label">
                                 {method === 'mobile' ? 'Mobile Number' : 'Email Address'}
@@ -238,6 +396,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                                 value={inputValue}
                                 onChange={e => { setInputValue(e.target.value); setError(''); }}
                                 maxLength={method === 'mobile' ? 10 : 100}
+                                autoFocus={authMode === 'login'}
                             />
                         </div>
                         {error && <p className="auth-error">{error}</p>}
@@ -246,11 +405,20 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                             onClick={sendOtp}
                             disabled={loading}
                         >
-                            {loading ? <span className="auth-spinner"></span> : `Send OTP →`}
+                            {loading ? <span className="auth-spinner"></span> : (authMode === 'register' ? 'Register Now →' : 'Sign In →')}
                         </button>
-                        <button className="auth-btn-back" onClick={() => { setStep(1); setError(''); }}>
-                            ← Back
-                        </button>
+                        
+                        <p className="auth-mode-switch-text">
+                            {authMode === 'login' 
+                                ? "Don't have an account? " 
+                                : "Already have an account? "}
+                            <span 
+                                className="auth-mode-link"
+                                onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+                            >
+                                {authMode === 'login' ? 'Register here' : 'Login here'}
+                            </span>
+                        </p>
                     </div>
                 )}
 
@@ -307,9 +475,26 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                     </div>
                 )}
 
+                {/* Step 5 — Already Logged In */}
+                {step === 5 && (
+                    <div className="auth-modal-body auth-success-body">
+                        <div className="auth-success-icon">👤</div>
+                        <h3 className="auth-success-name">Hi, {userName}!</h3>
+                        <p className="auth-success-msg">
+                            You are signed in with <strong>{user?.contact}</strong>.
+                        </p>
+                        <button className="auth-btn-primary" onClick={onClose}>
+                            Continue Shopping 🛍️
+                        </button>
+                        <button className="auth-btn-logout" onClick={logout}>
+                            Log Out
+                        </button>
+                    </div>
+                )}
+
                 {/* Step indicator dots */}
                 <div className="auth-step-dots">
-                    {[1, 2, 3, 4].map(s => (
+                    {[2, 3, 4].map(s => (
                         <span key={s} className={`auth-dot ${step >= s ? 'active' : ''} ${step === s ? 'current' : ''}`}></span>
                     ))}
                 </div>

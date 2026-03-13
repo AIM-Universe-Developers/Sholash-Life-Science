@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { UserContext } from './context/UserContext';
 import TopBar from './components/TopBar';
 import Header from './components/Header';
 import HeroCarousel from './components/HeroCarousel';
@@ -16,6 +17,7 @@ import PaymentProcess from './pages/PaymentProcess';
 import OurProducts from './components/OurProducts';
 import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
+import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
@@ -24,10 +26,17 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authProduct, setAuthProduct] = useState(null);
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const handleBuyClick = (product) => {
-    setAuthProduct(product);
-    setIsAuthOpen(true);
+    if (user) {
+      handleAddToCart(product, 1);
+      navigate('/cart');
+    } else {
+      setAuthProduct(product);
+      setIsAuthOpen(true);
+    }
   };
 
   const handleAddToCart = (product, quantity = 1) => {
@@ -62,7 +71,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <>
       <ScrollToTop />
       <div className="app">
         <TopBar />
@@ -107,6 +116,7 @@ function App() {
                 onRemoveFromCart={handleRemoveFromCart}
               />
             } />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/payment" element={<PaymentProcess cart={cart} />} />
             <Route path="/product/:id" element={<ProductDetail onAddToCart={handleAddToCart} onBuyClick={handleBuyClick} />} />
           </Routes>
@@ -119,7 +129,7 @@ function App() {
           product={authProduct}
         />
       </div>
-    </Router>
+    </>
   );
 }
 
