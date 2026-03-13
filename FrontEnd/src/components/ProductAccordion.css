@@ -51,6 +51,7 @@
 
 .accordion-content {
     padding: 1rem 0 2rem;
+    color: #000;
 }
 
 .benefits-grid {
@@ -88,6 +89,7 @@
     padding: 1rem 2rem;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    
 }
 
 .sub-accordion-item {
@@ -124,7 +126,7 @@
 
 .sub-accordion-content {
     padding: 0 0 1.2rem;
-    color: var(--color-text-muted);
+    color: var(--color-text-black);
     font-size: 0.95rem;
     line-height: 1.6;
     white-space: pre-wrap;
