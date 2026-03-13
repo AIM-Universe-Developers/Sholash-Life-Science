@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AuthModal.css';
 
-const OTP_SERVER = 'http://localhost:4000/api';
+const OTP_SERVER = 'http://localhost:4001/api';
 
 const AuthModal = ({ isOpen, onClose, product }) => {
     const [step, setStep] = useState(1); // 1: method, 2: input, 3: otp, 4: success
@@ -85,8 +85,9 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             } else {
                 setError(data.message || 'Failed to send OTP. Please try again.');
             }
-        } catch {
-            setError('Cannot reach OTP server. Make sure the backend is running on port 4000.');
+        } catch (err) {
+            console.error('OTP Send Error:', err);
+            setError('Cannot reach OTP server. Make sure the OTP server is running on port 4001.');
         } finally {
             setLoading(false);
         }
@@ -143,8 +144,9 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 setOtpDigits(['', '', '', '', '', '']);
                 otpRefs.current[0]?.focus();
             }
-        } catch {
-            setError('Cannot reach OTP server. Make sure the backend is running on port 4000.');
+        } catch (err) {
+            console.error('OTP Verify Error:', err);
+            setError('Cannot reach OTP server. Make sure the OTP server is running on port 4001.');
         } finally {
             setLoading(false);
         }
@@ -171,7 +173,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
 
                 {/* Header */}
                 <div className="auth-modal-header">
-                    <div className="auth-modal-logo">🌿</div>
+                    <div className="auth-modal-logo"><img src="assets/logo.2.png" alt="Sholash Logo" width="100px" height="100px" /></div>
                     <h2 className="serif auth-modal-title">
                         {step === 4 ? 'Welcome!' : step === 3 ? 'Verify OTP' : 'Sign In / Register'}
                     </h2>

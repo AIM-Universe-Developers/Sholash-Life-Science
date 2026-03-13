@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login — Sholash Life Science</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" />
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            /* Added subtle border */
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.2));
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .login-sub {
+            color: #666666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #444444;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.03) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            color: #000000 !important;
+        }
+
+        .glass-input input {
+            color: #000000 !important;
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: none;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="login-card glass-card float-card">
+        <div class="login-logo"><img src="assets/logo.2.png" alt="Sholash Logo" width="100px" height="100px"></div>
+        <h1 class="login-title">Admin Login</h1>
+        <p class="login-sub">Secure access for Sholash personnel</p>
+
+        <div id="login-error" class="login-error"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label>Email Address</label>
+                <div class="glass-input full">
+                    <i class="ri-mail-line"></i>
+                    <input type="email" id="email" placeholder="admin@sholash.com" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="glass-input full">
+                    <i class="ri-lock-line"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary full mt" id="submit-btn" style="justify-content: center;">
+                <span id="btn-text">Log In</span>
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const form = document.getElementById('login-form');
+        const errorDiv = document.getElementById('login-error');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+
+        // Check if already logged in
+        if (localStorage.getItem('sholash_admin_token')) {
+            window.location.href = 'index.html';
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Loading state
+            submitBtn.disabled = true;
+            btnText.innerText = 'Verifying...';
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('sholash_admin_token', data.data.token);
+                    localStorage.setItem('sholash_admin_user', JSON.stringify(data.data));
+                    window.location.href = 'index.html';
+                } else {
+                    errorDiv.innerText = data.message || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (err) {
+                errorDiv.innerText = 'Cannot reach backend server. Make sure it is running on port 5000.';
+                errorDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                btnText.innerText = 'Log In';
+            }
+        });
+    </script>
+</body>
+
+</html>

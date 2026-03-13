@@ -7,20 +7,15 @@
     display: flex;
     align-items: center;
     z-index: 1000;
-<<<<<<< HEAD
-    background-color: rgba(17, 17, 17, 0.6);
-    /* Light green tint */
-=======
     background-color: #ffffff;
->>>>>>> 4f207c5a0985e4457481d57ed0d4af257e8a03c0
     box-shadow: var(--shadow-sm);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.header.scrolled{
-background:rgba(255,255,255,0.9);
-backdrop-filter:blur(10px);
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -42,13 +37,13 @@ box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
 
 .logo-img {
-   height:140px;
-width:auto;
-object-fit:contain;
-display:block;
-transition: height 0.3s ease;
-  
-   
+    height: 140px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition: height 0.3s ease;
+
+
 }
 
 .nav {
@@ -88,7 +83,7 @@ transition: height 0.3s ease;
 
 .nav a:hover::after {
     width: 100%;
-     background:silver;
+    background: silver;
 }
 
 
@@ -97,35 +92,36 @@ transition: height 0.3s ease;
     align-items: center;
     gap: var(--spacing-sm);
 }
-.search-input{
-border:none;
-background:transparent;
-outline:none;
-font-size:0.9rem;
-padding:6px 10px;
-width:150px;
-color:#2C2C2C;
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    width: 150px;
+    color: #2C2C2C;
 }
 
-.search-container{
-display:flex;
-align-items:center;
-background:#ffffff;
-border:1px solid #E6E6E6;
-border-radius:30px;
-padding:6px 14px;
-transition:all 0.35s ease;
+.search-container {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #E6E6E6;
+    border-radius: 30px;
+    padding: 6px 14px;
+    transition: all 0.35s ease;
 }
 
 /* Expand effect */
-.search-container:hover{
-transform:translateY(-1px);
+.search-container:hover {
+    transform: translateY(-1px);
 }
 
 /* Focus glow */
-.search-container:focus-within{
-border-color:silver;
-box-shadow:0 0 0 3px rgba(200,162,122,0.15);
+.search-container:focus-within {
+    border-color: silver;
+    box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
 }
 
 

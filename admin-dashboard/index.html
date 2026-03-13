@@ -11,7 +11,23 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"/>
 </head>
-<body>
+<body style="opacity: 0; transition: opacity 0.5s ease;">
+  <script>
+    // Auth Check
+    const token = localStorage.getItem('sholash_admin_token');
+    const user = JSON.parse(localStorage.getItem('sholash_admin_user') || '{}');
+    if (!token) {
+        window.location.href = 'login.html';
+    } else {
+        document.body.style.opacity = '1';
+    }
+
+    function logout() {
+        localStorage.removeItem('sholash_admin_token');
+        localStorage.removeItem('sholash_admin_user');
+        window.location.href = 'login.html';
+    }
+  </script>
 
 <!-- Ambient background orbs -->
 <div class="orb orb-1"></div>
@@ -89,15 +105,15 @@
         <span class="badge">2</span>
       </button>
       <div class="nav-divider-v"></div>
-      <div class="admin-profile">
+      <div class="admin-profile" onclick="if(confirm('Logout?')) logout()">
         <div class="avatar-ring">
-          <div class="avatar">AD</div>
+          <div class="avatar" id="admin-initials">AD</div>
         </div>
         <div class="admin-info">
-          <span class="admin-name">Admin Dev</span>
-          <span class="admin-role">Super Admin</span>
+          <span class="admin-name" id="admin-display-name">Admin Dev</span>
+          <span class="admin-role" id="admin-display-role">Super Admin</span>
         </div>
-        <i class="ri-arrow-down-s-line"></i>
+        <i class="ri-logout-box-r-line" style="margin-left: 10px; color: var(--red);"></i>
       </div>
     </div>
   </header>
@@ -406,6 +422,14 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+    <script src="app.js"></script>
+    <script>
+      // Populate Profile
+      if (user.name) {
+          document.getElementById('admin-display-name').innerText = user.name;
+          document.getElementById('admin-display-role').innerText = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+          document.getElementById('admin-initials').innerText = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+    </script>
 </body>
 </html>

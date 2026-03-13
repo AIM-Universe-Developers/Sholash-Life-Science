@@ -1,55 +1,32 @@
 /* =====================================================
-   SHOLASH ADMIN — app.js  |  Data + Charts + Routing
+   SHOLASH ADMIN — app.js  |  Real Data + API Integration
    ===================================================== */
 
-// ---- DATA ----
-const ORDERS = [
-  { id:'#SH-10421', product:'Glow Serum 30ml', customer:'Aisha Patel', date:'Feb 24, 2026', status:'delivered', amount:'₹48.00' },
-  { id:'#SH-10420', product:'HydraBalance Cream', customer:'Marcus Chen', date:'Feb 24, 2026', status:'shipped', amount:'₹65.00' },
-  { id:'#SH-10419', product:'Vitamin C Booster', customer:'Priya Sharma', date:'Feb 23, 2026', status:'pending', amount:'₹39.00' },
-  { id:'#SH-10418', product:'Retinol Night Oil', customer:'James Okafor', date:'Feb 23, 2026', status:'delivered', amount:'₹82.00' },
-  { id:'#SH-10417', product:'SPF 50+ Sunscreen', customer:'Luna García', date:'Feb 22, 2026', status:'cancelled', amount:'₹28.00' },
-  { id:'#SH-10416', product:'Pearl Brightener', customer:'Emily Watson', date:'Feb 22, 2026', status:'shipped', amount:'₹75.00' },
-  { id:'#SH-10415', product:'Collagen Peptide', customer:'Raj Murthy', date:'Feb 21, 2026', status:'delivered', amount:'₹55.00' },
-  { id:'#SH-10414', product:'Rose Water Toner', customer:'Yuki Tanaka', date:'Feb 21, 2026', status:'pending', amount:'₹32.00' },
-  { id:'#SH-10413', product:'Micellar Cleanser', customer:'Chris Adeyemi', date:'Feb 20, 2026', status:'shipped', amount:'₹27.00' },
-  { id:'#SH-10412', product:'Eye Lift Serum', customer:'Sarah Kim', date:'Feb 20, 2026', status:'delivered', amount:'₹94.00' },
-];
+const API_BASE = 'http://localhost:5000/api';
+const TOKEN = localStorage.getItem('sholash_admin_token');
 
-const PRODUCTS = [
-  { emoji:'🌿', name:'Glow Serum 30ml', price:'₹48.00', stock:142, low:false },
-  { emoji:'💧', name:'HydraBalance Cream', price:'₹65.00', stock:89, low:false },
-  { emoji:'☀️', name:'Vitamin C Booster', price:'₹39.00', stock:17, low:true },
-  { emoji:'🌙', name:'Retinol Night Oil', price:'₹82.00', stock:204, low:false },
-  { emoji:'🛡️', name:'SPF 50+ Sunscreen', price:'₹28.00', stock:8,  low:true },
-  { emoji:'✨', name:'Pearl Brightener', price:'₹75.00', stock:56, low:false },
-  { emoji:'💎', name:'Collagen Peptide', price:'₹55.00', stock:120, low:false },
-  { emoji:'🌹', name:'Rose Water Toner', price:'₹32.00', stock:233, low:false },
-  { emoji:'🫧', name:'Micellar Cleanser', price:'₹27.00', stock:310, low:false },
-  { emoji:'👁️', name:'Eye Lift Serum', price:'₹94.00', stock:44, low:false },
-  { emoji:'🧴', name:'Exfoliating Scrub', price:'₹36.00', stock:12, low:true },
-  { emoji:'🍯', name:'Honey Mask', price:'₹42.00', stock:98, low:false },
-];
+async function fetchWithAuth(endpoint, options = {}) {
+  const headers = {
+    'Authorization': `Bearer ${TOKEN}`,
+    'Content-Type': 'application/json',
+    ...options.headers
+  };
+  const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+  if (response.status === 401) {
+    // Token expired or invalid
+    localStorage.removeItem('sholash_admin_token');
+    window.location.href = 'login.html';
+    return;
+  }
+  return response.json();
+}
 
-const CUSTOMERS = [
-  { initials:'AP', name:'Aisha Patel',   email:'aisha@mail.com',   orders:14, colors:['#3B82F6','#7C3AED'] },
-  { initials:'MC', name:'Marcus Chen',   email:'mchen@mail.com',   orders:8,  colors:['#06B6D4','#3B82F6'] },
-  { initials:'PS', name:'Priya Sharma',  email:'priya@mail.com',   orders:22, colors:['#8B5CF6','#2563EB'] },
-  { initials:'JO', name:'James Okafor', email:'james@mail.com',   orders:5,  colors:['#10B981','#06B6D4'] },
-  { initials:'LG', name:'Luna García',  email:'luna@mail.com',    orders:11, colors:['#F59E0B','#EF4444'] },
-  { initials:'EW', name:'Emily Watson', email:'emily@mail.com',   orders:19, colors:['#EC4899','#8B5CF6'] },
-  { initials:'RM', name:'Raj Murthy',   email:'raj@mail.com',     orders:7,  colors:['#3B82F6','#10B981'] },
-  { initials:'YT', name:'Yuki Tanaka',  email:'yuki@mail.com',    orders:3,  colors:['#F59E0B','#3B82F6'] },
-];
+// ---- DATA (Initialized Empty) ----
+let ORDERS = [];
+let PRODUCTS = [];
+let CUSTOMERS = [];
+let REVIEWS = []; // Reviews might still be mock for now if no backend yet
 
-const REVIEWS = [
-  { author:'Aisha Patel',   product:'Glow Serum 30ml',  stars:5, text:'Absolutely love this! My skin feels so soft and radiant after just one week of use.', colors:['#3B82F6','#7C3AED'] },
-  { author:'Marcus Chen',   product:'HydraBalance Cream', stars:4, text:'Great moisturizer, light texture and absorbs quickly. Will definitely repurchase.', colors:['#06B6D4','#3B82F6'] },
-  { author:'Priya Sharma',  product:'Vitamin C Booster', stars:5, text:'Noticed a visible difference in my skin tone within two weeks. Highly recommended!', colors:['#8B5CF6','#2563EB'] },
-  { author:'Luna García',   product:'SPF 50+ Sunscreen', stars:3, text:'Good protection but slightly leaves a white cast. Would be perfect in a tinted version.', colors:['#F59E0B','#EF4444'] },
-  { author:'Emily Watson',  product:'Pearl Brightener',  stars:5, text:'The texture is luxurious and the glow it gives is unreal. My skincare staple!', colors:['#EC4899','#8B5CF6'] },
-  { author:'Raj Murthy',    product:'Collagen Peptide',  stars:4, text:'Skin feels firmer after consistent use. Great product at a fair price point.', colors:['#3B82F6','#10B981'] },
-];
 
 // ---- NAVIGATION ----
 function navigate(page, el) {
@@ -76,38 +53,79 @@ function statusBadge(s) {
 function renderDashboardOrders() {
   const tbody = document.getElementById('ordersTableBody');
   if(!tbody) return;
+  
+  if (!ORDERS || ORDERS.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted);">No orders found.</td></tr>';
+    return;
+  }
+
   tbody.innerHTML = ORDERS.slice(0,5).map(o=>`
     <tr>
-      <td><code style="color:var(--blue);font-size:.8rem;">${o.id}</code></td>
-      <td>${o.product}</td>
-      <td>${o.customer}</td>
-      <td>${statusBadge(o.status)}</td>
-      <td style="font-weight:600;color:var(--text-primary);">${o.amount}</td>
+      <td><code style="color:var(--blue);font-size:.8rem;">${o._id.substring(o._id.length - 8).toUpperCase()}</code></td>
+      <td>${o.orderItems ? o.orderItems.map(i => i.name).join(', ') : 'Product'}</td>
+      <td>${o.user ? o.user.name : 'Unknown User'} ${o.isGuest ? '(Guest)' : ''}</td>
+      <td>${statusBadge(o.orderStatus || 'pending')}</td>
+      <td style="font-weight:600;color:var(--text-primary);">₹${o.totalPrice}</td>
       <td>
-        <button class="btn-glass sm" onclick="openOrderModal('${o.id}', false)"><i class="ri-eye-line"></i></button>
+        <button class="btn-glass sm" onclick="openOrderModal('${o._id}', false)"><i class="ri-eye-line"></i></button>
       </td>
     </tr>`).join('');
+}
+
+async function initDashboard() {
+    const data = await fetchWithAuth('/admin/dashboard');
+    if (data && data.success) {
+        const stats = data.data;
+        
+        // Update Stat Cards
+        document.querySelector('.stat-card[style*="#3B82F6"] .stat-value').innerText = `₹${stats.totalRevenue.toLocaleString()}`;
+        document.querySelector('.stat-card[style*="#8B5CF6"] .stat-value').innerText = stats.totalOrders.toLocaleString();
+        document.querySelector('.stat-card[style*="#06B6D4"] .stat-value').innerText = stats.totalProducts.toLocaleString();
+        document.querySelector('.stat-card[style*="#10B981"] .stat-value').innerText = stats.totalUsers.toLocaleString();
+
+        ORDERS = stats.recentOrders;
+        renderDashboardOrders();
+    }
+}
+async function fetchAllData() {
+    try {
+        const [ordersRes, productsRes, usersRes] = await Promise.all([
+            fetchWithAuth('/orders'), // Adjust if routes differ
+            fetchWithAuth('/products'),
+            fetchWithAuth('/admin/users')
+        ]);
+
+        if (ordersRes && ordersRes.success) ORDERS = ordersRes.data;
+        if (productsRes && productsRes.success) PRODUCTS = productsRes.data;
+        if (usersRes && usersRes.success) CUSTOMERS = usersRes.data;
+
+        renderFullOrders();
+        renderProducts();
+        renderCustomers();
+    } catch (err) {
+        console.error('Error fetching data:', err);
+    }
 }
 
 // Full orders page
 function renderFullOrders(filtered = ORDERS) {
   const tbody = document.getElementById('fullOrdersBody');
   if(!tbody) return;
-  if (filtered.length === 0) {
+  if (!filtered || filtered.length === 0) {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">No orders found matching your search.</td></tr>';
     return;
   }
   tbody.innerHTML = filtered.map(o=>`
     <tr>
-      <td><code style="color:var(--blue);font-size:.8rem;">${o.id}</code></td>
-      <td>${o.product}</td>
-      <td>${o.customer}</td>
-      <td style="color:var(--text-muted);font-size:.78rem;">${o.date}</td>
-      <td>${statusBadge(o.status)}</td>
-      <td style="font-weight:600;color:var(--text-primary);">${o.amount}</td>
+      <td><code style="color:var(--blue);font-size:.8rem;">${o._id.substring(o._id.length - 8).toUpperCase()}</code></td>
+      <td>${o.orderItems ? o.orderItems.map(i => i.name).join(', ') : 'Product'}</td>
+      <td>${o.user ? o.user.name : 'Unknown User'}</td>
+      <td style="color:var(--text-muted);font-size:.78rem;">${new Date(o.createdAt).toLocaleDateString()}</td>
+      <td>${statusBadge(o.orderStatus || 'pending')}</td>
+      <td style="font-weight:600;color:var(--text-primary);">₹${o.totalPrice}</td>
       <td>
-        <button class="btn-glass sm" onclick="openOrderModal('${o.id}', false)"><i class="ri-eye-line"></i></button>
-        <button class="btn-glass sm" style="margin-left:4px;" onclick="openOrderModal('${o.id}', true)"><i class="ri-edit-line"></i></button>
+        <button class="btn-glass sm" onclick="openOrderModal('${o._id}', false)"><i class="ri-eye-line"></i></button>
+        <button class="btn-glass sm" style="margin-left:4px;" onclick="openOrderModal('${o._id}', true)"><i class="ri-edit-line"></i></button>
       </td>
     </tr>`).join('');
 }
@@ -116,17 +134,17 @@ function renderFullOrders(filtered = ORDERS) {
 function renderProducts(filtered = PRODUCTS) {
   const grid = document.getElementById('productsGrid');
   if(!grid) return;
-  if (filtered.length === 0) {
+  if (!filtered || filtered.length === 0) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);font-size:1.1rem;">No products found matching your search.</div>';
     return;
   }
   grid.innerHTML = filtered.map(p=>`
     <div class="product-card glass-card float-card">
-      <div class="product-img">${p.emoji}</div>
+      <div class="product-img">🌿</div>
       <div class="product-name">${p.name}</div>
       <div class="product-meta">
-        <span class="product-price">${p.price}</span>
-        <span class="product-stock ${p.low?'low':''}">Stock: ${p.stock}${p.low?' ⚠️':''}</span>
+        <span class="product-price">₹${p.price}</span>
+        <span class="product-stock ${p.stock < 10 ? 'low' : ''}">Stock: ${p.stock}</span>
       </div>
       <button class="product-edit"><i class="ri-edit-line"></i> Edit Product</button>
     </div>`).join('');
@@ -136,16 +154,16 @@ function renderProducts(filtered = PRODUCTS) {
 function renderCustomers(filtered = CUSTOMERS) {
   const grid = document.getElementById('customersGrid');
   if(!grid) return;
-  if (filtered.length === 0) {
+  if (!filtered || filtered.length === 0) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);font-size:1.1rem;">No customers found matching your search.</div>';
     return;
   }
   grid.innerHTML = filtered.map(c=>`
     <div class="customer-card glass-card float-card">
-      <div class="cust-avatar" style="background:linear-gradient(135deg,${c.colors[0]},${c.colors[1]})">${c.initials}</div>
+      <div class="cust-avatar">${c.name.split(' ').map(n=>n[0]).join('').toUpperCase()}</div>
       <div class="cust-name">${c.name}</div>
       <div class="cust-email">${c.email}</div>
-      <div class="cust-orders">${c.orders} orders placed</div>
+      <div class="cust-orders">${c.isActive ? 'Active Member' : 'Blocked'}</div>
       <button class="btn-glass sm" style="margin-top:6px;width:100%;justify-content:center;">View Profile</button>
     </div>`).join('');
 }
@@ -530,14 +548,14 @@ function handleSearch(inputId, type) {
 
     if (currentType === 'orders') {
       const filtered = ORDERS.filter(o => 
-        o.id.toLowerCase().includes(query) || 
-        o.product.toLowerCase().includes(query) || 
-        o.customer.toLowerCase().includes(query) ||
-        o.status.toLowerCase().includes(query)
+        o._id.toLowerCase().includes(query) || 
+        (o.orderItems && o.orderItems.some(i => i.name.toLowerCase().includes(query))) || 
+        (o.user && o.user.name.toLowerCase().includes(query)) ||
+        (o.orderStatus && o.orderStatus.toLowerCase().includes(query))
       );
       renderFullOrders(filtered);
     } else if (currentType === 'products') {
-      const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(query));
+      const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(query) || (p.brand && p.brand.toLowerCase().includes(query)));
       renderProducts(filtered);
     } else if (currentType === 'customers') {
       const filtered = CUSTOMERS.filter(c => 
@@ -576,10 +594,8 @@ window.addEventListener('DOMContentLoaded', ()=>{
   handleSearch('orders-search-input', 'orders');
 
   renderDashboardOrders();
-  renderFullOrders();
-  renderProducts();
-  renderCustomers();
-  renderReviews();
+  initDashboard();
+  fetchAllData();
   
   // Wait a tick so canvas is laid out
   requestAnimationFrame(()=>{

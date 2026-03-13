@@ -31,11 +31,7 @@ const OurProducts = ({ searchQuery = '' }) => {
         return () => observer.disconnect();
     }, [searchQuery]);
 
-<<<<<<< HEAD
-    // Filtering logic
-=======
     // Filtering logic based on search query
->>>>>>> 4f207c5a0985e4457481d57ed0d4af257e8a03c0
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
