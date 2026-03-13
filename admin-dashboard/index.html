@@ -343,6 +343,171 @@
   </div>
 </div>
 
+<!-- ADD/EDIT PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box glass-card float-card product-modal-box">
+    <div class="modal-head">
+      <span id="productModalTitle">Add New Product</span>
+      <button onclick="closeModal()" type="button"><i class="ri-close-line"></i></button>
+    </div>
+    <form id="productForm" onsubmit="handleProductSubmit(event)">
+      <div class="form-scroll-area">
+        <!-- Section 1: Basic Info -->
+        <div class="settings-section-title">Basic Info</div>
+        <div class="form-grid-2">
+          <div class="settings-field">
+            <label>Product Name <span class="req">*</span></label>
+            <div class="glass-input full"><input type="text" id="prod-name" required maxlength="120" placeholder="e.g. Calgro™ Tablets"/></div>
+          </div>
+          <div class="settings-field">
+            <label>Brand</label>
+            <div class="glass-input full"><input type="text" id="prod-brand" placeholder="e.g. Sholash"/></div>
+          </div>
+        </div>
+        
+        <div class="settings-field">
+          <label>Tagline</label>
+          <div class="glass-input full"><input type="text" id="prod-tagline" maxlength="200" placeholder="e.g. Complete Nutritional Support..."/></div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="settings-field">
+            <label>Category <span class="req">*</span></label>
+            <div class="glass-input full">
+              <select id="prod-category" required class="glass-select">
+                <option value="" disabled selected>Select Category</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-field">
+            <label>Price (₹) <span class="req">*</span></label>
+            <div class="glass-input full"><input type="number" id="prod-price" required min="0" placeholder="0"/></div>
+          </div>
+          <div class="settings-field">
+            <label>Stock <span class="req">*</span></label>
+            <div class="glass-input full"><input type="number" id="prod-stock" required min="0" placeholder="0"/></div>
+          </div>
+        </div>
+        
+        <div class="settings-field">
+          <label>Theme Color (Hex)</label>
+          <div class="glass-input full"><input type="color" id="prod-color" value="#f0f0f0" style="padding:0; height:30px; cursor:pointer;" /></div>
+        </div>
+
+        <!-- Section 2: Media & Description -->
+        <div class="settings-section-title mt">Media & Description</div>
+        <div class="settings-field">
+          <label>Description <span class="req">*</span></label>
+          <div class="glass-input full textarea-wrap">
+            <textarea id="prod-desc" required rows="4" placeholder="Detailed product description..."></textarea>
+          </div>
+        </div>
+
+        <div class="settings-field">
+          <label>Product Images (Max 5)</label>
+          <div class="image-upload-zone" id="imgUploadZone" onclick="document.getElementById('imgUploadInput').click()">
+            <i class="ri-upload-cloud-2-line"></i>
+            <span>Click to select images (or drag & drop)</span>
+            <input type="file" id="imgUploadInput" multiple accept="image/*" style="display:none" onchange="handleImageSelection(event)"/>
+          </div>
+          <div class="image-preview-grid" id="imagePreviewGrid"></div>
+        </div>
+
+        <!-- Section 3: Features & Target -->
+        <div class="settings-section-title mt">Features & Target Audience</div>
+        <div class="form-grid-2">
+          <div class="settings-field">
+            <label>Key Features (Press Enter to add)</label>
+            <div class="dynamic-list-wrap">
+              <div class="glass-input full"><input type="text" id="feat-input" placeholder="e.g. 24h Hydration" onkeypress="handleListAdd(event, 'featuresList', 'feat-input')"/>
+                <button type="button" class="btn-glass sm" onclick="handleListAdd({key:'Enter'}, 'featuresList', 'feat-input')"><i class="ri-add-line"></i></button>
+              </div>
+              <div class="tag-list" id="featuresList"></div>
+            </div>
+          </div>
+          <div class="settings-field">
+            <label>Target Audience (Press Enter to add)</label>
+            <div class="dynamic-list-wrap">
+              <div class="glass-input full"><input type="text" id="target-input" placeholder="e.g. Adults" onkeypress="handleListAdd(event, 'targetList', 'target-input')"/>
+                <button type="button" class="btn-glass sm" onclick="handleListAdd({key:'Enter'}, 'targetList', 'target-input')"><i class="ri-add-line"></i></button>
+              </div>
+              <div class="tag-list" id="targetList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Details Accordion -->
+        <div class="settings-section-title mt">Rich Details</div>
+        <div class="details-accordion">
+          <!-- Benefits -->
+          <details class="detail-panel">
+            <summary>Benefits <span class="badge-count" id="count-benefits">0</span></summary>
+            <div class="panel-content" id="panel-benefits">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('benefits')"><i class="ri-add-line"></i> Add Benefit</button>
+              <div class="items-container" id="container-benefits"></div>
+            </div>
+          </details>
+          <!-- Ingredients -->
+          <details class="detail-panel">
+            <summary>Ingredients <span class="badge-count" id="count-ingredients">0</span></summary>
+            <div class="panel-content" id="panel-ingredients">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('ingredients')"><i class="ri-add-line"></i> Add Ingredient</button>
+              <div class="items-container" id="container-ingredients"></div>
+            </div>
+          </details>
+          <!-- Before & After -->
+          <details class="detail-panel">
+            <summary>Before & After <span class="badge-count" id="count-beforeAfter">0</span></summary>
+            <div class="panel-content" id="panel-beforeAfter">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('beforeAfter')"><i class="ri-add-line"></i> Add Point</button>
+              <div class="items-container" id="container-beforeAfter"></div>
+            </div>
+          </details>
+          <!-- Usage -->
+          <details class="detail-panel">
+            <summary>Usage Instructions <span class="badge-count" id="count-usage">0</span></summary>
+            <div class="panel-content" id="panel-usage">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('usage')"><i class="ri-add-line"></i> Add Instruction</button>
+              <div class="items-container" id="container-usage"></div>
+            </div>
+          </details>
+          <!-- FAQ -->
+          <details class="detail-panel">
+            <summary>FAQ <span class="badge-count" id="count-faq">0</span></summary>
+            <div class="panel-content" id="panel-faq">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('faq')"><i class="ri-add-line"></i> Add FAQ</button>
+              <div class="items-container" id="container-faq"></div>
+            </div>
+          </details>
+          <!-- Other -->
+          <details class="detail-panel">
+            <summary>Other Information <span class="badge-count" id="count-other">0</span></summary>
+            <div class="panel-content" id="panel-other">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('other')"><i class="ri-add-line"></i> Add Info</button>
+              <div class="items-container" id="container-other"></div>
+            </div>
+          </details>
+          <!-- Legal -->
+          <details class="detail-panel">
+            <summary>Legal / Regulatory <span class="badge-count" id="count-legal">0</span></summary>
+            <div class="panel-content" id="panel-legal">
+              <button type="button" class="btn-glass sm mb" onclick="addDetailItem('legal')"><i class="ri-add-line"></i> Add Legal Info</button>
+              <div class="items-container" id="container-legal"></div>
+            </div>
+          </details>
+        </div>
+      </div>
+      
+      <div class="modal-actions" style="margin-top: 0; border-top: 1px solid var(--glass-border); padding-top: 16px;">
+        <button type="button" class="btn-glass" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn-primary" id="btnSubmitProduct">
+          <i class="ri-save-line"></i> Save Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- SIDE PANELS -->
 <div class="panel-overlay" id="panel-overlay" onclick="closeAllPanels()"></div>
 

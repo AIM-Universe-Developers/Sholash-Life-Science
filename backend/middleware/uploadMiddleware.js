@@ -1,8 +1,25 @@
 const multer = require("multer");
 const path = require("path");
 
-// ─── Storage: Memory (for Cloudinary) or Disk ────────────────────────────────
-const storage = multer.memoryStorage();
+const fs = require("fs");
+
+const uploadDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// ─── Storage: Disk ───────────────────────────────────────────────────────────
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename(req, file, cb) {
+        cb(
+            null,
+            `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+        );
+    },
+});
 
 // ─── File Filter: Images Only ─────────────────────────────────────────────────
 const fileFilter = (req, file, cb) => {

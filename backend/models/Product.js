@@ -57,6 +57,79 @@ const productSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        tagline: {
+            type: String,
+            trim: true,
+            maxlength: [200, "Tagline cannot exceed 200 characters"],
+            default: "",
+        },
+        color: {
+            type: String,
+            trim: true,
+            maxlength: 20,
+            default: "#f0f0f0",
+        },
+        target: [
+            {
+                type: String,
+            },
+        ],
+        features: [
+            {
+                type: String,
+            },
+        ],
+        details: {
+            benefits: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+            ingredients: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+            beforeAfter: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+            usage: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+            faq: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+            other: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+            legal: [
+                {
+                    id: String,
+                    title: { type: String, required: true },
+                    content: String,
+                },
+            ],
+        },
     },
     { timestamps: true }
 );

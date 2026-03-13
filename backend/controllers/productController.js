@@ -5,7 +5,7 @@ const Product = require("../models/Product");
 // ─── @access Private (Admin)
 const createProduct = async (req, res, next) => {
     try {
-        const { name, description, price, category, stock, brand } = req.body;
+        const { name, description, price, category, stock, brand, tagline, color, target, features, details } = req.body;
 
         if (!name || !description || !price || !category) {
             return res.status(400).json({
@@ -14,13 +14,25 @@ const createProduct = async (req, res, next) => {
             });
         }
 
-        // If files were uploaded, use their paths (memory storage returns buffer)
+        let parsedTarget = [];
+        let parsedFeatures = [];
+        let parsedDetails = {};
+
+        try {
+            if (target) parsedTarget = JSON.parse(target);
+            if (features) parsedFeatures = JSON.parse(features);
+            if (details) parsedDetails = JSON.parse(details);
+        } catch (err) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid JSON format for target, features, or details",
+            });
+        }
+
+        // If files were uploaded, save their paths to DB
         let images = [];
         if (req.files && req.files.length > 0) {
-            // Map to filenames or Cloudinary URLs — placeholder strings here
-            images = req.files.map(
-                (f) => `uploads/${Date.now()}-${f.originalname}`
-            );
+            images = req.files.map((f) => `uploads/${f.filename}`);
         }
 
         const product = await Product.create({
@@ -30,6 +42,11 @@ const createProduct = async (req, res, next) => {
             category,
             stock,
             brand,
+            tagline,
+            color,
+            target: parsedTarget,
+            features: parsedFeatures,
+            details: parsedDetails,
             images,
         });
 
@@ -136,11 +153,21 @@ const updateProduct = async (req, res, next) => {
             });
         }
 
+        // Parse JSON fields if they are sent
+        try {
+            if (req.body.target && typeof req.body.target === 'string') req.body.target = JSON.parse(req.body.target);
+            if (req.body.features && typeof req.body.features === 'string') req.body.features = JSON.parse(req.body.features);
+            if (req.body.details && typeof req.body.details === 'string') req.body.details = JSON.parse(req.body.details);
+        } catch (err) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid JSON format for target, features, or details",
+            });
+        }
+
         // Handle new image uploads
         if (req.files && req.files.length > 0) {
-            const newImages = req.files.map(
-                (f) => `uploads/${Date.now()}-${f.originalname}`
-            );
+            const newImages = req.files.map((f) => `uploads/${f.filename}`);
             req.body.images = [...product.images, ...newImages];
         }
 
