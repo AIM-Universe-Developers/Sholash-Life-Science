@@ -1,169 +1,169 @@
-const User = require("../models/User.js");
-const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
-//1. Register USER
-const register = async (req, res) => {
-    try {
-        const {name, email, password} = req.body; 
-        
-        //Check if user already exists
-        const existingUser = await User.findOne({email});
-        if(existingUser) {
-            return res.status(400).json({message: "User already exists"});
-        }
+const OTP_SERVER = 'http://localhost:4001/api';
 
-        //Hash Password 
-        const hashPassword = await bcrypt.hash(password, 10);
+// Generate JWT
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE || '30d',
+  });
+};
 
-        //Create and Save User 
-        const newUser = await User.create ({name , email, password: hashPassword});
-        res.status(201).json({message: "User Registered Successfully", user: { id: newUser._id, name, email } });
+// @desc    Request Registration (Send OTP)
+// @route   POST /api/users/request-register
+// @access  Public
+const requestRegister = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ success: false, message: "User already exists" });
+    }
+
+    // Call OTP server to send email
+    const otpRes = await axios.post(`${OTP_SERVER}/send-otp/email`, { email, name });
     
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({message: "Internal Server Error"});
+    if (otpRes.data.success) {
+      res.json({ success: true, message: "OTP sent to your email." });
+    } else {
+      res.status(500).json({ success: false, message: "Failed to send OTP." });
     }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.response?.data?.message || error.message });
+  }
 };
 
-//2. Login USER
-const login = async (req, res) => {
-    try {
-        const {email, password} = req.body;
+// @desc    Register a new user (Verify OTP & Save)
+// @route   POST /api/users/register
+// @access  Public
+const registerUser = async (req, res) => {
+  try {
+    const { name, email, password, otp } = req.body;
 
-        //Check if user exists
-        const user = await User.findOne({email});
-        if(!user) {
-            return res.status(400).json({message: "User not found"});
-        }
-
-        //Check Password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if(!isPasswordValid) {
-            return res.status(400).json({message: "Invalid Password"});
-        }
-
-        //Generate Token
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: "1h"});
-
-        //Send Response
-        res.status(200).json({message: "User Logged In Successfully", token});
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({message: "Internal Server Error"});
+    // 1. Verify OTP first
+    const verifyRes = await axios.post(`${OTP_SERVER}/verify-otp`, { key: email, otp });
+    
+    if (!verifyRes.data.success) {
+      return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
     }
+
+    // 2. Check if user exists again (race condition)
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ success: false, message: "User already exists" });
+    }
+
+    // 3. Create user
+    const user = await User.create({
+      name,
+      email,
+      password,
+    });
+
+    if (user) {
+      res.status(201).json({
+        success: true,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        contact: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(400).json({ success: false, message: "Invalid user data" });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.response?.data?.message || error.message });
+  }
 };
 
-// 3. Get User Profile
-const getUserProfile = async (req, res) => {
-    try {
-        const user = await User.findById(req.user._id);
-        if (user) {
-            res.status(200).json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-            });
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+// @desc    Auth user & get token
+// @route   POST /api/users/login
+// @access  Public
+const authUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (user && (await user.matchPassword(password))) {
+      res.json({
+        success: true,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        contact: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid email or password" });
     }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// 4. Update User Profile
-const updateUserProfile = async (req, res) => {
-    try {
-        const user = await User.findById(req.user._id);
-        if (user) {
-            user.name = req.body.name || user.name;
-            user.email = req.body.email || user.email;
-            if (req.body.password) {
-                user.password = await bcrypt.hash(req.body.password, 10);
-            }
+// @desc    Forgot Password (Send OTP)
+// @route   POST /api/users/forgot-password
+// @access  Public
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
 
-            const updatedUser = await user.save();
-            res.status(200).json({
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                role: updatedUser.role,
-            });
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
+
+    // Call OTP server
+    const otpRes = await axios.post(`${OTP_SERVER}/send-otp/email`, { email, name: user.name });
+    
+    if (otpRes.data.success) {
+      res.json({ success: true, message: "Password reset OTP sent to your email." });
+    } else {
+      res.status(500).json({ success: false, message: "Failed to send OTP." });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.response?.data?.message || error.message });
+  }
 };
 
-// 5. Admin: Get All Users
-const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find({});
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-};
+// @desc    Reset Password (Verify OTP & Update)
+// @route   POST /api/users/reset-password
+// @access  Public
+const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
 
-// 6. Admin: Get User By ID
-const getUserById = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).select("-password");
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+    // 1. Verify OTP
+    const verifyRes = await axios.post(`${OTP_SERVER}/verify-otp`, { key: email, otp });
+    
+    if (!verifyRes.data.success) {
+      return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
     }
-};
 
-// 7. Admin: Update User By ID
-const updateUserById = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (user) {
-            user.name = req.body.name || user.name;
-            user.email = req.body.email || user.email;
-            user.role = req.body.role || user.role;
-
-            const updatedUser = await user.save();
-            res.status(200).json(updatedUser);
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+    // 2. Find and update user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
-};
 
-// 8. Admin: Delete User By ID
-const deleteUserById = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (user) {
-            await user.deleteOne();
-            res.status(200).json({ message: "User removed" });
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
-    }
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ success: true, message: "Password updated successfully! You can now sign in." });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.response?.data?.message || error.message });
+  }
 };
 
 module.exports = {
-    register,
-    login,
-    getUserProfile,
-    updateUserProfile,
-    getAllUsers,
-    getUserById,
-    updateUserById,
-    deleteUserById
+  requestRegister,
+  registerUser,
+  authUser,
+  forgotPassword,
+  resetPassword,
 };
