@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { 
+    checkUser,
     requestRegister, 
     registerUser, 
     authUser, 
@@ -9,6 +10,7 @@ const {
 } = require("../controllers/userController");
 
 // Regular User Authentication Routes
+router.post("/check", checkUser);
 router.post("/request-register", requestRegister);
 router.post("/register", registerUser);
 router.post("/login", authUser);

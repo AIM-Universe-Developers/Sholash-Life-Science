@@ -160,7 +160,26 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// @desc    Check if user exists
+// @route   POST /api/users/check
+// @access  Public
+const checkUser = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user) {
+      res.json({ success: true, exists: true, name: user.name });
+    } else {
+      res.json({ success: true, exists: false });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
+  checkUser,
   requestRegister,
   registerUser,
   authUser,
