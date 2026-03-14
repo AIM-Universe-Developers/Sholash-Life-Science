@@ -3,6 +3,7 @@ import { UserContext } from '../context/UserContext';
 import logo from '../assets/logo/logo.png';
 import './AuthModal.css';
 
+<<<<<<< HEAD
 const OTP_SERVER = 'http://localhost:4001/api';
 
 const AuthModal = ({ isOpen, onClose, product }) => {
@@ -12,9 +13,28 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     const [method, setMethod] = useState('mobile'); 
     const [inputValue, setInputValue] = useState('');
     const [userName, setUserName] = useState('');
+=======
+const API_URL = 'http://localhost:5000/api/users';
+
+const AuthModal = ({ isOpen, onClose, product }) => {
+    // ─── View Views ───────────────────────────────────────────────────────────
+    // 'IDENTIFY', 'LOGIN', 'REGISTER', 'VERIFY_REG', 'FORGOT_EMAIL', 'FORGOT_RESET'
+    const [view, setView] = useState('IDENTIFY');
+    
+    // ─── Form State ───────────────────────────────────────────────────────────
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
     const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
+    const [newPassword, setNewPassword] = useState('');
+    
+    // ─── UI State ─────────────────────────────────────────────────────────────
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
     const [resendTimer, setResendTimer] = useState(0);
     const [user, setUserLocal] = useState(null);
     const otpRefs = useRef([]);
@@ -26,10 +46,18 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             setUserLocal(JSON.parse(savedUser));
         }
     }, [isOpen]);
+=======
+    const [successMsg, setSuccessMsg] = useState('');
+    const [timer, setTimer] = useState(0);
+    const otpRefs = useRef([]);
 
-    // Reset state whenever modal opens
+    const { login } = useContext(UserContext);
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
+
+    // Reset everything when modal opens
     useEffect(() => {
         if (isOpen) {
+<<<<<<< HEAD
             const savedUser = localStorage.getItem('user');
             if (savedUser) {
                 setStep(5); // 5 is "Logged In" state
@@ -47,6 +75,10 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             setError('');
             setLoading(false);
             setResendTimer(0);
+=======
+            setView('IDENTIFY');
+            resetForms();
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         }
     }, [isOpen]);
 
@@ -61,6 +93,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
 
     if (!isOpen) return null;
 
+<<<<<<< HEAD
     const logoutLocal = () => {
         localStorage.removeItem('user');
         setUserLocal(null);
@@ -92,27 +125,37 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     };
 
     const sendOtp = async () => {
+=======
+    const resetForms = () => {
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setOtpDigits(['', '', '', '', '', '']);
+        setNewPassword('');
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         setError('');
-        if (!validate()) return;
-        setLoading(true);
+        setSuccessMsg('');
+        setLoading(false);
+        setTimer(0);
+    };
 
-        try {
-            const endpoint = method === 'mobile'
-                ? `${OTP_SERVER}/send-otp/sms`
-                : `${OTP_SERVER}/send-otp/email`;
+    const getCombinedOtp = () => otpDigits.join('');
 
-            const body = method === 'mobile'
-                ? { mobile: inputValue, name: authMode === 'register' ? userName : 'Customer' }
-                : { email: inputValue, name: authMode === 'register' ? userName : 'Customer' };
+    // ─── OTP Handlers ────────────────────────────────────────────────────────
 
-            const res = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
+    const handleOtpChange = (index, value) => {
+        if (!/^\d*$/.test(value)) return;
+        const newOtp = [...otpDigits];
+        newOtp[index] = value.slice(-1);
+        setOtpDigits(newOtp);
 
-            const data = await res.json();
+        if (value && index < 5) {
+            otpRefs.current[index + 1].focus();
+        }
+    };
 
+<<<<<<< HEAD
             if (data.success) {
                 setStep(3);
                 setResendTimer(30);
@@ -123,11 +166,30 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             setError('Cannot reach OTP server. Make sure the backend is running on port 4001.');
         } finally {
             setLoading(false);
+=======
+    const handleOtpKeyDown = (index, e) => {
+        if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+            otpRefs.current[index - 1].focus();
+        }
+    };
+
+    const handleOtpPaste = (e) => {
+        const pasteData = e.clipboardData.getData('text').slice(0, 6).split('');
+        const newOtp = [...otpDigits];
+        pasteData.forEach((char, i) => {
+            if (/^\d$/.test(char)) newOtp[i] = char;
+        });
+        setOtpDigits(newOtp);
+        if (pasteData.length > 0) {
+            const nextFocus = Math.min(pasteData.length, 5);
+            otpRefs.current[nextFocus].focus();
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         }
     };
 
     // ─── Actions ──────────────────────────────────────────────────────────────
 
+<<<<<<< HEAD
     // 1. LOGIN
     const handleOtpChange = (index, value) => {
         if (!/^\d*$/.test(value)) return;
@@ -162,17 +224,26 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         const enteredOtp = otpDigits.join('');
         if (enteredOtp.length < 6) return setError('Please enter the 6-digit OTP.');
         
+=======
+    // 0. IDENTIFY (Amazon-style Step 1)
+    const handleIdentify = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!email) return setError('Enter your email address to continue.');
+
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         setLoading(true);
         setError('');
         try {
-            const res = await fetch(`${OTP_SERVER}/verify-otp`, {
+            const res = await fetch(`${API_URL}/check`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key: inputValue, otp: enteredOtp })
+                body: JSON.stringify({ email })
             });
 
             const data = await res.json();
             if (data.success) {
+<<<<<<< HEAD
                 const userData = { 
                     name: authMode === 'register' ? userName : (data.userName || 'Customer'), 
                     contact: inputValue, 
@@ -183,6 +254,42 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 setStep(4);
             } else {
                 setError(data.message || 'Invalid OTP. Please try again.');
+=======
+                if (data.exists) {
+                    setName(data.name);
+                    setView('LOGIN');
+                } else {
+                    setView('REGISTER');
+                }
+            } else {
+                setError('Something went wrong. Please try again.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 1. LOGIN (Amazon-style Step 2)
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!password) return setError('Please enter your password.');
+        
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                onAuthSuccess(data);
+            } else {
+                setError(data.message || 'Invalid password.');
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
             }
         } catch (err) {
             setError('Connection error. Please ensure the backend is running.');
@@ -191,8 +298,128 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         }
     };
 
+<<<<<<< HEAD
     const handleResend = () => {
         sendOtp();
+=======
+    // 2. REQUEST REGISTRATION (Send OTP)
+    const handleRequestRegister = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!name || !email || !password) return setError('All fields are required.');
+        if (password !== confirmPassword) return setError('Passwords do not match.');
+        if (password.length < 6) return setError('Password must be at least 6 characters.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/request-register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setView('VERIFY_REG');
+                setOtpDigits(['', '', '', '', '', '']);
+                setTimer(30);
+            } else {
+                setError(data.message || 'Failed to send verification code.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 3. COMPLETE REGISTRATION (Verify OTP)
+    const handleVerifyRegister = async (e) => {
+        if (e) e.preventDefault();
+        setError('');
+        const otp = getCombinedOtp();
+        if (otp.length < 6) return setError('Please enter the 6-digit OTP.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, otp })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setSuccessMsg('Account created successfully!');
+                onAuthSuccess(data);
+            } else {
+                setError(data.message || 'Verification failed.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 4. FORGOT PASSWORD - REQUEST RESET
+    const handleRequestReset = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!email) return setError('Please enter your email.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setView('FORGOT_RESET');
+                setOtpDigits(['', '', '', '', '', '']);
+                setTimer(30);
+            } else {
+                setError(data.message || 'User not found.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 5. COMPLETE PASSWORD RESET
+    const handleResetPassword = async (e) => {
+        e.preventDefault();
+        setError('');
+        const otp = getCombinedOtp();
+        if (otp.length < 6 || !newPassword) return setError('Please enter OTP and new password.');
+        if (newPassword !== confirmPassword) return setError('Passwords do not match.');
+        if (newPassword.length < 6) return setError('Password must be at least 6 characters.');
+
+        setLoading(true);
+        try {
+            const res = await fetch(`${API_URL}/reset-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, otp, newPassword })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setSuccessMsg('Password reset successful! Please sign in.');
+                setTimeout(() => {
+                    resetForms();
+                    setView('LOGIN');
+                }, 2000);
+            } else {
+                setError(data.message || 'Reset failed.');
+            }
+        } catch (err) {
+            setError('Server connection error.');
+        } finally {
+            setLoading(false);
+        }
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
     };
 
     const onAuthSuccess = (data) => {
@@ -211,189 +438,147 @@ const AuthModal = ({ isOpen, onClose, product }) => {
 
     // ─── Render View Helpers ──────────────────────────────────────────────────
 
-    const renderHeader = (title) => (
-        <div className="auth-modal-header" style={{ textAlign: 'center', marginBottom: '15px' }}>
-            <div className="auth-modal-logo" style={{ marginBottom: '10px' }}>
-                <img src={logo} alt="Sholash" width="100px" />
+    const renderHeader = (title, subtitle) => (
+        <div className="auth-modal-header">
+            <div className="auth-modal-logo">
+                <img src={logo} alt="Sholash Logo" className="auth-logo-img" />
             </div>
-            <h2 className="serif" style={{ fontSize: '24px', fontWeight: 'bold' }}>{title}</h2>
+            <h2 className="serif auth-modal-title">{title}</h2>
+            {subtitle && <p className="auth-modal-subtitle">{subtitle}</p>}
         </div>
     );
 
     const renderError = () => error && (
-        <div className="auth-error-msg" style={{ background: '#fef2f2', border: '1px solid #fca5a5', padding: '12px', borderRadius: '8px', color: '#b91c1c', marginBottom: '20px', fontSize: '13px', display: 'flex', gap: '8px' }}>
-            <span>⚠️</span> {error}
-        </div>
+        <p className="auth-error">{error}</p>
     );
 
     const renderSuccess = () => successMsg && (
-        <div className="auth-success-body" style={{ textAlign: 'center', padding: '20px 0' }}>
-            <div style={{ fontSize: '48px', marginBottom: '15px' }}>✅</div>
-            <h3 className="serif">{successMsg}</h3>
+        <div className="auth-modal-body auth-success-body">
+            <div className="auth-success-icon">✅</div>
+            <h3 className="auth-success-name">{successMsg}</h3>
+            <p className="auth-success-msg">
+                {product ? `You can now proceed to purchase ${product.name}.` : 'Welcome to Sholash Life Science.'}
+            </p>
         </div>
     );
 
     return (
         <div className="auth-modal-backdrop" onClick={handleBackdropClick}>
-            <div className="auth-modal-card auth-modal-enter" style={{ maxWidth: '400px', padding: '30px' }}>
+            <div className="auth-modal-card auth-modal-enter">
                 <button className="auth-modal-close" onClick={onClose}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                 </button>
 
-                {/* Header */}
-                <div className="auth-modal-header">
-                    <div className="auth-modal-logo">
-                        <img src={logo} alt="Sholash Logo" className="auth-logo-img" />
-                    </div>
-                    <h2 className="serif auth-modal-title">
-                        {step === 5 ? 'Welcome Back!' : step === 4 ? 'Welcome!' : step === 3 ? 'Verify OTP' : (authMode === 'register' ? 'Create Account' : 'Sign In')}
-                    </h2>
-                    <p className="auth-modal-subtitle">
-                        {step === 5 && `You are currently logged in as ${userName}`}
-                        {step === 2 && (authMode === 'register' ? 'Join Sholash Life Science today' : 'Access your account with ease')}
-                        {step === 3 && `We sent a 6-digit OTP to ${inputValue}`}
-                        {step === 4 && `You're logged in and ready to shop!`}
-                    </p>
-                </div>
-
-                {/* Step 2 — Unified Input */}
-                {(step === 1 || step === 2) && (
-                    <div className="auth-modal-body">
-                        {/* Login/Register Toggle */}
-                        <div className="auth-mode-toggle">
-                            <button 
-                                className={`auth-mode-btn ${authMode === 'login' ? 'active' : ''}`}
-                                onClick={() => { setAuthMode('login'); setError(''); }}
-                            >
-                                Login
-                            </button>
-                            <button 
-                                className={`auth-mode-btn ${authMode === 'register' ? 'active' : ''}`}
-                                onClick={() => { setAuthMode('register'); setError(''); }}
-                            >
-                                Register
-                            </button>
-                        </div>
-
-                        <div className="auth-method-tabs">
-                            <button
-                                className={`auth-tab ${method === 'mobile' ? 'active' : ''}`}
-                                onClick={() => { setMethod('mobile'); setError(''); }}
-                            >
-                                📱 Mobile
-                            </button>
-                            <button
-                                className={`auth-tab ${method === 'email' ? 'active' : ''}`}
-                                onClick={() => { setMethod('email'); setError(''); }}
-                            >
-                                ✉️ Email
-                            </button>
-                        </div>
-
-                        {authMode === 'register' && (
-                            <div className="auth-input-group auth-fade-in">
-                                <label className="auth-label">Your Name</label>
-                                <input
-                                    className="auth-input"
-                                    type="text"
-                                    placeholder="Enter your full name"
-                                    value={userName}
-                                    onChange={e => { setUserName(e.target.value); setError(''); }}
-                                    autoFocus
-                                />
-                            </div>
+                {successMsg ? renderSuccess() : (
+                    <>
+                        {/* ─── 0. IDENTIFY VIEW ─────────────────────────────────── */}
+                        {view === 'IDENTIFY' && (
+                            <>
+                                {renderHeader('Sign in', 'Use your email to continue')}
+                                <div className="auth-modal-body">
+                                    {renderError()}
+                                    <form onSubmit={handleIdentify} className="auth-form">
+                                        <div className="auth-input-group">
+                                            <label className="auth-label">Email</label>
+                                            <input className="auth-input" type="email" value={email} onChange={e => setEmail(e.target.value)} autoFocus />
+                                        </div>
+                                        <button type="submit" className="auth-btn-primary" disabled={loading}>
+                                            {loading ? <span className="auth-spinner" /> : 'Continue'}
+                                        </button>
+                                    </form>
+                                    <p className="auth-footer-text" style={{ textAlign: 'left', marginTop: '15px', color: '#555' }}>
+                                        By continuing, you agree to Sholash's <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
+                                    </p>
+                                    
+                                    <div className="auth-footer-divider">New to Sholash?</div>
+                                    <button className="auth-btn-sec" onClick={() => setView('REGISTER')}>Create your Sholash account</button>
+                                </div>
+                            </>
                         )}
 
-                        <div className="auth-input-group">
-                            <label className="auth-label">
-                                {method === 'mobile' ? 'Mobile Number' : 'Email Address'}
-                            </label>
-                            <input
-                                className="auth-input"
-                                type={method === 'mobile' ? 'tel' : 'email'}
-                                placeholder={method === 'mobile' ? '10-digit mobile number' : 'you@example.com'}
-                                value={inputValue}
-                                onChange={e => { setInputValue(e.target.value); setError(''); }}
-                                maxLength={method === 'mobile' ? 10 : 100}
-                                autoFocus={authMode === 'login'}
-                            />
-                        </div>
-                        {error && <p className="auth-error">{error}</p>}
-                        <button
-                            className={`auth-btn-primary ${loading ? 'loading' : ''}`}
-                            onClick={sendOtp}
-                            disabled={loading}
-                        >
-                            {loading ? <span className="auth-spinner"></span> : (authMode === 'register' ? 'Register Now →' : 'Sign In →')}
-                        </button>
-                        
-                        <p className="auth-mode-switch-text">
-                            {authMode === 'login' 
-                                ? "Don't have an account? " 
-                                : "Already have an account? "}
-                            <span 
-                                className="auth-mode-link"
-                                onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
-                            >
-                                {authMode === 'login' ? 'Register here' : 'Login here'}
-                            </span>
-                        </p>
-                    </div>
-                )}
+                        {/* ─── 1. LOGIN VIEW ────────────────────────────────────── */}
+                        {view === 'LOGIN' && (
+                            <>
+                                {renderHeader('Sign in', '')}
+                                <div className="auth-modal-body">
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+                                        <span style={{ fontSize: '14px', color: '#111' }}>{email}</span>
+                                        <button onClick={() => setView('IDENTIFY')} style={{ background: 'none', border: 'none', color: '#0066c0', fontSize: '13px', cursor: 'pointer' }}>Change</button>
+                                    </div>
+                                    {renderError()}
+                                    <form onSubmit={handleLogin} className="auth-form">
+                                        <div className="auth-input-group">
+                                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                <label className="auth-label">Password</label>
+                                                <button type="button" className="auth-btn-back" style={{ padding: 0, margin: 0 }} onClick={() => setView('FORGOT_EMAIL')}>Forgot Password?</button>
+                                            </div>
+                                            <div style={{ position: 'relative' }}>
+                                                <input className="auth-input" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} autoFocus />
+                                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="eye-btn" style={{ right: '15px' }}>{showPassword ? '👁️‍🗨️' : '👁️'}</button>
+                                            </div>
+                                        </div>
+                                        <button type="submit" className="auth-btn-primary" disabled={loading}>
+                                            {loading ? <span className="auth-spinner" /> : 'Sign in'}
+                                        </button>
+                                    </form>
+                                </div>
+                            </>
+                        )}
 
-                {/* Step 3 — OTP verification */}
-                {step === 3 && (
-                    <div className="auth-modal-body">
-                        <div className="otp-boxes" onPaste={handleOtpPaste}>
-                            {otpDigits.map((digit, i) => (
-                                <input
-                                    key={i}
-                                    ref={el => otpRefs.current[i] = el}
-                                    className="otp-box"
-                                    type="text"
-                                    inputMode="numeric"
-                                    maxLength={1}
-                                    value={digit}
-                                    onChange={e => handleOtpChange(i, e.target.value)}
-                                    onKeyDown={e => handleOtpKeyDown(i, e)}
-                                    autoFocus={i === 0}
-                                />
-                            ))}
-                        </div>
-                        {error && <p className="auth-error">{error}</p>}
-                        <button
-                            className={`auth-btn-primary ${loading ? 'loading' : ''}`}
-                            onClick={handleVerifyOtp}
-                            disabled={loading}
-                        >
-                            {loading ? <span className="auth-spinner"></span> : 'Verify OTP ✓'}
-                        </button>
-                        <div className="auth-resend-row">
-                            {resendTimer > 0
-                                ? <span className="auth-timer">Resend OTP in {resendTimer}s</span>
-                                : <button className="auth-btn-resend" onClick={handleResend}>Resend OTP</button>
-                            }
-                        </div>
-                        <button className="auth-btn-back" onClick={() => { setStep(2); setError(''); setOtpDigits(['', '', '', '', '', '']); }}>
-                            ← Change {method === 'mobile' ? 'Number' : 'Email'}
-                        </button>
-                    </div>
-                )}
+                        {/* ─── 2. REGISTER VIEW ─────────────────────────────────── */}
+                        {view === 'REGISTER' && (
+                            <>
+                                {renderHeader('Create account', '')}
+                                <div className="auth-modal-body">
+                                    {renderError()}
+                                    <form onSubmit={handleRequestRegister} className="auth-form">
+                                        <div className="auth-input-group"><label className="auth-label">Your name</label><input className="auth-input" type="text" value={name} onChange={e => setName(e.target.value)} placeholder="First and last name" autoFocus /></div>
+                                        <div className="auth-input-group"><label className="auth-label">Email</label><input className="auth-input" type="email" value={email} onChange={e => setEmail(e.target.value)} /></div>
+                                        <div className="auth-input-group"><label className="auth-label">Password</label><input className="auth-input" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="At least 6 characters" /></div>
+                                        <div className="auth-input-group"><label className="auth-label">Re-enter password</label><input className="auth-input" type={showPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} /></div>
+                                        <button type="submit" className="auth-btn-primary" disabled={loading}>{loading ? <span className="auth-spinner" /> : 'Continue'}</button>
+                                    </form>
+                                    <div className="auth-footer-divider">Already have an account?</div>
+                                    <button className="auth-btn-sec" onClick={() => setView('IDENTIFY')}>Sign in</button>
+                                </div>
+                            </>
+                        )}
 
-                {/* Step 4 — Success */}
-                {step === 4 && (
-                    <div className="auth-modal-body auth-success-body">
-                        <div className="auth-success-icon">✅</div>
-                        <h3 className="auth-success-name">Hello, {userName}! 👋</h3>
-                        <p className="auth-success-msg">
-                            Your account has been verified. You can now proceed to purchase <strong>{product?.name || 'your product'}</strong>.
-                        </p>
-                        <button className="auth-btn-primary auth-btn-shop" onClick={onClose}>
-                            Continue Shopping 🛍️
-                        </button>
-                    </div>
-                )}
+                        {/* ─── 3. VERIFY REGISTRATION ──────────────────────────── */}
+                        {view === 'VERIFY_REG' && (
+                            <>
+                                {renderHeader('Verify email address', `To verify your email, we've sent a One Time Password (OTP) to ${email}`)}
+                                <div className="auth-modal-body">
+                                    {renderError()}
+                                    <div className="otp-boxes" onPaste={handleOtpPaste}>
+                                        {otpDigits.map((digit, i) => (
+                                            <input
+                                                key={i}
+                                                ref={el => otpRefs.current[i] = el}
+                                                className="otp-box"
+                                                type="text"
+                                                inputMode="numeric"
+                                                maxLength={1}
+                                                value={digit}
+                                                onChange={e => handleOtpChange(i, e.target.value)}
+                                                onKeyDown={e => handleOtpKeyDown(i, e)}
+                                                autoFocus={i === 0}
+                                            />
+                                        ))}
+                                    </div>
+                                    <button onClick={handleVerifyRegister} className="auth-btn-primary" disabled={loading}>
+                                        {loading ? <span className="auth-spinner" /> : 'Create your Sholash account'}
+                                    </button>
+                                    <div className="auth-resend-row">
+                                        {timer > 0 ? <span className="auth-timer">Resend OTP in {timer}s</span> : 
+                                        <button className="auth-btn-resend" onClick={handleRequestRegister}>Resend OTP</button>}
+                                    </div>
+                                    <button className="auth-btn-back" onClick={() => setView('REGISTER')}>← Change Details</button>
+                                </div>
+                            </>
+                        )}
 
+<<<<<<< HEAD
                 {/* Step 5 — Already Logged In */}
                 {step === 5 && (
                     <div className="auth-modal-body auth-success-body">
@@ -410,12 +595,65 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                         </button>
                     </div>
                 )}
+=======
+                        {/* ─── 4. FORGOT PASSWORD - EMAIL ──────────────────────── */}
+                        {view === 'FORGOT_EMAIL' && (
+                            <>
+                                {renderHeader('Password assistance', 'Enter the email address associated with your Sholash account.')}
+                                <div className="auth-modal-body">
+                                    {renderError()}
+                                    <form onSubmit={handleRequestReset} className="auth-form">
+                                        <div className="auth-input-group"><label className="auth-label">Email</label><input className="auth-input" type="email" value={email} onChange={e => setEmail(e.target.value)} /></div>
+                                        <button type="submit" className="auth-btn-primary" disabled={loading}>{loading ? <span className="auth-spinner" /> : 'Continue'}</button>
+                                    </form>
+                                    <button className="auth-btn-back" onClick={() => setView('LOGIN')}>← Back to Sign in</button>
+                                </div>
+                            </>
+                        )}
+>>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
 
+                        {/* ─── 5. FORGOT PASSWORD - RESET ─────────────────────── */}
+                        {view === 'FORGOT_RESET' && (
+                            <>
+                                {renderHeader('Reset password', `OTP sent to ${email}`)}
+                                <div className="auth-modal-body">
+                                    {renderError()}
+                                    <form onSubmit={handleResetPassword} className="auth-form">
+                                        <div className="otp-boxes" onPaste={handleOtpPaste}>
+                                            {otpDigits.map((digit, i) => (
+                                                <input
+                                                    key={i}
+                                                    ref={el => otpRefs.current[i] = el}
+                                                    className="otp-box"
+                                                    type="text"
+                                                    inputMode="numeric"
+                                                    maxLength={1}
+                                                    value={digit}
+                                                    onChange={e => handleOtpChange(i, e.target.value)}
+                                                    onKeyDown={e => handleOtpKeyDown(i, e)}
+                                                    autoFocus={i === 0}
+                                                />
+                                            ))}
+                                        </div>
+                                        <div className="auth-input-group"><label className="auth-label">New Password</label><input className="auth-input" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} /></div>
+                                        <div className="auth-input-group"><label className="auth-label">Confirm Password</label><input className="auth-input" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} /></div>
+                                        <button type="submit" className="auth-btn-primary" disabled={loading}>{loading ? <span className="auth-spinner" /> : 'Save and Sign in'}</button>
+                                    </form>
+                                    <div className="auth-resend-row" style={{ marginTop: '10px' }}>
+                                        {timer > 0 ? <span className="auth-timer">Resend OTP in {timer}s</span> : 
+                                        <button className="auth-btn-resend" onClick={handleRequestReset}>Resend OTP</button>}
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </>
+                )}
+                
                 {/* Step indicator dots */}
-                <div className="auth-step-dots">
-                    {[2, 3, 4].map(s => (
-                        <span key={s} className={`auth-dot ${step >= s ? 'active' : ''} ${step === s ? 'current' : ''}`}></span>
-                    ))}
+                <div className="auth-step-dots" style={{ marginTop: '20px' }}>
+                    <span className={`auth-dot ${view === 'IDENTIFY' || view === 'REGISTER' || view === 'FORGOT_EMAIL' ? 'active shadow' : ''}`}></span>
+                    <span className={`auth-dot ${view === 'LOGIN' || view === 'VERIFY_REG' || view === 'FORGOT_RESET' ? 'active shadow' : ''}`}></span>
+                    <span className={`auth-dot ${successMsg ? 'active shadow' : ''}`}></span>
                 </div>
             </div>
         </div>

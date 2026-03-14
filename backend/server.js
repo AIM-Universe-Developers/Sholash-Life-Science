@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -40,6 +41,9 @@ app.use(limiter);
 // ─── Body Parsers ─────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ─── Static Files ─────────────────────────────────────────────────────────────
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {

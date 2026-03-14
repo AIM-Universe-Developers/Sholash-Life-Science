@@ -311,14 +311,239 @@ function saveOrderStatus() {
   }
 }
 
-// ---- PRODUCT MODAL ----
-function showAddProduct() {
+// ---- PRODUCT MODAL & FORM LOGIC ----
+let CATEGORIES = [];
+let selectedImages = [];
+let featuresList = [];
+let targetList = [];
+let detailsData = {
+  benefits: [], ingredients: [], beforeAfter: [], usage: [], faq: [], other: [], legal: []
+};
+let isEditingProduct = false;
+let editingProductId = null;
+
+async function fetchCategories() {
+  if (CATEGORIES.length > 0) return;
+  try {
+    const res = await fetchWithAuth('/categories');
+    if (res && res.success) {
+      CATEGORIES = res.data;
+      const select = document.getElementById('prod-category');
+      select.innerHTML = '<option value="" disabled selected>Select Category</option>' + 
+        CATEGORIES.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
+    }
+  } catch(e) { console.error("Could not fetch categories", e); }
+}
+
+async function showAddProduct() {
+  isEditingProduct = false;
+  editingProductId = null;
+  document.getElementById('productModalTitle').innerText = 'Add New Product';
+  document.getElementById('productForm').reset();
+  
+  // reset state
+  selectedImages = [];
+  featuresList = [];
+  targetList = [];
+  detailsData = { benefits: [], ingredients: [], beforeAfter: [], usage: [], faq: [], other: [], legal: [] };
+  
+  renderImages();
+  renderListItems('featuresList');
+  renderListItems('targetList');
+  Object.keys(detailsData).forEach(key => renderDetailItems(key));
+  
+  await fetchCategories();
+  
   document.getElementById('productModal').classList.add('open');
   document.body.style.overflow='hidden';
 }
+
 function closeModal() {
   document.getElementById('productModal').classList.remove('open');
   document.body.style.overflow='';
+}
+
+// Lists handling
+function handleListAdd(e, listId, inputId) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const input = document.getElementById(inputId);
+    const val = input.value.trim();
+    if (val) {
+      if (listId === 'featuresList') featuresList.push(val);
+      if (listId === 'targetList') targetList.push(val);
+      renderListItems(listId);
+      input.value = '';
+    }
+  }
+}
+function removeListItem(listId, index) {
+  if (listId === 'featuresList') featuresList.splice(index, 1);
+  if (listId === 'targetList') targetList.splice(index, 1);
+  renderListItems(listId);
+}
+function renderListItems(listId) {
+  const container = document.getElementById(listId);
+  const arr = listId === 'featuresList' ? featuresList : targetList;
+  container.innerHTML = arr.map((item, idx) => `
+    <div class="tag-item">
+      ${item} <i class="ri-close-line tag-remove" onclick="removeListItem('${listId}', ${idx})"></i>
+    </div>
+  `).join('');
+}
+
+// Details Accordion handling
+function addDetailItem(section) {
+  detailsData[section].push({ id: Date.now().toString(), title: '', content: '' });
+  renderDetailItems(section);
+}
+function removeDetailItem(section, index) {
+  detailsData[section].splice(index, 1);
+  renderDetailItems(section);
+}
+function updateDetailItem(section, index, field, value) {
+  detailsData[section][index][field] = value;
+}
+function renderDetailItems(section) {
+  const container = document.getElementById(`container-${section}`);
+  const countBadge = document.getElementById(`count-${section}`);
+  
+  countBadge.innerText = detailsData[section].length;
+  container.innerHTML = detailsData[section].map((item, idx) => `
+    <div class="detail-item-box">
+      <button type="button" class="btn-remove" onclick="removeDetailItem('${section}', ${idx})" title="Remove">
+        <i class="ri-delete-bin-line"></i>
+      </button>
+      <div class="settings-field">
+        <label>Title <span class="req">*</span></label>
+        <div class="glass-input full"><input type="text" value="${item.title}" onchange="updateDetailItem('${section}', ${idx}, 'title', this.value)" required placeholder="e.g. Key Component"/></div>
+      </div>
+      <div class="settings-field">
+        <label>Content</label>
+        <div class="glass-input full textarea-wrap" style="min-height:60px;">
+          <textarea rows="2" onchange="updateDetailItem('${section}', ${idx}, 'content', this.value)" placeholder="Description...">${item.content}</textarea>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Image handling
+function handleImageSelection(e) {
+  const files = Array.from(e.target.files);
+  if (selectedImages.length + files.length > 5) {
+    showToast('Maximum 5 images allowed');
+    return;
+  }
+  
+  files.forEach(file => {
+    if (file.size > 5 * 1024 * 1024) {
+      showToast(`File ${file.name} is too large (>5MB)`);
+      return;
+    }
+    selectedImages.push(file);
+  });
+  
+  e.target.value = ''; // reset
+  renderImages();
+}
+
+// Optional Drag and drop
+setTimeout(() => {
+    const dropZone = document.getElementById('imgUploadZone');
+    if(dropZone) {
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--blue)'; });
+      dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--glass-border)'; });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = 'var(--glass-border)';
+        const dt = new DataTransfer();
+        Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+        const input = document.getElementById('imgUploadInput');
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change'));
+      });
+    }
+}, 1000);
+
+function removeImage(index) {
+  selectedImages.splice(index, 1);
+  renderImages();
+}
+
+function renderImages() {
+  const grid = document.getElementById('imagePreviewGrid');
+  grid.innerHTML = selectedImages.map((file, idx) => {
+    let src = '';
+    if (file instanceof File) {
+      src = URL.createObjectURL(file);
+    } else {
+      src = `http://localhost:5000/${file}`; 
+    }
+    return `
+      <div class="img-preview-wrap">
+        <img src="${src}" class="img-preview" />
+        <button type="button" class="img-remove" onclick="removeImage(${idx})"><i class="ri-close-line"></i></button>
+      </div>
+    `;
+  }).join('');
+}
+
+// Form Submission
+async function handleProductSubmit(e) {
+  e.preventDefault();
+  
+  const btn = document.getElementById('btnSubmitProduct');
+  const ogText = btn.innerHTML;
+  btn.innerHTML = '<i class="ri-loader-4-line" style="animation:spin 1s linear infinite"></i> Saving...';
+  btn.disabled = true;
+  
+  const formData = new FormData();
+  formData.append('name', document.getElementById('prod-name').value);
+  formData.append('brand', document.getElementById('prod-brand').value);
+  formData.append('tagline', document.getElementById('prod-tagline').value);
+  formData.append('category', document.getElementById('prod-category').value);
+  formData.append('price', document.getElementById('prod-price').value);
+  formData.append('stock', document.getElementById('prod-stock').value);
+  formData.append('color', document.getElementById('prod-color').value);
+  formData.append('description', document.getElementById('prod-desc').value);
+  
+  formData.append('features', JSON.stringify(featuresList));
+  formData.append('target', JSON.stringify(targetList));
+  formData.append('details', JSON.stringify(detailsData));
+  
+  selectedImages.forEach(file => {
+    if (file instanceof File) {
+      formData.append('images', file);
+    }
+  });
+
+  try {
+    const url = isEditingProduct ? `/products/${editingProductId}` : '/products';
+    const method = isEditingProduct ? 'PUT' : 'POST';
+    
+    const res = await fetch(`${API_BASE}${url}`, {
+      method,
+      headers: { 'Authorization': `Bearer ${TOKEN}` },
+      body: formData
+    });
+    
+    const data = await res.json();
+    if (data.success) {
+      showToast(isEditingProduct ? 'Product updated successfully' : 'Product created successfully');
+      closeModal();
+      fetchAllData();
+      initDashboard();
+    } else {
+      showToast(data.message || 'Error saving product');
+    }
+  } catch (err) {
+    console.error(err);
+    showToast('Network error occurred');
+  } finally {
+    btn.innerHTML = ogText;
+    btn.disabled = false;
+  }
 }
 
 // ---- EXPORT FUNCTIONALITY ----
