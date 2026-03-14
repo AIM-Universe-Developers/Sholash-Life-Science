@@ -16,7 +16,8 @@ const generateToken = (id) => {
 // @access  Public
 const requestRegister = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email: rawEmail } = req.body;
+    const email = rawEmail?.toLowerCase().trim();
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -32,16 +33,21 @@ const requestRegister = async (req, res) => {
       res.status(500).json({ success: false, message: "Failed to send OTP." });
     }
   } catch (error) {
+    if (error.code === 'ECONNREFUSED' || error.message.includes('network')) {
+      return res.status(503).json({ success: false, message: "OTP server is down. Please contact support." });
+    }
     res.status(500).json({ success: false, message: error.response?.data?.message || error.message });
   }
 };
+
 
 // @desc    Register a new user (Verify OTP & Save)
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, otp } = req.body;
+    const { name, email: rawEmail, password, otp } = req.body;
+    const email = rawEmail?.toLowerCase().trim();
 
     // 1. Verify OTP first
     const verifyRes = await axios.post(`${OTP_SERVER}/verify-otp`, { key: email, otp });
@@ -85,7 +91,8 @@ const registerUser = async (req, res) => {
 // @access  Public
 const authUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email: rawEmail, password } = req.body;
+    const email = rawEmail?.toLowerCase().trim();
 
     const user = await User.findOne({ email });
 
@@ -111,7 +118,8 @@ const authUser = async (req, res) => {
 // @access  Public
 const forgotPassword = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email: rawEmail } = req.body;
+    const email = rawEmail?.toLowerCase().trim();
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -127,16 +135,21 @@ const forgotPassword = async (req, res) => {
       res.status(500).json({ success: false, message: "Failed to send OTP." });
     }
   } catch (error) {
+    if (error.code === 'ECONNREFUSED' || error.message.includes('network')) {
+      return res.status(503).json({ success: false, message: "OTP server is down. Please contact support." });
+    }
     res.status(500).json({ success: false, message: error.response?.data?.message || error.message });
   }
 };
+
 
 // @desc    Reset Password (Verify OTP & Update)
 // @route   POST /api/users/reset-password
 // @access  Public
 const resetPassword = async (req, res) => {
   try {
-    const { email, otp, newPassword } = req.body;
+    const { email: rawEmail, otp, newPassword } = req.body;
+    const email = rawEmail?.toLowerCase().trim();
 
     // 1. Verify OTP
     const verifyRes = await axios.post(`${OTP_SERVER}/verify-otp`, { key: email, otp });
@@ -165,7 +178,8 @@ const resetPassword = async (req, res) => {
 // @access  Public
 const checkUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email: rawEmail } = req.body;
+    const email = rawEmail?.toLowerCase().trim();
     const user = await User.findOne({ email });
 
     if (user) {

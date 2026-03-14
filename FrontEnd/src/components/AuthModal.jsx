@@ -99,15 +99,15 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     // 0. IDENTIFY (Amazon-style Step 1)
     const handleIdentify = async (e) => {
         e.preventDefault();
-        setError('');
-        if (!email) return setError('Enter your email address to continue.');
+        const cleanEmail = email.toLowerCase().trim();
+        if (!cleanEmail) return setError('Enter your email address to continue.');
 
         setLoading(true);
         try {
             const res = await fetch(`${API_URL}/check`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email: cleanEmail })
             });
             const data = await res.json();
             if (data.success) {
@@ -138,7 +138,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email: email.toLowerCase().trim(), password })
             });
             const data = await res.json();
             if (data.success) {
@@ -166,7 +166,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/request-register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email })
+                body: JSON.stringify({ name, email: email.toLowerCase().trim() })
             });
             const data = await res.json();
             if (data.success) {
@@ -195,7 +195,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password, otp })
+                body: JSON.stringify({ name, email: email.toLowerCase().trim(), password, otp })
             });
             const data = await res.json();
             if (data.success) {
@@ -222,7 +222,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/forgot-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email: email.toLowerCase().trim() })
             });
             const data = await res.json();
             if (data.success) {
@@ -253,7 +253,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/reset-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, otp, newPassword })
+                body: JSON.stringify({ email: email.toLowerCase().trim(), otp, newPassword })
             });
             const data = await res.json();
             if (data.success) {
