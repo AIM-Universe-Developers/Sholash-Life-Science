@@ -23,9 +23,10 @@
 .auth-modal-card {
     background: #ffffff;
     border-radius: 24px;
-    width: 95%;
-    max-width: 440px;
+    width: 85%;    
+    max-width: 440px;    
     padding: 2.5rem;
+   
     box-shadow: 0 20px 60px rgba(0, 50, 40, 0.18);
     position: relative;
     overflow: hidden;
@@ -81,23 +82,25 @@
 }
 
 .auth-logo-img {
-    height: 150px;
+    height: 10px;
     width: auto;
     object-fit: contain;
     filter: drop-shadow(0 4px 10px rgba(0, 160, 130, 0.2));
     transition: transform 0.3s ease;
-    
+    margin-bottom: 0.6rem;
 }
 
 .auth-logo-img:hover {
     transform: scale(1.05);
+    
 }
 
 .auth-modal-title {
     font-size: 1.55rem;
-    color: #0a2a22;
+    color: #0a2a22;  
     margin-bottom: 0.4rem;
     line-height: 1.2;
+
 }
 
 .auth-modal-subtitle {
@@ -106,6 +109,7 @@
     line-height: 1.5;
     max-width: 300px;
     margin: 0 auto;
+    
 }
 
 /* Body */
@@ -113,6 +117,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    
 }
 
 /* Method Tabs */
@@ -176,6 +181,7 @@
     background: white;
     color: #00796b;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    
 }
 
 .auth-mode-switch-text {
@@ -183,6 +189,7 @@
     font-size: 0.82rem;
     color: #607060;
     margin-top: 0.5rem;
+    margin-bottom: 20rem;
 }
 
 .auth-mode-link {
@@ -355,6 +362,7 @@
     align-items: center;
     justify-content: center;
     min-height: 52px;
+    margin-top: 15px;
 }
 
 .auth-btn-primary:hover:not(:disabled) {
@@ -375,7 +383,7 @@
 /* Loading spinner */
 .auth-spinner {
     width: 20px;
-    height: 20px;
+    height: 10px;
     border: 3px solid rgba(255, 255, 255, 0.4);
     border-top-color: white;
     border-radius: 50%;
@@ -542,4 +550,4 @@
 
 .auth-modal-enter {
     animation: modalSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+}

@@ -3,17 +3,6 @@ import { UserContext } from '../context/UserContext';
 import logo from '../assets/logo/logo.png';
 import './AuthModal.css';
 
-<<<<<<< HEAD
-const OTP_SERVER = 'http://localhost:4001/api';
-
-const AuthModal = ({ isOpen, onClose, product }) => {
-    const { login } = useContext(UserContext);
-    const [step, setStep] = useState(2); // Start directly at input (Step 2)
-    const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
-    const [method, setMethod] = useState('mobile'); 
-    const [inputValue, setInputValue] = useState('');
-    const [userName, setUserName] = useState('');
-=======
 const API_URL = 'http://localhost:5000/api/users';
 
 const AuthModal = ({ isOpen, onClose, product }) => {
@@ -26,7 +15,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
     const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
     const [newPassword, setNewPassword] = useState('');
     
@@ -34,98 +22,31 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
-    const [resendTimer, setResendTimer] = useState(0);
-    const [user, setUserLocal] = useState(null);
-    const otpRefs = useRef([]);
-
-    // Check for existing session on mount and when modal opens
-    useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-            setUserLocal(JSON.parse(savedUser));
-        }
-    }, [isOpen]);
-=======
     const [successMsg, setSuccessMsg] = useState('');
     const [timer, setTimer] = useState(0);
     const otpRefs = useRef([]);
 
     const { login } = useContext(UserContext);
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
 
     // Reset everything when modal opens
     useEffect(() => {
         if (isOpen) {
-<<<<<<< HEAD
-            const savedUser = localStorage.getItem('user');
-            if (savedUser) {
-                setStep(5); // 5 is "Logged In" state
-                const parsed = JSON.parse(savedUser);
-                setUserName(parsed.name || '');
-                setUserLocal(parsed);
-            } else {
-                setStep(2);
-                setInputValue('');
-                setUserName('');
-                setOtpDigits(['', '', '', '', '', '']);
-                setAuthMode('login'); // Default to login on fresh open
-            }
-            setMethod('mobile');
-            setError('');
-            setLoading(false);
-            setResendTimer(0);
-=======
             setView('IDENTIFY');
             resetForms();
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         }
     }, [isOpen]);
 
     // Timer for resending OTP
     useEffect(() => {
         let interval;
-        if (resendTimer > 0) {
-            interval = setInterval(() => setResendTimer(t => t - 1), 1000);
+        if (timer > 0) {
+            interval = setInterval(() => setTimer(t => t - 1), 1000);
         }
         return () => clearInterval(interval);
-    }, [resendTimer]);
+    }, [timer]);
 
     if (!isOpen) return null;
 
-<<<<<<< HEAD
-    const logoutLocal = () => {
-        localStorage.removeItem('user');
-        setUserLocal(null);
-        setStep(2);
-        setUserName('');
-        setInputValue('');
-        setAuthMode('login');
-    };
-
-    const validate = () => {
-        if (method === 'mobile') {
-            if (!/^\d{10}$/.test(inputValue)) {
-                setError('Please enter a valid 10-digit mobile number.');
-                return false;
-            }
-        } else {
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue)) {
-                setError('Please enter a valid email address.');
-                return false;
-            }
-        }
-        
-        // Name is only required in Register mode
-        if (authMode === 'register' && !userName.trim()) {
-            setError('Please enter your name for registration.');
-            return false;
-        }
-        return true;
-    };
-
-    const sendOtp = async () => {
-=======
     const resetForms = () => {
         setName('');
         setEmail('');
@@ -133,7 +54,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         setConfirmPassword('');
         setOtpDigits(['', '', '', '', '', '']);
         setNewPassword('');
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         setError('');
         setSuccessMsg('');
         setLoading(false);
@@ -155,18 +75,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         }
     };
 
-<<<<<<< HEAD
-            if (data.success) {
-                setStep(3);
-                setResendTimer(30);
-            } else {
-                setError(data.message || 'Failed to send OTP. Please try again.');
-            }
-        } catch {
-            setError('Cannot reach OTP server. Make sure the backend is running on port 4001.');
-        } finally {
-            setLoading(false);
-=======
     const handleOtpKeyDown = (index, e) => {
         if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
             otpRefs.current[index - 1].focus();
@@ -183,55 +91,17 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         if (pasteData.length > 0) {
             const nextFocus = Math.min(pasteData.length, 5);
             otpRefs.current[nextFocus].focus();
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         }
     };
 
     // ─── Actions ──────────────────────────────────────────────────────────────
 
-<<<<<<< HEAD
-    // 1. LOGIN
-    const handleOtpChange = (index, value) => {
-        if (!/^\d*$/.test(value)) return;
-        const newOtp = [...otpDigits];
-        newOtp[index] = value.slice(-1);
-        setOtpDigits(newOtp);
-
-        if (value && index < 5) {
-            otpRefs.current[index + 1]?.focus();
-        }
-    };
-
-    const handleOtpKeyDown = (index, e) => {
-        if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
-            otpRefs.current[index - 1]?.focus();
-        }
-    };
-
-    const handleOtpPaste = (e) => {
-        e.preventDefault();
-        const pasteData = e.clipboardData.getData('text').slice(0, 6).split('');
-        const newOtp = [...otpDigits];
-        pasteData.forEach((char, i) => {
-            if (i < 6 && /^\d$/.test(char)) newOtp[i] = char;
-        });
-        setOtpDigits(newOtp);
-        const nextFocus = Math.min(pasteData.length, 5);
-        otpRefs.current[nextFocus]?.focus();
-    };
-
-    const handleVerifyOtp = async () => {
-        const enteredOtp = otpDigits.join('');
-        if (enteredOtp.length < 6) return setError('Please enter the 6-digit OTP.');
-        
-=======
     // 0. IDENTIFY (Amazon-style Step 1)
     const handleIdentify = async (e) => {
         e.preventDefault();
         setError('');
         if (!email) return setError('Enter your email address to continue.');
 
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
         setLoading(true);
         setError('');
         try {
@@ -243,18 +113,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
 
             const data = await res.json();
             if (data.success) {
-<<<<<<< HEAD
-                const userData = { 
-                    name: authMode === 'register' ? userName : (data.userName || 'Customer'), 
-                    contact: inputValue, 
-                    method 
-                };
-                login(userData);
-                setUserLocal(userData);
-                setStep(4);
-            } else {
-                setError(data.message || 'Invalid OTP. Please try again.');
-=======
                 if (data.exists) {
                     setName(data.name);
                     setView('LOGIN');
@@ -289,7 +147,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 onAuthSuccess(data);
             } else {
                 setError(data.message || 'Invalid password.');
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
             }
         } catch (err) {
             setError('Connection error. Please ensure the backend is running.');
@@ -298,10 +155,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         }
     };
 
-<<<<<<< HEAD
-    const handleResend = () => {
-        sendOtp();
-=======
     // 2. REQUEST REGISTRATION (Send OTP)
     const handleRequestRegister = async (e) => {
         e.preventDefault();
@@ -419,7 +272,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         } finally {
             setLoading(false);
         }
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
     };
 
     const onAuthSuccess = (data) => {
@@ -578,24 +430,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                             </>
                         )}
 
-<<<<<<< HEAD
-                {/* Step 5 — Already Logged In */}
-                {step === 5 && (
-                    <div className="auth-modal-body auth-success-body">
-                        <div className="auth-success-icon">👤</div>
-                        <h3 className="auth-success-name">Hi, {userName}!</h3>
-                        <p className="auth-success-msg">
-                            You are signed in with <strong>{user?.contact}</strong>.
-                        </p>
-                        <button className="auth-btn-primary" onClick={onClose}>
-                            Continue Shopping 🛍️
-                        </button>
-                        <button className="auth-btn-logout" onClick={logoutLocal}>
-                            Log Out
-                        </button>
-                    </div>
-                )}
-=======
                         {/* ─── 4. FORGOT PASSWORD - EMAIL ──────────────────────── */}
                         {view === 'FORGOT_EMAIL' && (
                             <>
@@ -610,7 +444,6 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                                 </div>
                             </>
                         )}
->>>>>>> 223d27a63e2951b6b679baa8ee765b658dd92120
 
                         {/* ─── 5. FORGOT PASSWORD - RESET ─────────────────────── */}
                         {view === 'FORGOT_RESET' && (
