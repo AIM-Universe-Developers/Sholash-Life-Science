@@ -103,12 +103,14 @@ const AuthModal = ({ isOpen, onClose, product }) => {
         if (!cleanEmail) return setError('Enter your email address to continue.');
 
         setLoading(true);
+        setError('');
         try {
             const res = await fetch(`${API_URL}/check`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: cleanEmail })
             });
+
             const data = await res.json();
             if (data.success) {
                 if (data.exists) {
@@ -147,7 +149,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 setError(data.message || 'Invalid password.');
             }
         } catch (err) {
-            setError('Server connection error.');
+            setError('Connection error. Please ensure the backend is running.');
         } finally {
             setLoading(false);
         }
