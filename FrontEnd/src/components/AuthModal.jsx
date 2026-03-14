@@ -342,7 +342,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                                         By continuing, you agree to Sholash's <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
                                     </p>
                                     
-                                    <div className="auth-footer-divider">New to Sholash?</div>
+                                    <div className="auth-footer-divider" data-text="New to Sholash?"></div>
                                     <button className="auth-btn-sec" onClick={() => setView('REGISTER')}>Create your Sholash account</button>
                                 </div>
                             </>
@@ -390,7 +390,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                                         <div className="auth-input-group"><label className="auth-label">Re-enter password</label><input className="auth-input" type={showPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} /></div>
                                         <button type="submit" className="auth-btn-primary" disabled={loading}>{loading ? <span className="auth-spinner" /> : 'Continue'}</button>
                                     </form>
-                                    <div className="auth-footer-divider">Already have an account?</div>
+                                    <div className="auth-footer-divider" data-text="Already have an account?"></div>
                                     <button className="auth-btn-sec" onClick={() => setView('IDENTIFY')}>Sign in</button>
                                 </div>
                             </>
