@@ -3,9 +3,10 @@ import { UserContext } from '../context/UserContext';
 import logo from '../assets/logo/logo.png';
 import './AuthModal.css';
 
-const OTP_SERVER = 'http://localhost:4001';
+const OTP_SERVER = 'http://localhost:4001/api';
 
 const AuthModal = ({ isOpen, onClose, product }) => {
+    const { login } = useContext(UserContext);
     const [step, setStep] = useState(2); // Start directly at input (Step 2)
     const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
     const [method, setMethod] = useState('mobile'); 
@@ -15,26 +16,26 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [resendTimer, setResendTimer] = useState(0);
-    const [user, setUser] = useState(null);
+    const [user, setUserLocal] = useState(null);
     const otpRefs = useRef([]);
 
     // Check for existing session on mount and when modal opens
     useEffect(() => {
-        const savedUser = localStorage.getItem('sholash_user');
+        const savedUser = localStorage.getItem('user');
         if (savedUser) {
-            setUser(JSON.parse(savedUser));
+            setUserLocal(JSON.parse(savedUser));
         }
     }, [isOpen]);
 
     // Reset state whenever modal opens
     useEffect(() => {
         if (isOpen) {
-            const savedUser = localStorage.getItem('sholash_user');
+            const savedUser = localStorage.getItem('user');
             if (savedUser) {
                 setStep(5); // 5 is "Logged In" state
                 const parsed = JSON.parse(savedUser);
                 setUserName(parsed.name || '');
-                setUser(parsed);
+                setUserLocal(parsed);
             } else {
                 setStep(2);
                 setInputValue('');
@@ -52,17 +53,17 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     // Timer for resending OTP
     useEffect(() => {
         let interval;
-        if (timer > 0) {
-            interval = setInterval(() => setTimer(t => t - 1), 1000);
+        if (resendTimer > 0) {
+            interval = setInterval(() => setResendTimer(t => t - 1), 1000);
         }
         return () => clearInterval(interval);
-    }, [timer]);
+    }, [resendTimer]);
 
     if (!isOpen) return null;
 
-    const logout = () => {
-        localStorage.removeItem('sholash_user');
-        setUser(null);
+    const logoutLocal = () => {
+        localStorage.removeItem('user');
+        setUserLocal(null);
         setStep(2);
         setUserName('');
         setInputValue('');
@@ -119,7 +120,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                 setError(data.message || 'Failed to send OTP. Please try again.');
             }
         } catch {
-            setError('Cannot reach OTP server. Make sure the backend is running on port 4000.');
+            setError('Cannot reach OTP server. Make sure the backend is running on port 4001.');
         } finally {
             setLoading(false);
         }
@@ -128,152 +129,70 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     // ─── Actions ──────────────────────────────────────────────────────────────
 
     // 1. LOGIN
-    const handleLogin = async (e) => {
+    const handleOtpChange = (index, value) => {
+        if (!/^\d*$/.test(value)) return;
+        const newOtp = [...otpDigits];
+        newOtp[index] = value.slice(-1);
+        setOtpDigits(newOtp);
+
+        if (value && index < 5) {
+            otpRefs.current[index + 1]?.focus();
+        }
+    };
+
+    const handleOtpKeyDown = (index, e) => {
+        if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+            otpRefs.current[index - 1]?.focus();
+        }
+    };
+
+    const handleOtpPaste = (e) => {
         e.preventDefault();
-        setError('');
-        if (!email || !password) return setError('Please enter both email and password.');
+        const pasteData = e.clipboardData.getData('text').slice(0, 6).split('');
+        const newOtp = [...otpDigits];
+        pasteData.forEach((char, i) => {
+            if (i < 6 && /^\d$/.test(char)) newOtp[i] = char;
+        });
+        setOtpDigits(newOtp);
+        const nextFocus = Math.min(pasteData.length, 5);
+        otpRefs.current[nextFocus]?.focus();
+    };
+
+    const handleVerifyOtp = async () => {
+        const enteredOtp = otpDigits.join('');
+        if (enteredOtp.length < 6) return setError('Please enter the 6-digit OTP.');
         
         setLoading(true);
+        setError('');
         try {
             const res = await fetch(`${OTP_SERVER}/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ key: inputValue, otp: enteredOtp })
             });
+
             const data = await res.json();
             if (data.success) {
                 const userData = { 
-                    name: authMode === 'register' ? userName : (userName || 'Customer'), 
+                    name: authMode === 'register' ? userName : (data.userName || 'Customer'), 
                     contact: inputValue, 
-                    method,
-                    mode: authMode
+                    method 
                 };
-                localStorage.setItem('sholash_user', JSON.stringify(userData));
-                setUser(userData);
+                login(userData);
+                setUserLocal(userData);
                 setStep(4);
             } else {
-                setError(data.message || 'Invalid email or password.');
+                setError(data.message || 'Invalid OTP. Please try again.');
             }
         } catch (err) {
-            setError('Server connection error.');
+            setError('Connection error. Please ensure the backend is running.');
         } finally {
             setLoading(false);
         }
     };
 
-    // 2. REQUEST REGISTRATION (Send OTP)
-    const handleRequestRegister = async (e) => {
-        e.preventDefault();
-        setError('');
-        if (!name || !email || !password) return setError('All fields are required.');
-        if (password !== confirmPassword) return setError('Passwords do not match.');
-        if (password.length < 6) return setError('Password must be at least 6 characters.');
-
-        setLoading(true);
-        try {
-            const res = await fetch(`${API_URL}/request-register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email })
-            });
-            const data = await res.json();
-            if (data.success) {
-                setView('VERIFY_REG');
-                setTimer(30);
-            } else {
-                setError(data.message || 'Failed to send verification code.');
-            }
-        } catch (err) {
-            setError('Server connection error.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // 3. COMPLETE REGISTRATION (Verify OTP)
-    const handleVerifyRegister = async (e) => {
-        e.preventDefault();
-        setError('');
-        if (!otp) return setError('Please enter the OTP sent to your email.');
-
-        setLoading(true);
-        try {
-            const res = await fetch(`${API_URL}/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password, otp })
-            });
-            const data = await res.json();
-            if (data.success) {
-                setSuccessMsg('Account created successfully!');
-                onAuthSuccess(data);
-            } else {
-                setError(data.message || 'Verification failed.');
-            }
-        } catch (err) {
-            setError('Server connection error.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // 4. FORGOT PASSWORD - REQUEST RESET
-    const handleRequestReset = async (e) => {
-        e.preventDefault();
-        setError('');
-        if (!email) return setError('Please enter your email.');
-
-        setLoading(true);
-        try {
-            const res = await fetch(`${API_URL}/forgot-password`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-            const data = await res.json();
-            if (data.success) {
-                setView('FORGOT_RESET');
-                setTimer(30);
-            } else {
-                setError(data.message || 'User not found.');
-            }
-        } catch (err) {
-            setError('Server connection error.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // 5. COMPLETE PASSWORD RESET
-    const handleResetPassword = async (e) => {
-        e.preventDefault();
-        setError('');
-        if (!otp || !newPassword) return setError('Please enter OTP and new password.');
-        if (newPassword !== confirmPassword) return setError('Passwords do not match.');
-        if (newPassword.length < 6) return setError('Password must be at least 6 characters.');
-
-        setLoading(true);
-        try {
-            const res = await fetch(`${API_URL}/reset-password`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, otp, newPassword })
-            });
-            const data = await res.json();
-            if (data.success) {
-                setSuccessMsg('Password reset successful! Please sign in.');
-                setTimeout(() => {
-                    resetForms();
-                    setView('LOGIN');
-                }, 2000);
-            } else {
-                setError(data.message || 'Reset failed.');
-            }
-        } catch (err) {
-            setError('Server connection error.');
-        } finally {
-            setLoading(false);
-        }
+    const handleResend = () => {
+        sendOtp();
     };
 
     const onAuthSuccess = (data) => {
@@ -486,7 +405,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                         <button className="auth-btn-primary" onClick={onClose}>
                             Continue Shopping 🛍️
                         </button>
-                        <button className="auth-btn-logout" onClick={logout}>
+                        <button className="auth-btn-logout" onClick={logoutLocal}>
                             Log Out
                         </button>
                     </div>
