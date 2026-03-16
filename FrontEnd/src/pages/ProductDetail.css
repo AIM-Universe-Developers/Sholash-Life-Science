@@ -123,6 +123,7 @@
     line-height: 1.8;
     color: var(--color-text-black);
     margin-bottom: 0.5rem;
+    font-family: serif;
 }
 
 .detail-features {
@@ -250,6 +251,7 @@
 
 .tag {
     font-size: 18px;
+    font-family: serif;
     color: black;
     
 }
@@ -257,5 +259,23 @@
     font-family: serif;
     font-size: 22px;
     color: rgb(160, 16, 16);
+    margin-bottom: 0.5rem;
+}
+.tar {
+    font-family: serif;
+    color: black;
+    font-size: large;
+    margin-bottom: 0.5rem;
+}
+.futch {
+    font-family: serif;
+    color: #000;
+    font-size: large;
+    margin-bottom: 0.5rem;
+}
+.precautions {
+    font-family: serif;
+    color: burlywood;
+    font-size: large;
     margin-bottom: 0.5rem;
 }
