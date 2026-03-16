@@ -55,7 +55,6 @@ const adminLogin = async (req, res, next) => {
             });
         }
 
-        // Explicitly select password (it's hidden by default via select: false)
         const admin = await Admin.findOne({ email }).select("+password");
 
         if (!admin) {
@@ -73,12 +72,15 @@ const adminLogin = async (req, res, next) => {
         }
 
         const isMatch = await admin.matchPassword(password);
+        
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email or password",
             });
         }
+
+        const token = generateToken(admin._id, admin.role);
 
         res.status(200).json({
             success: true,
@@ -88,7 +90,7 @@ const adminLogin = async (req, res, next) => {
                 name: admin.name,
                 email: admin.email,
                 role: admin.role,
-                token: generateToken(admin._id, admin.role),
+                token: token,
             },
         });
     } catch (error) {

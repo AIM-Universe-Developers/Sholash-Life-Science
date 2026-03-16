@@ -7,19 +7,50 @@ const Product = require("../models/Product");
 // ─── @access Private (Admin)
 const getDashboardStats = async (req, res, next) => {
     try {
-        const [totalUsers, totalOrders, totalProducts, revenueData] =
-            await Promise.all([
-                User.countDocuments(),
-                Order.countDocuments(),
-                Product.countDocuments(),
-                Order.aggregate([
-                    { $match: { paymentStatus: "paid" } },
-                    { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" } } },
-                ]),
-            ]);
+        const [
+            totalUsers, 
+            totalOrders, 
+            totalProducts, 
+            revenueData,
+            categoryData,
+            monthlyRevenueData
+        ] = await Promise.all([
+            User.countDocuments(),
+            Order.countDocuments(),
+            Product.countDocuments(),
+            Order.aggregate([
+                { $match: { paymentStatus: "paid" } },
+                { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" } } },
+            ]),
+            // Data for "Sales by Category" Pie Chart
+            Product.aggregate([
+                { $group: { _id: "$category", count: { $sum: 1 } } },
+                { $lookup: { from: "categories", localField: "_id", foreignField: "_id", as: "categoryDoc" } },
+                { $unwind: { path: "$categoryDoc", preserveNullAndEmptyArrays: true } },
+                { $project: { name: { $ifNull: ["$categoryDoc.name", "Uncategorized"] }, value: "$count" } }
+            ]),
+            // Data for "Revenue Overview" Line Chart (Last 6 months)
+            Order.aggregate([
+                { $match: { paymentStatus: "paid" } },
+                {
+                    $group: {
+                        _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+                        Revenue: { $sum: "$totalPrice" }
+                    }
+                },
+                { $sort: { _id: 1 } },
+                { $limit: 6 },
+                {
+                    $project: {
+                        name: "$_id", // e.g. "2023-10"
+                        Revenue: 1,
+                        _id: 0
+                    }
+                }
+            ])
+        ]);
 
-        const totalRevenue =
-            revenueData.length > 0 ? revenueData[0].totalRevenue : 0;
+        const totalRevenue = revenueData.length > 0 ? revenueData[0].totalRevenue : 0;
 
         // Recent 5 orders
         const recentOrders = await Order.find()
@@ -36,6 +67,10 @@ const getDashboardStats = async (req, res, next) => {
                 totalProducts,
                 totalRevenue,
                 recentOrders,
+                charts: {
+                    salesByCategory: categoryData,
+                    revenueOverview: monthlyRevenueData
+                }
             },
         });
     } catch (error) {

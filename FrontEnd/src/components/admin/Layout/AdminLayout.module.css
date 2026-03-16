@@ -1,0 +1,27 @@
+.layoutContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--admin-bg);
+  color: var(--admin-text-main);
+  overflow: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pageContainer {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 1rem;
+  }
+}
