@@ -1,0 +1,41 @@
+.chartCard {
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  box-shadow: var(--admin-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: box-shadow 0.3s ease;
+}
+
+.chartCard:hover {
+  box-shadow: var(--admin-shadow-md);
+}
+
+.header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--admin-text-main);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.body {
+  padding: 1.5rem;
+  flex: 1;
+  min-height: 300px;
+  position: relative;
+}

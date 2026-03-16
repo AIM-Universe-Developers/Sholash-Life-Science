@@ -7,8 +7,9 @@ const notFound = (req, res, next) => {
 
 // ─── Global Error Handler ─────────────────────────────────────────────────────
 const errorHandler = (err, req, res, next) => {
-    // If status is 200 but an error was thrown, default to 500
-    let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+    console.error("SERVER_ERROR:", err);
+    // Use error's own status if available, otherwise check res.statusCode, else default to 500
+    let statusCode = err.statusCode || err.status || (res.statusCode === 200 ? 500 : res.statusCode);
     let message = err.message;
 
     // Mongoose: bad ObjectId format

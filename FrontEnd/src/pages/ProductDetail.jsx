@@ -60,6 +60,9 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <p className="detail-desc">{product.description}</p>
                            <h3 className='target'>{product.Target}</h3>
+                           <h2 className='tar'>{product.tar}</h2>
+                           <h2 className='futch'>{product.futch}</h2>
+                           <h2 className='precautions'>{product.precautions}</h2>
                         <div className="detail-features">
                             <h3>Key Benefits:</h3>
                             <ul>
