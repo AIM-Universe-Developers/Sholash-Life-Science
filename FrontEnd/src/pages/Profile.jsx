@@ -113,21 +113,27 @@ const Profile = () => {
                             
                             <div className="dashboard-grid">
                                 <div className="dash-card glass-panel">
-                                    <div className="dash-icon" style={{ background: '#ecfdf5', color: '#059669' }}>🛍️</div>
+                                    <div className="dash-icon" style={{ background: '#ecfdf5', color: '#059669' }}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                    </div>
                                     <div className="dash-info">
                                         <h3>Total Orders</h3>
                                         <p className="dash-value">0</p>
                                     </div>
                                 </div>
                                 <div className="dash-card glass-panel" onClick={() => navigate('/cart')} style={{ cursor: 'pointer' }}>
-                                    <div className="dash-icon" style={{ background: '#fef3c7', color: '#d97706' }}>🛒</div>
+                                    <div className="dash-icon" style={{ background: '#fef3c7', color: '#d97706' }}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                    </div>
                                     <div className="dash-info">
                                         <h3>Cart Items</h3>
                                         <p className="dash-value">View Cart →</p>
                                     </div>
                                 </div>
                                 <div className="dash-card glass-panel" onClick={() => navigate('/#products')} style={{ cursor: 'pointer' }}>
-                                    <div className="dash-icon" style={{ background: '#e0e7ff', color: '#4f46e5' }}>✨</div>
+                                    <div className="dash-icon" style={{ background: '#e0e7ff', color: '#4f46e5' }}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                    </div>
                                     <div className="dash-info">
                                         <h3>Discover</h3>
                                         <p className="dash-value">Shop Now →</p>
@@ -164,7 +170,9 @@ const Profile = () => {
                             <p className="pane-subtitle">You have no recent orders.</p>
                             
                             <div className="empty-state">
-                                <div className="empty-icon">📦</div>
+                                <div className="empty-icon">
+                                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.3"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"></path><path d="M21 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"></path><path d="M4 12H2"></path><path d="M10 12H7"></path><path d="M17 12h-3"></path><path d="M22 12h-2"></path></svg>
+                                </div>
                                 <h3>No orders yet</h3>
                                 <p>Looks like you haven't made your first purchase yet. Discover our scientific skincare collection.</p>
                                 <button className="auth-btn-primary" onClick={() => navigate('/#products')} style={{ width: 'auto', padding: '12px 30px', marginTop: '15px' }}>

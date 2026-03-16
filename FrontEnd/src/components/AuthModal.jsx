@@ -99,8 +99,8 @@ const AuthModal = ({ isOpen, onClose, product }) => {
     // 0. IDENTIFY (Amazon-style Step 1)
     const handleIdentify = async (e) => {
         e.preventDefault();
-        setError('');
-        if (!email) return setError('Enter your email address to continue.');
+        const cleanEmail = email.toLowerCase().trim();
+        if (!cleanEmail) return setError('Enter your email address to continue.');
 
         setLoading(true);
         setError('');
@@ -108,7 +108,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/check`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email: cleanEmail })
             });
 
             const data = await res.json();
@@ -140,7 +140,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email: email.toLowerCase().trim(), password })
             });
             const data = await res.json();
             if (data.success) {
@@ -168,7 +168,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/request-register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email })
+                body: JSON.stringify({ name, email: email.toLowerCase().trim() })
             });
             const data = await res.json();
             if (data.success) {
@@ -197,7 +197,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password, otp })
+                body: JSON.stringify({ name, email: email.toLowerCase().trim(), password, otp })
             });
             const data = await res.json();
             if (data.success) {
@@ -224,7 +224,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/forgot-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email: email.toLowerCase().trim() })
             });
             const data = await res.json();
             if (data.success) {
@@ -255,7 +255,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
             const res = await fetch(`${API_URL}/reset-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, otp, newPassword })
+                body: JSON.stringify({ email: email.toLowerCase().trim(), otp, newPassword })
             });
             const data = await res.json();
             if (data.success) {
@@ -342,7 +342,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                                         By continuing, you agree to Sholash's <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
                                     </p>
                                     
-                                    <div className="auth-footer-divider">New to Sholash?</div>
+                                    <div className="auth-footer-divider" data-text="New to Sholash?"></div>
                                     <button className="auth-btn-sec" onClick={() => setView('REGISTER')}>Create your Sholash account</button>
                                 </div>
                             </>
@@ -390,7 +390,7 @@ const AuthModal = ({ isOpen, onClose, product }) => {
                                         <div className="auth-input-group"><label className="auth-label">Re-enter password</label><input className="auth-input" type={showPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} /></div>
                                         <button type="submit" className="auth-btn-primary" disabled={loading}>{loading ? <span className="auth-spinner" /> : 'Continue'}</button>
                                     </form>
-                                    <div className="auth-footer-divider">Already have an account?</div>
+                                    <div className="auth-footer-divider" data-text="Already have an account?"></div>
                                     <button className="auth-btn-sec" onClick={() => setView('IDENTIFY')}>Sign in</button>
                                 </div>
                             </>
