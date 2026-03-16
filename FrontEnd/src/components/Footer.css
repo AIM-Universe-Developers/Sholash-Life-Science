@@ -74,9 +74,14 @@
     gap: 0.5rem;
     background: rgba(255, 255, 255, 0.05);
     padding: 0.5rem;
-    border-radius: 50px;
+    border-radius: 100px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    flex: 1;
+    min-width: 300px;
+    background: transparent;
+    outline: none;
+    color: white;
 }
 
 .newsletter-form:focus-within {
