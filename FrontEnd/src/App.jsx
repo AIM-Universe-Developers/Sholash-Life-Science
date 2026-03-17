@@ -26,6 +26,8 @@ import AdminLayout from './components/Admin/Layout/AdminLayout';
 import AdminLogin from './pages/Admin/Login';
 import DashboardPage from './pages/Admin/DashboardPage';
 import UsersPage from './pages/Admin/UsersPage';
+import OrdersPage from './pages/Admin/OrdersPage';
+import AnalyticsPage from './pages/Admin/AnalyticsPage';
 import SettingsPage from './pages/Admin/SettingsPage';
 
 function App() {
@@ -133,11 +135,11 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={<DashboardPage />} />
-                <Route path="orders" element={<div>Orders List</div>} />
+                <Route path="orders" element={<OrdersPage />} />
 
                 <Route path="products" element={<div>Products List</div>} />
                 <Route path="users" element={<UsersPage />} />
-                <Route path="analytics" element={<div>Detailed Analytics</div>} />
+                <Route path="analytics" element={<AnalyticsPage />} />
                 <Route path="roles" element={<div>Roles & Permissions</div>} />
                 <Route path="settings" element={<SettingsPage />} />
             </Route>
