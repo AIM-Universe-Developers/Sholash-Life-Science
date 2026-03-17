@@ -131,8 +131,8 @@
 
 .activeTab {
   background-color: white;
-  color: var(--admin-primary);
-  box-shadow: var(--admin-shadow-sm);
+  color: var(--admin-primary) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .tableCard {

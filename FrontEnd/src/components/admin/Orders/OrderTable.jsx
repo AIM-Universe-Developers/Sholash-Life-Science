@@ -41,13 +41,13 @@ const OrderTable = ({ orders }) => {
             <table className={styles.orderTable}>
                 <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Product</th>
-                        <th>Customer</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
+                        <th>ORDER ID</th>
+                        <th>PRODUCT</th>
+                        <th>CUSTOMER</th>
+                        <th>DATE</th>
+                        <th>STATUS</th>
+                        <th>AMOUNT</th>
+                        <th>ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,7 +60,7 @@ const OrderTable = ({ orders }) => {
                             </td>
                             <td>
                                 <div className={styles.productCell}>
-                                    {order.orderItems ? order.orderItems.map(i => i.name).join(', ') : 'Product'}
+                                    {order.products ? order.products.map(i => i.name).join(', ') : 'Product'}
                                 </div>
                             </td>
                             <td>

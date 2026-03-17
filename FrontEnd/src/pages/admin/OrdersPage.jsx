@@ -13,7 +13,7 @@ const OrdersPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTab, setActiveTab] = useState('All');
 
-    const statusTabs = ['All', 'Pending', 'Shipped', 'Delivered'];
+    const statusTabs = ['All', 'Processing', 'Shipped', 'Delivered'];
 
     const fetchOrders = async () => {
         try {
@@ -49,7 +49,7 @@ const OrdersPage = () => {
             result = result.filter(order => 
                 order._id.toLowerCase().includes(query) ||
                 order.user?.name?.toLowerCase().includes(query) ||
-                (order.orderItems && order.orderItems.some(item => item.name.toLowerCase().includes(query)))
+                (order.products && order.products.some(item => item.name.toLowerCase().includes(query)))
             );
         }
 
