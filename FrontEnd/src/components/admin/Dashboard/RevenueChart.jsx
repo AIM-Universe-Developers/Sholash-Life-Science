@@ -110,7 +110,7 @@ const RevenueChart = ({ data }) => {
                 },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Outfit, sans-serif' }
+                    font: { family: 'Inter, sans-serif' }
                 }
             }
         }

@@ -23,6 +23,11 @@ const AdminLayout = () => {
 
     return (
         <div className={styles.layoutContainer}>
+            {/* Ambient background orbs */}
+            <div className={`${styles.orb} ${styles.orb1}`}></div>
+            <div className={`${styles.orb} ${styles.orb2}`}></div>
+            <div className={`${styles.orb} ${styles.orb3}`}></div>
+
             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
             <div className={styles.mainContent}>
                 <Topbar toggleSidebar={toggleSidebar} />

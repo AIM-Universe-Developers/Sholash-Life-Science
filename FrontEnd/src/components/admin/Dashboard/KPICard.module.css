@@ -1,5 +1,7 @@
 .kpiCard {
-  background-color: var(--admin-surface);
+  background: var(--admin-surface);
+  backdrop-filter: blur(var(--admin-blur));
+  -webkit-backdrop-filter: blur(var(--admin-blur));
   border: 1px solid var(--admin-border);
   border-radius: 16px;
   padding: 1.5rem;
@@ -7,7 +9,7 @@
   align-items: center;
   gap: 1.5rem;
   box-shadow: var(--admin-shadow-sm);
-  transition: all 0.3s ease;
+  transition: all var(--admin-transition);
 }
 
 .kpiCard:hover {

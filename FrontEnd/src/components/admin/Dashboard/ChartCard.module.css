@@ -1,16 +1,19 @@
 .chartCard {
-  background-color: var(--admin-surface);
+  background: var(--admin-surface);
+  backdrop-filter: blur(var(--admin-blur));
+  -webkit-backdrop-filter: blur(var(--admin-blur));
   border: 1px solid var(--admin-border);
   border-radius: 16px;
   box-shadow: var(--admin-shadow-sm);
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: box-shadow 0.3s ease;
+  transition: all var(--admin-transition);
 }
 
 .chartCard:hover {
   box-shadow: var(--admin-shadow-md);
+  transform: translateY(-2px);
 }
 
 .header {

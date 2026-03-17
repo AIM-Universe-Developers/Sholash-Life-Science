@@ -1,16 +1,18 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, Package, Users, Activity, Settings, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Package, Users, Settings, ShieldCheck } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartColumn } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../../assets/logo/logo_symbol.png';
 import styles from './Sidebar.module.css';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
     const navItems = [
         { path: '/admin/dashboard', icon: <LayoutDashboard className={styles.navIcon} />, label: 'Dashboard' },
-        { path: '/admin/orders', icon: <ShoppingCart className={styles.navIcon} />, label: 'Orders' },
+        { path: '/admin/orders', icon: <ShoppingCart className={styles.navIcon} />, label: 'Orders' },                        
         { path: '/admin/products', icon: <Package className={styles.navIcon} />, label: 'Products' },
-        { path: '/admin/users', icon: <Users className={styles.navIcon} />, label: 'Customers' },
-        { path: '/admin/analytics', icon: <Activity className={styles.navIcon} />, label: 'Analytics' },
+        { path: '/admin/users', icon: <Users className={styles.navIcon} />, label: 'Customers' },                                     
+        { path: '/admin/analytics', icon: <FontAwesomeIcon icon={faChartColumn} className={styles.navIcon} />, label: 'Analytics' },
     ];
 
     const settingsItems = [

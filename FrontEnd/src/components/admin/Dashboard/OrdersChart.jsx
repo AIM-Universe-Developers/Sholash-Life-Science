@@ -77,7 +77,7 @@ const OrdersChart = ({ data }) => {
                 },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Outfit, sans-serif' }
+                    font: { family: 'Inter, sans-serif' }
                 }
             },
             x: {
@@ -87,7 +87,7 @@ const OrdersChart = ({ data }) => {
                 },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Outfit, sans-serif' }
+                    font: { family: 'Inter, sans-serif' }
                 }
             }
         }

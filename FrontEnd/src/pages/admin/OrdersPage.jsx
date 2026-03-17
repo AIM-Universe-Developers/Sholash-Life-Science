@@ -57,7 +57,7 @@ const OrdersPage = () => {
     }, [orders, searchQuery, activeTab]);
 
     return (
-        <div className={styles.ordersPage}>
+        <div className={`${styles.ordersPage} admin-fade-in-up`}>
             <div className={styles.header}>
                 <div className={styles.titleInfo}>
                     <h2>Orders</h2>

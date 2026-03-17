@@ -37,7 +37,7 @@ const SalesPieChart = ({ data }) => {
                     usePointStyle: true,
                     padding: 20,
                     font: {
-                        family: 'Outfit, sans-serif',
+                        family: 'Inter, sans-serif',
                         size: 12
                     }
                 }

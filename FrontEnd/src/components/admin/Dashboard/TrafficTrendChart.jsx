@@ -107,14 +107,14 @@ const TrafficTrendChart = ({ timeframe }) => {
                 grid: { color: isDark ? '#334155' : '#F1F5F9', drawBorder: false },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Outfit, sans-serif' }
+                    font: { family: 'Inter, sans-serif' }
                 }
             },
             x: {
                 grid: { display: false, drawBorder: false },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Outfit, sans-serif' }
+                    font: { family: 'Inter, sans-serif' }
                 }
             }
         }

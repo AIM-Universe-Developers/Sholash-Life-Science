@@ -26,22 +26,28 @@
 
   --admin-sidebar-w: 260px;
   --admin-topbar-h: 70px;
+  --admin-font: 'Inter', system-ui, sans-serif;
   
   --admin-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --admin-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Animation & Glass Tokens */
+  --admin-blur: 20px;
+  --admin-transition: 0.32s cubic-bezier(.4, 0, .2, 1);
+  --admin-orb-opacity: 0.08;
 }
 
 [data-theme='dark'] {
   /* Admin Base Colors - Dark Mode */
   --admin-bg: #0F172A;
-  --admin-surface: #1E293B;
-  --admin-surface-hover: #334155;
+  --admin-surface: rgba(30, 41, 59, 0.6);
+  --admin-surface-hover: rgba(51, 65, 85, 0.8);
   
   --admin-text-main: #F8FAFC;
   --admin-text-muted: #94A3B8;
   
-  --admin-border: #334155;
+  --admin-border: rgba(255, 255, 255, 0.1);
   
   --admin-primary: #38BDF8;
   --admin-primary-light: rgba(56, 189, 248, 0.2);
@@ -58,6 +64,30 @@
   --admin-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --admin-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
   --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --admin-orb-opacity: 0.12;
+}
+
+/* --- Global Admin Animations --- */
+@keyframes orbDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(30px, 20px) scale(1.05); }
+}
+
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-fade-in-up {
+  animation: fadeUpIn 0.4s var(--admin-transition) forwards;
+}
+
+.admin-glass {
+  background: var(--admin-surface);
+  backdrop-filter: blur(var(--admin-blur));
+  -webkit-backdrop-filter: blur(var(--admin-blur));
+  border: 1px solid var(--admin-border);
+  transition: all var(--admin-transition);
 }
 
 /* Base resets for dashboard components */

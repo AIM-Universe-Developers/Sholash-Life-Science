@@ -14,7 +14,7 @@ const AnalyticsPage = () => {
     const timeframes = ['Day', 'Week', 'Month', 'Year'];
 
     return (
-        <div className={styles.analytics}>
+        <div className={`${styles.analytics} admin-fade-in-up`}>
             <div className={styles.header}>
                 <div className={styles.title}>
                     <h2>Analytics</h2>
