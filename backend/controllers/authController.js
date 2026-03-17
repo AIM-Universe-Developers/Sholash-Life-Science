@@ -109,6 +109,45 @@ const getAdminProfile = async (req, res) => {
     });
 };
 
+// ─── @desc   Update Admin Profile
+// ─── @route  PUT /api/admin/profile
+// ─── @access Private (Admin)
+const updateAdminProfile = async (req, res, next) => {
+    try {
+        const admin = await Admin.findById(req.user._id);
+
+        if (!admin) {
+            return res.status(404).json({
+                success: false,
+                message: "Admin not found",
+            });
+        }
+
+        admin.name = req.body.name || admin.name;
+        admin.email = req.body.email || admin.email;
+
+        if (req.body.password) {
+            admin.password = req.body.password;
+        }
+
+        const updatedAdmin = await admin.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            data: {
+                _id: updatedAdmin._id,
+                name: updatedAdmin.name,
+                email: updatedAdmin.email,
+                role: updatedAdmin.role,
+                token: generateToken(updatedAdmin._id, updatedAdmin.role),
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // ─── @desc   Logout Admin (stateless – client drops the token)
 // ─── @route  POST /api/admin/logout
 // ─── @access Private (Admin)
@@ -119,4 +158,4 @@ const logoutAdmin = (req, res) => {
     });
 };
 
-module.exports = { registerAdmin, adminLogin, getAdminProfile, logoutAdmin };
+module.exports = { registerAdmin, adminLogin, getAdminProfile, logoutAdmin, updateAdminProfile };

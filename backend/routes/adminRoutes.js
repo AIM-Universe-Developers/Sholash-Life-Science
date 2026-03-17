@@ -10,6 +10,8 @@ const { protect, isAdmin, isSuperAdmin } = require("../middleware/adminAuthMiddl
 const { authorizeRoles } = require("../middleware/roleMiddleware");
 
 const { getRoles, createRole, getPermissions } = require("../controllers/roleController");
+const { updateAdminProfile } = require("../controllers/authController");
+const { getSettings, updateSettings } = require("../controllers/settingsController");
 
 // All admin routes require authentication
 router.use(protect);
@@ -18,10 +20,17 @@ router.use(isAdmin);
 // Dashboard – any admin
 router.get("/dashboard", getDashboardStats);
 
+// Profile
+router.put("/profile", updateAdminProfile);
+
 // User management
 router.get("/users", getUsers);
 router.put("/users/block/:id", blockUser);
 router.delete("/users/:id", isSuperAdmin, deleteUser); // superadmin only
+
+// Settings
+router.get("/settings", getSettings);
+router.put("/settings", isSuperAdmin, updateSettings);
 
 // Role and Permission management
 router.get("/roles", getRoles);

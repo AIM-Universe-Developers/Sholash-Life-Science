@@ -26,6 +26,7 @@ import AdminLayout from './components/Admin/Layout/AdminLayout';
 import AdminLogin from './pages/Admin/Login';
 import DashboardPage from './pages/Admin/DashboardPage';
 import UsersPage from './pages/Admin/UsersPage';
+import SettingsPage from './pages/Admin/SettingsPage';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -138,7 +139,7 @@ function App() {
                 <Route path="users" element={<UsersPage />} />
                 <Route path="analytics" element={<div>Detailed Analytics</div>} />
                 <Route path="roles" element={<div>Roles & Permissions</div>} />
-                <Route path="settings" element={<div>System Settings</div>} />
+                <Route path="settings" element={<SettingsPage />} />
             </Route>
 
           </Routes>

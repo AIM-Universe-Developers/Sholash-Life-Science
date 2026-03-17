@@ -45,6 +45,12 @@
   flex-direction: column;
   gap: 0.5rem;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 .navLink {
