@@ -14,6 +14,7 @@ export const products = [
         image: calgroImg,
 
         description: "Calgro™ is a nutraceutical supplement formulated with vitamins, minerals, amino acids,and botanical extracts to support overall health and nutrition.",
+        tar:"Vitamins, Minerals, Amino Acids With Isoflavones and Grape Seed Extract Tablets",
         category: "Protection",
         color: "#e6f2ed",
         price: 499,
@@ -96,7 +97,10 @@ export const products = [
         name: "Glazzium™ – Anti-Acne Detoxifying Face Wash",
         tagline: " Deep Clean. Oil Control. Clear & Healthy Skin.",
         image: glazziumImg,
-        description: "Gentle yet effective cleanser that removes toxins and prevents breakouts.",
+        description: "Glazzium face wash is a gently exfoliating and enriched with natural extracs that reach deep into your skins blocked pores to remove trapped oil, toxins, dead skin and acne. Moisture is locked in, Make your skin cleansed, nourished and toned. ",
+        tar:"Removes excess oil,  Relieves impurities, Imparts a healthy glow , Gentle for everday use",
+        futch:"Paraben Free , Light & Non Greasy, Non Comedogenic",
+         precautions:"Avoid contact with eyes. If Irritation occurs, rinse thoroughly with water.",
         category: "Cleanser",
         color: "#e8f0f2",
         price: 698,
@@ -105,23 +109,24 @@ export const products = [
         features: ["Detoxifying Action", "Oil Control", "Gentle Cleansing", "Anti-acne Properties"],
         details: {
             benefits: [
-                { id: 'detox', title: 'Detoxifying', content: 'Removes environmental pollutants and excess sebum from deep within pores.' },
-                { id: 'acne-prevention', title: 'Prevents Breakouts', content: 'Salicylic acid helps clear pores and reduce acne-causing bacteria.' }
+                { id: 'detox', title: 'Benefits', content: '•   Helps reduce pimples and breakouts with active ingredients like Salicylic Acid, Tea Tree & Neem.\n•   Removes dirt, oil, and impurities from pores for a fresh, clear, and healthy-looking skin.\n•   Enriched with Glycerin, Aloe Vera & Pentavitin to keep skin soft and moisturized.\n•   Calms irritation and redness with Allantoin & Calendula while maintaining skin balance.' },
+                // { id: 'acne-prevention', title: 'Prevents Breakouts', content: 'Salicylic acid helps clear pores and reduce acne-causing bacteria.' }
             ],
             ingredients: [
-                { id: 'salicylic', title: 'Salicylic Acid', content: 'A BHA that exfoliates and clears pores.' }
+                { id: 'salicylic', title: 'Ingredients', content: '\t•Aqua\n\t•Sodium lauryl ether sulfate\n\t•Cocamidopropyl Betaine\n\t•Glycerin\n\t•Acrylate copolymer\n\t•Lauryl Glucosides\n\t•Cocoglucosides\n\t•Polyquaternium 7\n\t•Aloe vera\n\t•Salicylic acid\n\t•PEG-40 Hydrogenated Castor Oil\n\t•Phenoxyethanol and ethylhexylglycerin\n\t•Triethanolamine D-panthanol\n\t•Pentavitin\n\t•Natural Betaine\n\t•Tea tree oil\n\t•Neem Extract\n\t•Allantoin\n\t•Calendula Extract\n\t•EDTA. ' }
             ],
             'before-after': [
-                { id: 'oil', title: 'Oil Control', content: 'Reduces surface oil by 50% after the first wash.' }
+                { id: 'oil', title: 'Before Use', content: '•Excess oil buildup with greasy, shiny skin\n•Frequent acne breakouts and clogged pores\n•Dull, uneven skin tone with rough texture\n•Redness, irritation, and sensitive skin feel' },
+                {id:'oil', title:'After Use', content:'•Oil-free, fresh, and deeply cleansed skin\n•Reduced acne, clearer pores, and smoother texture\n•Brighter, more even, and healthy-looking skin\n•Calm, soothed, and well-balanced skin'}
             ],
             usage: [
-                { id: 'wash', title: 'Washing Instructions', content: 'Massge onto damp skin for 30 seconds, then rinse thoroughly.' }
+                { id: 'wash', title: 'Washing Instructions', content: '•Take small amount of face wash on your palm\n• Massage gently\n•Rinse well and pat dry\n•Use it twice daily for best Results.' }
             ],
             faq: [
                 { id: 'drying', title: 'Will it dry out my skin?', content: 'No, it contains soothing agents to maintain skin moisture balance.' }
             ],
             other: [
-                { id: 'type', title: 'Skin Type', content: 'Best for oily and acne-prone skin.' }
+                { id: 'type', title: 'Other Informations', content: '•  Store in a cool and dry place below 30°C.\n•  It is mandatory to perform a patch test before applying this product.\n•  Do not use on cracked skin or open wounds.\n•  In case any irritation occurs stop the use of product with immediate effect and consult your dermatologist.\n•  Place cap tightly after use.\n•  Keep out of reach of children.' }
             ],
             legal: [
                 { id: 'safety', title: 'Safety Info', content: 'Dermatologically tested.' }
@@ -133,7 +138,8 @@ export const products = [
         name: "Uvinor™ – Clear Radiance Skin Brightening Sunscreen SPF 50+",
         tagline: "Powerful Sun Protection with Hydration and Skin Brightening.",
         image: uvinorImg,
-        description: "Powerful treatment that controls sebum and minimizes the appearance of pores.",
+        description: "Uvinor SPF 50+ helps protect sensitive skin from UV induced damage and also acts as a mositrurizer.  This sunblock offers broad spectrum protection against the sun's damaging rays. Safe on young delicate skin of children. ",
+        tar:"Fortified with Niacinamide, Chamomile and Hyaclear 7,  Formulated with Dermatologically Tested Actives.",
         category: "Treatment",
         color: "#f0f0f0",
         price: 659,
@@ -142,23 +148,24 @@ export const products = [
         features: ["Clinical Grade", "Pore Minimizing", "Sebum Control", "Fast Acting"],
         details: {
             benefits: [
-                { id: 'dual-action', title: 'Dual Action', content: 'Combines a retinoid with an antibiotic to treat current acne and prevent new ones.' },
-                { id: 'pores', title: 'Pore Refinement', content: 'Reduces the appearance of enlarged pores over time.' }
+                { id: 'dual-action', title: 'Dual Action', content: '• Shields skin from harmful UVA & UVB rays, preventing sunburn and tanning.\n•  Enhances natural glow and helps reduce dullness for a radiant look\n•  Absorbs quickly without white cast or sticky feel—perfect for daily use\n•  Helps protect against dark spots, pigmentation, and premature aging'},
+                // { id: 'pores', title: 'Pore Refinement', content: 'Reduces the appearance of enlarged pores over time.' }
             ],
             ingredients: [
-                { id: 'formulas', title: 'Active Formula', content: 'Adapalene 0.1% and Clindamycin 1%.' }
+                { id: 'formulas', title: 'Ingredients', content: '• Aqua\n•Sun care Zen Kt(Water (Aqua) and Ethylhexyl Methoxycinnamate and Butyl Mathoxydibenzoylmethane and Benzophenone-3 and 1,3-Butylene Glycol and Phenoxyethanol)\n• shea Butter\n• Hydorxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer and Isohexadecane and Polysorbate 60\n•Dimethicone \n• Polyarcrylate-13 and Polyisobutene and Polysorbate 20\n• Benzyl Alcohol\n•Triethylene Glycol\n•Niacinamide\n•Sodium Hyaluronate and 1,2- Heanediol\n•Almond oil\n•Triethanolamine\n• Carbomer\n• Cocont oil\n• Vanilla extract\n• Green tea extract\n• Kaempferia galanga extract\n• Zinc Oxide\n• Titanium Oxide\n• Chamomile extract\n• Allantion\n• Diethylamino Hydroxybenzoyl Hexyl Benzoate\n• Vitamin E.' }
             ],
             'before-after': [
-                { id: 'acne-reduction', title: 'Acne Reduction', content: '60% reduction in inflammatory lesions after 4 weeks.' }
+                { id: 'acne-reduction', title: 'Before Use', content: '• Skin exposed to harmful UV rays and sun damage\n• Dull, tanned, and uneven skin tone\n• Risk of dark spots and pigmentation\n• Dry, unprotected skin prone to premature aging' },
+                {id: 'acne-reduction', title: 'After Use', content:'• Strong protection against UVA & UVB rays\n• Brighter, more even, and radiant skin tone\n• Reduced tanning, dark spots, and pigmentation\n• Hydrated, smooth, and healthy-looking skin'}
             ],
             usage: [
-                { id: 'night', title: 'Night Application', content: 'Apply a thin layer to affected areas once daily at bedtime.' }
+                { id: 'night', title: 'Night Application', content: '• Start with a clean, dry face before application.\n• ake an adequate amount and spread evenly on face & neck\n• Apply at least 15–20 minutes before going outdoors\n• Reapply every 2–3 hours or after sweating/washing for continuous protection' }
             ],
             faq: [
                 { id: 'purging', title: 'Will I experience purging?', content: 'Some initial breakouts may occur as the skin adjusts to the retinoid.' }
             ],
             other: [
-                { id: 'sun-sensitivity', title: 'Sun Sensitivity', content: 'Use sunscreen daily, as this product increases sun sensitivity.' }
+                { id: 'sun-sensitivity', title: 'Sun Sensitivity', content: '•  Store in a cool and dry place below 30°C.\n•  It is mandatory to perform a patch test before applying this product.\n•  Do not use on cracked skin or open wounds.\n•  In case any irritation occurs stop the use of product with immediate effect and consult your dermatologist.\n•  Place cap tightly after use.\n•  Keep out of reach of children.' }
             ],
             legal: [
                 { id: 'rx', title: 'Prescription', content: 'Use as directed by a healthcare professional.' }
