@@ -91,15 +91,15 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <div className="detail-trust-badges">
                             <div className="badge-item">
-                                <span className="badge-icon">🛡️</span>
+                                <span className="badge-icon"></span>
                                 <span>Dermatologist Tested</span>
                             </div>
                             <div className="badge-item">
-                                <span className="badge-icon">⚕️</span>
+                                <span className="badge-icon"></span>
                                 <span>100% Ingredients</span>
                             </div>
                             <div className="badge-item">
-                                <span className="badge-icon">❤️</span>
+                                <span className="badge-icon"></span>
                                 <span>Cruelty Free</span>
                             </div>
                         </div>
