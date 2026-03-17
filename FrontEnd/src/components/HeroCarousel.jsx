@@ -10,6 +10,7 @@ import img5 from '../assets/IMG CART/p5.jpeg';
 import img6 from '../assets/IMG CART/p6.png';
 import img7 from '../assets/IMG CART/p7.jpeg';
 import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
+import Glazzium from '../assets/products/glazzium banner/Glazzium-h1.png'
 
 const marqueeImages = [img1, img2, img3, img4, img5, img6, img7];
 
@@ -25,7 +26,17 @@ const offers = [
         link: "/product/2"
     },
     {
-        id: 1,
+        id: 4,
+        title: "Limited Edition Collection",
+        desc: "Special Launch Offer",
+        image: Glazzium,
+        btn: "Discover Now",
+        color: "#f8f9fa",
+        isFullImage: true,
+        link: "/product/3"
+    },
+    {
+        id: 2,
         title: "Brightening Serum for Indian Skin",
         desc: "Flat 20% OFF",
         image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=1200",

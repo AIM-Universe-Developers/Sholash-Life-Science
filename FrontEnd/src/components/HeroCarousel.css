@@ -1,7 +1,9 @@
 .hero-carousel {
     position: relative;
     height: 90vh;
-    min-height: 600px;
+    /* better height */
+    min-height: 500px;
+    /* prevents collapse on small screens */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -279,7 +281,7 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    border-top:10px;
+    border-top: 10px;
 }
 
 .image-marquee {
