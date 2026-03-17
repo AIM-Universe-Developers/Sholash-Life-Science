@@ -251,7 +251,7 @@ export const products = [
         name: "Acnevor™ – Adapalene & Clindamycin Phosphate Gel",
         tagline: "Advanced Dual Action Acne Therapy",
         image: acnevorImg,
-        description: "Complete nutrition for skin and hair health from within.",
+        description: "Advanced acne treatment gel combining Adapalene (retinoid) & Clindamycin (antibiotic). Targets acne at the root by unclogging pores and fighting acne-causing bacteria. Lightweight, fast-absorbing formula for effective daily treatment. Suitable for oily, acne-prone, and combination skin",
         category: "Nutraceutical",
         color: "#f5f0e6",
         price: 689,
@@ -260,17 +260,19 @@ export const products = [
         features: ["Internal Nutrition", "Hair & Skin Health", "Vitamins & Minerals", "Complete Daily Supplement"],
         details: {
             benefits: [
-                { id: 'uv-protection', title: 'Superior UV Protection', content: 'alcium & Magnesium \n•Support bone strength and improve skeletal health.\n\n Vitamin C\n•Boosts immunity and helps in antioxidant protection.' },
-                { id: 'skin-health', title: 'Skin Radiance', content: 'Antioxidants protect skin from internal stress and improve glow.' }
+                { id: 'uv-protection', title: 'Benefits', content: '• Reduces Acne & Pimples \n• Unclogs Pores & Prevents Breakouts\n• Controls Bacteria & Inflammation\n• Improves Skin Texture & Clarity' },
+                // { id: 'skin-health', title: 'Skin Radiance', content: 'Antioxidants protect skin from internal stress and improve glow.' }
             ],
             ingredients: [
-                { id: 'vits', title: 'Vitamins', content: 'Biotin, Zinc, Iron, and Vitamin B-Complex.' }
+                { id: 'vits', title: 'Vitamins', content: '• Adapalene – Promotes skin renewal & prevents clogged pores\n• Clindamycin Phosphate – Fights acne-causing bacteria \n• Gel Base – Lightweight, non-greasy formulation \n• Stabilizing Agents – Ensure effectiveness & safety' }
             ],
             'before-after': [
-                { id: 'hair-fall', title: 'Reduced Hair Fall', content: 'Noticeable reduction in hair fall after 3 months of regular intake.' }
+                { id: 'hair-fall', title: 'Before Use', content: '• Active acne, pimples, and inflamed skin\n• Clogged pores with blackheads/whiteheads\n• Oily skin with frequent breakouts\n• Uneven, rough skin texture' },
+                { id: 'hair-fall', title: 'After Use', content: '• Reduced acne and clearer skin\n• Clean, unclogged pores\n• Balanced oil production\n• Smoother, healthier skin texture' }
+
             ],
             usage: [
-                { id: 'tablet', title: 'Dosage', content: 'Take one tablet daily after a meal, or as directed by your physician.' }
+                { id: 'tablet', title: 'Dosage', content: '• Cleanse and dry your face thoroughly\n• Apply a thin layer to affected areas (preferably at night)\n• Avoid eyes, lips, and sensitive areas\n• Use regularly as advised; apply sunscreen during daytime' }
             ],
             faq: [
                 { id: 'ayurvedic', title: 'Is it ayurvedic?', content: 'It is a scientifically formulated nutraceutical supplement.' }

@@ -5,7 +5,7 @@
   font-family: var(--admin-font);
   background: radial-gradient(ellipse 80% 60% at 10% -10%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
               radial-gradient(ellipse 60% 40% at 90% 100%, rgba(124, 58, 237, 0.10) 0%, transparent 60%),
-              linear-gradient(160deg, var(--admin-bg) 0%, #020617 100%);
+              linear-gradient(160deg, var(--admin-bg-base) 0%, var(--admin-bg-deep) 100%);
   background-attachment: fixed;
   color: var(--admin-text-main);
   overflow: hidden;
