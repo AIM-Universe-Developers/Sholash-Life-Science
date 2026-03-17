@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import TopBar from './components/TopBar';
 import Header from './components/Header';
@@ -21,13 +21,25 @@ import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
+// Admin Components
+import AdminLayout from './components/Admin/Layout/AdminLayout';
+import AdminLogin from './pages/Admin/Login';
+import DashboardPage from './pages/Admin/DashboardPage';
+import UsersPage from './pages/Admin/UsersPage';
+import OrdersPage from './pages/Admin/OrdersPage';
+import AnalyticsPage from './pages/Admin/AnalyticsPage';
+import SettingsPage from './pages/Admin/SettingsPage';
+
 function App() {
   const [cart, setCart] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authProduct, setAuthProduct] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useContext(UserContext);
+
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   const handleBuyClick = (product) => {
     if (user) {
@@ -73,29 +85,25 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <div className="app">
-        <TopBar />
-        <Header
-          cartCount={cart.length}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          onAuthClick={() => setIsAuthOpen(true)}
-        />
+      <div className={isAdminRoute ? 'admin-app-container' : 'app'}>
+        {!isAdminRoute && <TopBar />}
+        {!isAdminRoute && (
+          <Header
+            cartCount={cart.length}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onAuthClick={() => setIsAuthOpen(true)}
+          />
+        )}
         <main>
           <Routes>
+            {/* Storefront Routes */}
             <Route path="/" element={
               <>
                 <div id="home">
                   <HeroCarousel />
                 </div>
                 <OurProducts searchQuery={searchQuery} />
-                {/* <div id="products">
-                  <ProductList
-                    onAddToCart={handleAddToCart}
-                    searchQuery={searchQuery}
-                    onBuyClick={handleBuyClick}
-                  />
-                </div> */}
                 <div id="skin-types">
                   <SkinTypes />
                 </div>
@@ -119,18 +127,39 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/payment" element={<PaymentProcess cart={cart} />} />
             <Route path="/product/:id" element={<ProductDetail onAddToCart={handleAddToCart} onBuyClick={handleBuyClick} />} />
+
+            {/* Admin Routes */}
+            {/* Note: We handle login outside of AdminLayout so it doesn't show sidebar */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<DashboardPage />} />
+                <Route path="orders" element={<OrdersPage />} />
+
+                <Route path="products" element={<div>Products List</div>} />
+                <Route path="users" element={<UsersPage />} />
+                <Route path="analytics" element={<AnalyticsPage />} />
+                <Route path="roles" element={<div>Roles & Permissions</div>} />
+                <Route path="settings" element={<SettingsPage />} />
+            </Route>
+
           </Routes>
         </main>
-        <Footer />
-        <WhatsAppButton />
-        <AuthModal
-          isOpen={isAuthOpen}
-          onClose={() => setIsAuthOpen(false)}
-          product={authProduct}
-        />
+        
+        {!isAdminRoute && <Footer />}
+        {!isAdminRoute && <WhatsAppButton />}
+        {!isAdminRoute && (
+          <AuthModal
+            isOpen={isAuthOpen}
+            onClose={() => setIsAuthOpen(false)}
+            product={authProduct}
+          />
+        )}
       </div>
     </>
   );
 }
 
 export default App;
+

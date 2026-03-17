@@ -10,6 +10,10 @@ main {
   /* 36px TopBar + 100px Header */
 }
 
+.admin-app-container main {
+  padding-top: 0;
+}
+
 /* Base styles for buttons and interactive elements across the app */
 button,
 .btn {
