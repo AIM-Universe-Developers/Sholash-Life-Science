@@ -17,9 +17,9 @@ const SalesPieChart = ({ data }) => {
         datasets: [
             {
                 data: chartDataRaw.map(d => d.value),
-                backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#6366F1', '#EC4899', '#8B5CF6'],
+                backgroundColor: ['#3B82F6', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EC4899'],
                 borderWidth: isDark ? 2 : 0,
-                borderColor: isDark ? '#1E293B' : '#ffffff',
+                borderColor: isDark ? '#0F172A' : '#ffffff',
                 hoverOffset: 4,
             },
         ],
