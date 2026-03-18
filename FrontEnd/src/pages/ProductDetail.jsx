@@ -50,7 +50,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         
 
                         <div className="detail-meta">
-                            <div className="detail-price">MRP. ₹{product.price}</div>
+                            <div className="detail-price">MRP: ₹{product.price}</div>
                             <div className="detail-rating">
                                 <span className="star">★</span>
                                 <span className="rating-val">{product.rating}</span>

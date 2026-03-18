@@ -249,14 +249,14 @@ const ProductReviews = () => {
                         <div className="transparency-badge">
                             <div className="badge-ring">
                                 <div className="badge-inner">
-                                    <svg viewBox="0 0 100 100" className="badge-svg">
+                                    {/* <svg viewBox="0 0 100 100" className="badge-svg">
                                         <path id="curve" d="M 25, 50 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0" fill="transparent" />
                                         <text className="badge-text" fontSize="10">
                                             <textPath xlinkHref="#curve">SILVER TRANSPARENCY • </textPath>
                                         </text>
-                                    </svg>
-                                    <div className="badge-score">92.3</div>
-                                    <div className="badge-check">✔</div>
+                                    </svg> */}
+                                    {/* <div className="badge-score">92.3</div>
+                                    <div className="badge-check">✔</div> */}
                                 </div>
                             </div>
                         </div>

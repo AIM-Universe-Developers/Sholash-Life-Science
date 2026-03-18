@@ -255,7 +255,7 @@
     font-size: 20px;
     font-family: serif;
     color: black;
-    font-style: italic;
+    
     
 }
 .target {
@@ -279,7 +279,7 @@
 }
 .precautions {
     font-family: serif;
-    color: burlywood;
+    color:rgb(13, 13, 13);   
     font-size: large;
     margin-bottom: 0.5rem;
 }
