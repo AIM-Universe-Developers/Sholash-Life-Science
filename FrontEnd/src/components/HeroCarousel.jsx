@@ -17,8 +17,6 @@ const marqueeImages = [img1, img2, img3, img4, img5, img6, img7];
 const offers = [
     {
         id: 0,
-        title: "Limited Edition Collection",
-        desc: "Special Launch Offer",
         image: heroBanner,
         btn: "Discover Now",
         color: "#f8f9fa",
@@ -27,8 +25,6 @@ const offers = [
     },
     {
         id: 4,
-        title: "Limited Edition Collection",
-        desc: "Special Launch Offer",
         image: Glazzium,
         btn: "Discover Now",
         color: "#f8f9fa",
@@ -112,35 +108,54 @@ const HeroCarousel = () => {
 
                 {offers.map((slide, index) => (
                     <div
-                        className={`${index === current ? 'slide active' : 'slide'} ${slide.isFullImage ? 'full-image' : ''}`}
+                        className={`${index === current ? 'slide active' : 'slide'}`}
                         key={slide.id}
-                        style={{ backgroundColor: slide.color }}
                         onClick={() => slide.link ? navigate(slide.link) : scrollToProducts()}
                     >
+                        {/* Background Layer */}
+                        <div
+                            className="slide-background"
+                            style={{
+                                backgroundColor: slide.color,
+                                backgroundImage: slide.isFullImage ? `url(${slide.image})` : 'none'
+                            }}
+                        >
+                            {slide.isFullImage && <div className="overlay" />}
+                        </div>
+
+                        {/* Content Layer */}
+                        {index === current && !slide.isFullImage && (
+                            <div className="container carousel-content">
+                                <div className="carousel-text fade-in">
+                                    <div className="badge">Featured Product</div>
+                                    <h1 className="serif">{slide.title}</h1>
+                                    <p className="offer-desc">{slide.desc}</p>
+                                    <div className="carousel-actions">
+                                        <div className="price-tag">Starting from ₹499</div>
+                                    </div>
+                                </div>
+                                <div className="carousel-image fade-in">
+                                    <div className="image-wrapper glass">
+                                        <img src={slide.image} alt={slide.title} />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {index === current && slide.isFullImage && (
+                            <div className="container carousel-content full-banner-content">
+                                <div className="carousel-text fade-in">
+                                    <h1 className="serif">{slide.title}</h1>
+                                    <p className="offer-desc">{slide.desc}</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Slide Progress Bar */}
                         {index === current && (
-                            slide.isFullImage ? (
-                                <div className="full-banner-wrapper">
-                                    <img src={slide.image} alt={slide.title} className="full-banner-img" />
-                                </div>
-                            ) : (
-                                <div className="container carousel-content">
-                                    <div className="carousel-text fade-in">
-                                        <h1 className="serif">{slide.title}</h1>
-                                        <p className="offer-desc">{slide.desc}</p>
-                                        <button
-                                            className="btn-carousel"
-                                            onClick={scrollToProducts}
-                                        >
-                                            {slide.btn}
-                                        </button>
-                                    </div>
-                                    <div className="carousel-image fade-in">
-                                        <div className="image-wrapper glass">
-                                            <img src={slide.image} alt={slide.title} />
-                                        </div>
-                                    </div>
-                                </div>
-                            )
+                            <div className="slide-progress">
+                                <div className="progress-fill" style={{ animationDuration: isPaused ? '0s' : '2.5s' }}></div>
+                            </div>
                         )}
                     </div>
                 ))}

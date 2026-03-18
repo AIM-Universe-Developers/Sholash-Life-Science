@@ -43,10 +43,10 @@ const OrdersChart = ({ data }) => {
             {
                 label: 'Orders',
                 data: actualData.map(d => d.value),
-                backgroundColor: '#8B5CF6',
-                borderRadius: 4, // rounded tops on bars
+                backgroundColor: '#6366F1',
+                borderRadius: 6,
                 barThickness: 'flex',
-                maxBarThickness: 20
+                maxBarThickness: 16
             }
         ],
     };

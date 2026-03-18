@@ -38,6 +38,7 @@
   font-size: 1.25rem;
   color: var(--admin-text-main);
   letter-spacing: -0.5px;
+  font-family: 'sans-serif';
 }
 
 .nav {
