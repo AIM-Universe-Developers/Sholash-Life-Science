@@ -89,6 +89,7 @@
     border-radius: 20px;
     border: 1px solid var(--color-border);
     margin-bottom: 2rem;
+    
 }
 
 .detail-rating {
@@ -113,9 +114,9 @@
 }
 
 .detail-price {
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: 800;
-    color: var(--color-primary-aqua);
+    color: var(--color-primary-black);
 }
 
 .detail-desc {
@@ -250,7 +251,7 @@
 }
 
 .tag {
-    font-size: 18px;
+    font-size: 20px;
     font-family: serif;
     color: black;
     

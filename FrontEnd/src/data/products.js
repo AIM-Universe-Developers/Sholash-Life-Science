@@ -177,7 +177,8 @@ export const products = [
         name: "SertaFree™ – Sertaconazole Nitrate Cream",
         tagline: " Effective Relief from Fungal Skin Infections",
         image: sertafreeImg,
-        description: "Reduces inflammation and improves overall skin texture for smoother skin.",
+        description: "Broad-spectrum antifungal cream with Sertaconazole Nitrate,Effectively treats fungal infections like ringworm, athlete’s foot & jock itch,Provides quick relief from itching, redness, and irritation,Smooth, non-greasy formula suitable for daily application.",
+        tar:"Avoid contact with eyes, mouth and open wounds. If contact occurs, wash thoroughy with water. Keep the medicine out of reach of children.",
         category: "Treatment",
         color: "#ebf2f5",
         price: 270,
@@ -186,23 +187,26 @@ export const products = [
         features: ["Anti-inflammatory", "Texture Improvement", "Soothing Effect", "Dermatological Solution"],
         details: {
             benefits: [
-                { id: 'inflammation', title: 'Reduces Redness', content: 'Nicotinamide significantly reduces the redness and swelling associated with acne.' },
-                { id: 'texture', title: 'Texture Smoothing', content: 'Improves the overall smoothness and clarity of the skin.' }
-            ],
+                { id: 'inflammation', title: ' Benefits', content: '• Eliminates Fungal Infection at Source\n• Relieves Itching, Burning & Redness\n• Prevents Recurrence of Infection\n• Promotes Faster Skin Healing' },
+            //     { id: 'texture', title: 'Texture Smoothing', content: 'Improves the overall smoothness and clarity of the skin.' }
+            //
+             ],
             ingredients: [
-                { id: 'cn-actives', title: 'Active Ingredients', content: 'Clindamycin Phosphate and Nicotinamide.' }
-            ],
+                { id: 'cn-actives', title: 'Before Use', content: '• Sertaconazole Nitrate – Powerful antifungal agent\n• Cream Base – Ensures smooth and even application\n• Moisturizing Agents – Prevent dryness and irritation\n• Stabilizers & Preservatives – Maintain product safety and effectiveness' },
+           ],
             'before-after': [
-                { id: 'redness', title: 'Redness Relief', content: 'Visible calming of active acne within 48 hours.' }
+                { id: 'redness', title: 'Before Use', content: '• Fungal infection with itching and discomfort\n• Red, inflamed, or scaly skin patches \n• Burning sensation and skin irritation \n• Spreading or recurring infection areas ' },
+                { id: 'redness', title: 'After Use', content: '• Relief from itching, burning, and irritation \n• Reduced redness and clearer skin \n• Controlled and eliminated fungal infection \n• Healthy, smooth, and restored skin' }
+
             ],
             usage: [
-                { id: 'spot-treat', title: 'Spot Treatment', content: 'Apply directly to blemishes twice daily.' }
+                { id: 'spot-treat', title: 'Usage', content: '• Clean and dry the affected area thoroughly\n• Apply a thin layer to the affected skin\n• Use once or twice daily as directed\n• Continue usage for the full prescribed duration' }
             ],
             faq: [
                 { id: 'moisturizer', title: 'Can I use moisturizer?', content: 'Yes, apply after the gel has completely absorbed.' }
             ],
             other: [
-                { id: 'storage-temp', title: 'Temperature', content: 'Store at room temperature below 25°C.' }
+                { id: 'storage-temp', title: 'Other Information', content: '• Keep the cap tightly closed after use.\n• Keep out of reach of children.' }
             ],
             legal: [
                 { id: 'mfg-info', title: 'Manufacturing', content: 'Certified GMP facility.' }
@@ -214,7 +218,8 @@ export const products = [
         name: "Acnevor CN™ – Clindamycin & Nicotinamide Gel",
         tagline: " Targeted Treatment for Acne & Skin Inflammation.",
         image: acnevorCnImg,
-        description: "Effective relief and restoration for various skin sensitivities and conditions.",
+        description: "Advanced anti-acne gel with Clindamycin & Nicotinamide,Targets acne-causing bacteria and reduces inflammationLightweight, non-greasy formula for quick absorption,Ideal for oily and acne-prone skin.",
+        precautions:"Product from direct sunlight,  Avoid contact with eyes.",
         category: "Special Care",
         color: "#f2f5e9",
         price: 480,
@@ -223,23 +228,26 @@ export const products = [
         features: ["Fast Relief", "Skin Restoration", "Intensive Care", "Safe for Sensitive Skin"],
         details: {
             benefits: [
-                { id: 'antifungal', title: 'Antifungal Action', content: 'Effectively treats various fungal skin infections and prevents recurrence.' },
-                { id: 'relief', title: 'Itching Relief', content: 'Provides rapid relief from itching, burning, and irritation.' }
+                { id: 'antifungal', title: 'Benefitsn', content: '• Reduces Acne & Breakouts Effectively\n• Controls Oil & Prevents Clogged Pores\n• Soothes Redness & Skin Irritation\n• Improves Skin Clarity & Texture' },
+                // { id: 'relief', title: 'Itching Relief', content: 'Provides rapid relief from itching, burning, and irritation.' }
             ],
             ingredients: [
-                { id: 'serta', title: 'Active Component', content: 'Sertaconazole Nitrate 2% w/w.' }
+                { id: 'serta', title: 'Key Ingredients', content: '• Clindamycin – Fights acne-causing bacteria\n• Nicotinamide (Vitamin B3) – Reduces inflammation & brightens skin\n• Gel Base – Lightweight and fast-absorbing\n• Stabilizing Agents – Maintain product effectiveness' }
             ],
             'before-after': [
-                { id: 'infection-clear', title: 'Infection Clearing', content: 'Most infections clear within 7-14 days of consistent application.' }
+                { id: 'infection-clear', title: 'Before Use', content: '• Active acne, pimples, and breakouts\n• Oily skin with clogged pores\n• Redness, irritation, and inflammation\n• Uneven and rough skin texture' },
+                { id: 'cream-apply', title: 'After Use', content: '• Reduced acne and clearer skin\n• Balanced oil and cleaner pores\n• Calm, soothed, and less irritated skin\n• Smoother and more even skin texture' }
+
             ],
             usage: [
-                { id: 'cream-apply', title: 'Application', content: 'Apply twice daily to affected area and surrounding skin.' }
+                { id: 'cream-apply', title: 'Usage', content: '• Cleanse and dry your face properly\n• Apply a thin layer to affected areas\n• Use once or twice daily as directed\n• Avoid eye area and use sunscreen during the day' },
+                
             ],
             faq: [
                 { id: 'contagious', title: 'Is it contagious?', content: 'Fungal infections can be contagious; maintain good hygiene during treatment.' }
             ],
             other: [
-                { id: 'duration', title: 'Treatment Duration', content: 'Continue use for the full recommended period, even if symptoms disappear.' }
+                { id: 'duration', title: 'Other Information', content: '• Keep the cap tightly closed after use.\n• Keep out of reach of children.' }
             ],
             legal: [
                 { id: 'schedule', title: 'Schedule', content: 'Schedule H Drug.' }
@@ -252,6 +260,8 @@ export const products = [
         tagline: "Advanced Dual Action Acne Therapy",
         image: acnevorImg,
         description: "Advanced acne treatment gel combining Adapalene (retinoid) & Clindamycin (antibiotic). Targets acne at the root by unclogging pores and fighting acne-causing bacteria. Lightweight, fast-absorbing formula for effective daily treatment. Suitable for oily, acne-prone, and combination skin",
+        precautions:"Product from direct sunlight,  Avoid contact with eyes. ",
+
         category: "Nutraceutical",
         color: "#f5f0e6",
         price: 689,
@@ -278,7 +288,7 @@ export const products = [
                 { id: 'ayurvedic', title: 'Is it ayurvedic?', content: 'It is a scientifically formulated nutraceutical supplement.' }
             ],
             other: [
-                { id: 'vegetarian', title: 'Dietary Info', content: '100% Vegetarian tablets.' }
+                { id: 'vegetarian', title: 'Other Information', content: '• Protect from direct sunlight Avoid contact with eyes.\n•  Keep out of reach of children.\n• Keep the cap tightly closed after Use' }
             ],
             legal: [
                 { id: 'fssai', title: 'FSSAI Approved', content: 'Certified as a safe dietary supplement.' }
