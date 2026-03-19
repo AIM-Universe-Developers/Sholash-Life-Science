@@ -44,9 +44,11 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     </div>
 
                     <div className="detail-info fade-in">
-                        <span className="detail-category">{product.category}</span>
-                        <h1 className="serif">{product.name}</h1>
-                        <h2 className='tag'>{product.tagline}</h2>
+                        <div className="category-tag-wrapper">
+                            <span className="detail-category">{product.category}</span>
+                        </div>
+                        <h1 className="product-title">{product.name}</h1>
+                        <p className="tag">{product.tagline}</p>
                         
 
                         <div className="detail-meta">
@@ -59,10 +61,32 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         </div>
 
                         <p className="detail-desc">{product.description}</p>
-                           <h3 className='target'>{product.Target}</h3>
-                           <h2 className='tar'>{product.tar}</h2>
-                           <h2 className='futch'>{product.futch}</h2>
-                           <h2 className='precautions'>{product.precautions}</h2>
+                        <div className="additional-info-container">
+                            {product.Target && (
+                                <div className="info-row">
+                                    <span className="info-label">Target:</span>
+                                    <span className="info-value">{product.Target}</span>
+                                </div>
+                            )}
+                            {product.tar && (
+                                <div className="info-row">
+                                    <span className="info-label">Composition:</span>
+                                    <span className="info-value">{product.tar}</span>
+                                </div>
+                            )}
+                            {product.futch && (
+                                <div className="info-row">
+                                    <span className="info-label">Features:</span>
+                                    <span className="info-value">{product.futch}</span>
+                                </div>
+                            )}
+                            {product.precautions && (
+                                <div className="info-row precautions-row">
+                                    <span className="info-label">Note:</span>
+                                    <span className="info-value">{product.precautions}</span>
+                                </div>
+                            )}
+                        </div>
                         <div className="detail-features">
                             <h3>Key Benefits:</h3>
                             <ul>
@@ -91,15 +115,12 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <div className="detail-trust-badges">
                             <div className="badge-item">
-                                <span className="badge-icon"></span>
                                 <span>Dermatologist Tested</span>
                             </div>
                             <div className="badge-item">
-                                <span className="badge-icon"></span>
                                 <span>100% Ingredients</span>
                             </div>
                             <div className="badge-item">
-                                <span className="badge-icon"></span>
                                 <span>Cruelty Free</span>
                             </div>
                         </div>
