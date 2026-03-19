@@ -42,7 +42,7 @@ const ProductAccordion = ({ product }) => {
                             >
                                 <span className="accordion-title serif">{section.title}</span>
                                 <span className="accordion-icon">
-                                    {openSection === section.id ? '⌃' : 'V'}
+                                    {openSection === section.id ? '−' : '+'}
                                 </span>
                             </button>
 

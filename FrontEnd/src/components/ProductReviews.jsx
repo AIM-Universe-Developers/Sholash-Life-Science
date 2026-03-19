@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './ProductReviews.css';
 
 const ProductReviews = () => {
@@ -33,71 +34,22 @@ const ProductReviews = () => {
         'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
     ];
 
-    const [allReviews, setAllReviews] = useState([
-        {
-            id: 1,
-            user: "Nyra",
-            verified: true,
-            location: "🇮🇳",
-            rating: 5,
-            title: "Aloe Vera gel",
-            content: "Loving it. My skin is so soft and soothing.",
-            date: "2 days ago"
-        },
-        {
-            id: 2,
-            user: "Anonymous",
-            verified: true,
-            location: "🇬🇧",
-            rating: 5,
-            title: "Good",
-            content: "Good",
-            date: "1 week ago"
-        },
-        {
-            id: 3,
-            user: "esadurai",
-            verified: true,
-            location: "🇮🇳",
-            rating: 5,
-            title: "wonderful product",
-            content: "act as a compliment and as always it is just awesome as the other products that I have been using so far",
-            date: "3 weeks ago"
-        },
-        {
-            id: 4,
-            user: "Rahul S.",
-            verified: true,
-            location: "🇮🇳",
-            rating: 4,
-            title: "Great results",
-            content: "I've been using this for a month and can see a visible difference. Highly recommend for daily use.",
-            date: "1 month ago"
-        },
-        {
-            id: 5,
-            user: "Sarah M.",
-            verified: true,
-            location: "🇺🇸",
-            rating: 1,
-            title: "Not for me",
-            content: "It didn't work well with my skin type. Had some redness.",
-            date: "2 months ago"
-        },
-        {
-            id: 6,
-            user: "Priya K.",
-            verified: true,
-            location: "🇮🇳",
-            rating: 5,
-            title: "Must buy!",
-            content: "The best product in this range. Worth every penny.",
-            date: "2 months ago"
-        }
-    ]);
+    const { id: productId } = useParams();
+    const storageKey = `sholash_reviews_${productId}`;
 
-    // Filter reviews: "under 1 star hide the review" 
-    const filteredReviews = allReviews.filter(review => review.rating > 1);
+    const [allReviews, setAllReviews] = useState(() => {
+        const saved = localStorage.getItem(storageKey);
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    // Save reviews whenever they change
+    useEffect(() => {
+        localStorage.setItem(storageKey, JSON.stringify(allReviews));
+    }, [allReviews, storageKey]);
+
+
+    // Show all reviews including 1 star
+    const filteredReviews = allReviews;
 
     // Dynamic calculations
     const totalReviews = filteredReviews.length;
@@ -249,14 +201,14 @@ const ProductReviews = () => {
                         <div className="transparency-badge">
                             <div className="badge-ring">
                                 <div className="badge-inner">
-                                    <svg viewBox="0 0 100 100" className="badge-svg">
+                                    {/* <svg viewBox="0 0 100 100" className="badge-svg">
                                         <path id="curve" d="M 25, 50 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0" fill="transparent" />
                                         <text className="badge-text" fontSize="10">
                                             <textPath xlinkHref="#curve">SILVER TRANSPARENCY • </textPath>
                                         </text>
-                                    </svg>
-                                    <div className="badge-score">92.3</div>
-                                    <div className="badge-check">✔</div>
+                                    </svg> */}
+                                    {/* <div className="badge-score">92.3</div>
+                                    <div className="badge-check">✔</div> */}
                                 </div>
                             </div>
                         </div>
