@@ -107,3 +107,33 @@
 .admin-card:hover {
   box-shadow: var(--admin-shadow-md);
 }
+
+/* --- Global Admin Scrollbars --- */
+/* For Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--admin-border);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--admin-primary);
+  background-clip: content-box;
+  border: 1px solid transparent;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--admin-border) transparent;
+}

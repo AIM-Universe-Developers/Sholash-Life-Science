@@ -60,6 +60,49 @@ const createProduct = async (req, res, next) => {
     }
 };
 
+// ─── @desc   Get All Products for Admin (including inactive)
+// ─── @route  GET /api/products/admin/all
+// ─── @access Private (Admin)
+const getAllProductsAdmin = async (req, res, next) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 50;
+        const skip = (page - 1) * limit;
+
+        const filter = {};
+
+        if (req.query.category) filter.category = req.query.category;
+        if (req.query.search) {
+            filter.$or = [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { brand: { $regex: req.query.search, $options: "i" } },
+            ];
+        }
+        if (req.query.status === "active") filter.isActive = true;
+        if (req.query.status === "inactive") filter.isActive = false;
+
+        const sort = { createdAt: -1 };
+
+        const [products, total] = await Promise.all([
+            Product.find(filter)
+                .populate("category", "name")
+                .sort(sort)
+                .skip(skip)
+                .limit(limit),
+            Product.countDocuments(filter),
+        ]);
+
+        res.status(200).json({
+            success: true,
+            message: "Admin products fetched",
+            data: products,
+            pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // ─── @desc   Get All Products (with search, filter & pagination)
 // ─── @route  GET /api/products
 // ─── @access Public
@@ -217,6 +260,7 @@ const deleteProduct = async (req, res, next) => {
 
 module.exports = {
     createProduct,
+    getAllProductsAdmin,
     getAllProducts,
     getProductById,
     updateProduct,
