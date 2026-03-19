@@ -16,21 +16,21 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
                 </header>
 
                 {cart.length === 0 ? (
-                    <div className="empty-cart glass">
-                        <div className="empty-icon">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <div className="empty-cart fade-in">
+                        <div className="empty-icon-container">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                         </div>
-                        <h3>Your cart is empty</h3>
-                        <p>Looks like you haven't added anything to your cart yet.</p>
-                        <Link to="/" className="btn-primary">Start Shopping</Link>
+                        <h2 className="serif">Your cart is empty</h2>
+                        <p>Discover our range of dermatologist-tested premium skincare.</p>
+                        <Link to="/" className="btn-shopping">Start Shopping</Link>
                     </div>
                 ) : (
                     <div className="cart-content">
                         <div className="cart-items-list">
                             {cart.map((item) => (
                                 <div key={item.id} className="cart-item glass fade-in">
-                                    <div className="item-image" style={{ backgroundColor: item.color || '#f0f0f0' }}>
-                                        <div className="item-silhouette"></div>
+                                    <div className="item-image-container">
+                                        <img src={item.image} alt={item.name} className="item-img" />
                                     </div>
                                     <div className="item-details">
                                         <span className="item-category">{item.category}</span>
@@ -39,12 +39,12 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
                                     </div>
                                     <div className="item-actions">
                                         <div className="cart-quantity-selector">
-                                            <button onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}>-</button>
+                                            <button onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}>−</button>
                                             <span>{item.quantity}</span>
                                             <button onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}>+</button>
                                         </div>
                                         <button className="btn-remove" onClick={() => onRemoveFromCart(item.id)}>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                                         </button>
                                     </div>
                                 </div>
@@ -53,20 +53,40 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
 
                         <aside className="cart-summary glass sticky">
                             <h2 className="serif">Order Summary</h2>
-                            <div className="summary-row">
-                                <span>Subtotal</span>
-                                <span>₹{total}</span>
+                            <div className="summary-details">
+                                <div className="summary-row">
+                                    <span>Subtotal</span>
+                                    <span>₹{total}</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Shipping</span>
+                                    <span className="free">FREE</span>
+                                </div>
+                                <div className="summary-total">
+                                    <span>Total</span>
+                                    <span>₹{total}</span>
+                                </div>
                             </div>
-                            <div className="summary-row">
-                                <span>Shipping</span>
-                                <span className="free">FREE</span>
+                            <button className="btn-checkout" onClick={() => navigate('/payment')}>
+                                Secure Checkout
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '10px' }}><path d="M5 12h14m-7-7 7 7-7 7"></path></svg>
+                            </button>
+                            
+                            <div className="trust-badges-mini">
+                                <div className="trust-badge-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                    <span>Secure Payment</span>
+                                </div>
+                                <div className="trust-badge-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                                    <span>100% Satisfaction</span>
+                                </div>
                             </div>
-                            <div className="summary-total">
-                                <span>Total</span>
-                                <span>₹{total}</span>
-                            </div>
-                            <button className="btn-checkout" onClick={() => navigate('/payment')}>Proceed to Checkout</button>
-                            <Link to="/" className="continue-shopping">Continue Shopping</Link>
+                            
+                            <Link to="/" className="continue-shopping">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}><path d="M19 12H5m7 7-7-7 7-7"></path></svg>
+                                Continue Shopping
+                            </Link>
                         </aside>
                     </div>
                 )}
