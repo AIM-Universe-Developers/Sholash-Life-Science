@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import ProductAccordion from '../components/ProductAccordion';
@@ -11,6 +11,28 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const [quantity, setQuantity] = useState(1);
 
     const product = products.find(p => p.id === parseInt(id));
+    const [dynamicRating, setDynamicRating] = useState(product ? product.rating : 0);
+    const [dynamicReviewsCount, setDynamicReviewsCount] = useState(product ? product.reviewsCount : 0);
+
+    useEffect(() => {
+        if (id) {
+            const storageKey = `sholash_reviews_${id}`;
+            const savedReviews = localStorage.getItem(storageKey);
+            if (savedReviews) {
+                const reviews = JSON.parse(savedReviews);
+                if (reviews.length > 0) {
+                    const total = reviews.length;
+                    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / total;
+                    setDynamicRating(avg.toFixed(1));
+                    setDynamicReviewsCount(total);
+                } else {
+                    setDynamicRating(product.rating);
+                    setDynamicReviewsCount(0);
+                }
+            }
+        }
+    }, [id, product]);
+
 
     if (!product) {
         return (
@@ -53,8 +75,8 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                             <div className="detail-price">MRP: ₹{product.price}</div>
                             <div className="detail-rating">
                                 <span className="star">★</span>
-                                <span className="rating-val">{product.rating}</span>
-                                <span className="rev-count">({product.reviewsCount} verified reviews)</span>
+                                <span className="rating-val">{dynamicRating}</span>
+                                <span className="rev-count">({dynamicReviewsCount} verified reviews)</span>
                             </div>
                         </div>
 
