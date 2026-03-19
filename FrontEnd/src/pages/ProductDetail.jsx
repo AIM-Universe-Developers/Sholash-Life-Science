@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
+import axios from 'axios';
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
 import './ProductDetail.css';
@@ -9,7 +9,40 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const res = await axios.get(`/api/products/${id}`);
+                if (res.data.success) {
+                    setProduct(res.data.data);
+                }
+            } catch (err) {
+                console.error('Failed to fetch product', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [id]);
+
+    const getImageUrl = (img) => {
+        if (!img) return '';
+        if (img.startsWith('http')) return img;
+        return `/${img}`;
+    };
+
+    if (loading) {
+        return (
+            <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
+                <p>Loading product...</p>
+            </div>
+        );
+    }
+=======
     const product = products.find(p => p.id === parseInt(id));
     const [dynamicRating, setDynamicRating] = useState(product ? product.rating : 0);
     const [dynamicReviewsCount, setDynamicReviewsCount] = useState(product ? product.reviewsCount : 0);
@@ -33,6 +66,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         }
     }, [id, product]);
 
+>>>>>>> f7515cb76e04c86d32b18121b7271ab7629f3004
 
     if (!product) {
         return (
@@ -45,6 +79,9 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         );
     }
 
+    const categoryName = typeof product.category === 'object' ? product.category?.name : product.category;
+    const mainImage = product.images?.[0] ? getImageUrl(product.images[0]) : '';
+
     const handleAddToCart = () => {
         onAddToCart(product, quantity);
     };
@@ -54,35 +91,63 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
             <div className="container">
                 <div className="breadcrumb">
                     <span onClick={() => navigate('/')}>Home</span> /
-                    <span onClick={() => navigate('/')}> {product.category}</span> /
+                    <span onClick={() => navigate('/')}> {categoryName}</span> /
                     <span className="active"> {product.name}</span>
                 </div>
 
                 <div className="detail-container">
                     <div className="detail-visual fade-in">
                         <div className="detail-image-wrapper glass" style={{ '--product-accent': product.color }}>
-                            <img src={product.image} alt={product.name} className="detail-image" />
+                            <img src={mainImage} alt={product.name} className="detail-image" />
                         </div>
                     </div>
 
                     <div className="detail-info fade-in">
+<<<<<<< HEAD
+                        <span className="detail-category">{categoryName}</span>
+                        <h1 className="serif">{product.name}</h1>
+                        <h2 className='tag'>{product.tagline}</h2>
+=======
                         <div className="category-tag-wrapper">
                             <span className="detail-category">{product.category}</span>
                         </div>
                         <h1 className="product-title">{product.name}</h1>
                         <p className="tag">{product.tagline}</p>
+>>>>>>> f7515cb76e04c86d32b18121b7271ab7629f3004
                         
 
                         <div className="detail-meta">
                             <div className="detail-price">MRP: ₹{product.price}</div>
                             <div className="detail-rating">
                                 <span className="star">★</span>
+<<<<<<< HEAD
+                                <span className="rating-val">{product.rating}</span>
+                                <span className="rev-count">({product.numReviews} verified reviews)</span>
+=======
                                 <span className="rating-val">{dynamicRating}</span>
                                 <span className="rev-count">({dynamicReviewsCount} verified reviews)</span>
+>>>>>>> f7515cb76e04c86d32b18121b7271ab7629f3004
                             </div>
                         </div>
 
                         <p className="detail-desc">{product.description}</p>
+<<<<<<< HEAD
+                        {product.target && product.target.length > 0 && (
+                            <h3 className='target'>{product.target.join(', ')}</h3>
+                        )}
+                        {product.features && product.features.length > 0 && (
+                            <div className="detail-features">
+                                <h3>Key Benefits:</h3>
+                                <ul>
+                                    {product.features.map((feature, index) => (
+                                        <li key={index}>
+                                            <span className="check">✓</span> {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+=======
                         <div className="additional-info-container">
                             {product.Target && (
                                 <div className="info-row">
@@ -119,6 +184,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 ))}
                             </ul>
                         </div>
+>>>>>>> f7515cb76e04c86d32b18121b7271ab7629f3004
 
                         <div className="purchase-controls">
                             <div className="quantity-selector">
@@ -127,7 +193,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 <button onClick={() => setQuantity(q => q + 1 )}>+</button>
                             </div>
                             <button className="btn-add-large" onClick={handleAddToCart}>
-                                Add to Cart{product.quantity}
+                                Add to Cart
                             </button>
 
                             <button className="btn-add-large" onClick={() => onBuyClick && onBuyClick(product)}>
@@ -157,3 +223,4 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 };
 
 export default ProductDetail;
+

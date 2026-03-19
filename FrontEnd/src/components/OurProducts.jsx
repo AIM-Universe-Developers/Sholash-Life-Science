@@ -1,11 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
+import axios from 'axios';
 import './OurProducts.css';
 
 const OurProducts = ({ searchQuery = '' }) => {
     const navigate = useNavigate();
     const sectionRef = useRef(null);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const params = {};
+                if (searchQuery.trim()) params.search = searchQuery;
+                const res = await axios.get('/api/products', { params });
+                if (res.data.success) {
+                    setProducts(res.data.data || []);
+                }
+            } catch (err) {
+                console.error('Failed to fetch products', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, [searchQuery]);
 
     useEffect(() => {
         const cards = sectionRef.current?.querySelectorAll('.our-product-card');
@@ -29,40 +49,49 @@ const OurProducts = ({ searchQuery = '' }) => {
         });
 
         return () => observer.disconnect();
-    }, [searchQuery]);
+    }, [products]);
 
-    // Filtering logic based on search query
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const getImageUrl = (product) => {
+        if (product.images && product.images.length > 0) {
+            const img = product.images[0];
+            if (img.startsWith('http')) return img;
+            return `/${img}`;
+        }
+        return '';
+    };
 
-    // If search is empty, show the core products (original 3x2+1 grid look)
-    // Otherwise show all matching products
-    const displayProducts = searchQuery.trim() === ''
-        ? products.filter(p => [1, 2, 3, 4, 5, 6, 7].includes(p.id))
-        : filteredProducts;
+    if (loading) {
+        return (
+            <section id="products" className="products-section our-products-section">
+                <div className="container" style={{ textAlign: 'center', padding: '4rem 0' }}>
+                    <p>Loading products...</p>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section id="products" className="products-section our-products-section" ref={sectionRef}>
             <div className="container">
-                <marquee>Calgro™ || Ceramois™ || Glazzium™ || Uvinor™ || Acnevor CN™ || Acnevor™ || SertaFree™</marquee>
+                <marquee>
+                    {products.map(p => p.name.split('–')[0].trim()).join(' || ')}
+                </marquee>
                 <h2 className="our-products-title serif">
                     {searchQuery.trim() === '' ? 'Our Product' : 'Search Results'}
                 </h2>
 
-                {displayProducts.length > 0 ? (
+                {products.length > 0 ? (
                     <div className="our-products-grid">
-                        {displayProducts.map(product => (
+                        {products.map(product => (
                             <div
-                                key={product.id}
+                                key={product._id}
                                 className="our-product-card"
-                                onClick={() => navigate(`/product/${product.id}`)}
+                                onClick={() => navigate(`/product/${product._id}`)}
                             >
                                 <div className="our-product-image-container">
-                                    <img src={product.image} alt={product.name} className="our-product-image" />
+                                    <img src={getImageUrl(product)} alt={product.name} className="our-product-image" />
                                 </div>
-                                <h3 className="our-product-name">{product.name.split('-')[0]}</h3>
+                                <h3 className="our-product-name">{product.name.split('–')[0]}</h3>
                             </div>
                         ))}
                     </div>
@@ -78,3 +107,4 @@ const OurProducts = ({ searchQuery = '' }) => {
 };
 
 export default OurProducts;
+

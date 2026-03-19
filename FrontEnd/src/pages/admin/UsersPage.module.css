@@ -3,6 +3,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  
 }
 
 .title h2 {
@@ -10,6 +11,7 @@
   font-weight: 700;
   color: var(--admin-text-main);
   margin: 0;
+  font-family:'Times New Roman';
 }
 
 .title p {
