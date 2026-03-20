@@ -1,19 +1,12 @@
-<<<<<<< HEAD
-import React, { useState, useEffect, useRef } from 'react';
-=======
 import React, { useEffect, useRef, useState } from 'react';
->>>>>>> 21895ce55f9dff65f2a636e5ad64009615c7274c
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { products as staticProducts } from '../data/products';
 import './OurProducts.css';
 
 const OurProducts = ({ searchQuery = '' }) => {
     const navigate = useNavigate();
     const sectionRef = useRef(null);
-<<<<<<< HEAD
-    const [hoveredProductId, setHoveredProductId] = useState(null);
-
-=======
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -23,18 +16,33 @@ const OurProducts = ({ searchQuery = '' }) => {
                 const params = {};
                 if (searchQuery.trim()) params.search = searchQuery;
                 const res = await axios.get('/api/products', { params });
-                if (res.data.success) {
-                    setProducts(res.data.data || []);
+                if (res.data.success && res.data.data.length > 0) {
+                    setProducts(res.data.data);
+                } else {
+                    // Fallback to static data
+                    const filtered = searchQuery.trim()
+                        ? staticProducts.filter(p =>
+                            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            p.category.toLowerCase().includes(searchQuery.toLowerCase())
+                          )
+                        : staticProducts;
+                    setProducts(filtered);
                 }
             } catch (err) {
-                console.error('Failed to fetch products', err);
+                // API unavailable — use static data
+                const filtered = searchQuery.trim()
+                    ? staticProducts.filter(p =>
+                        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                    : staticProducts;
+                setProducts(filtered);
             } finally {
                 setLoading(false);
             }
         };
         fetchProducts();
     }, [searchQuery]);
->>>>>>> 21895ce55f9dff65f2a636e5ad64009615c7274c
 
     useEffect(() => {
         const cards = sectionRef.current?.querySelectorAll('.our-product-card');
@@ -60,13 +68,16 @@ const OurProducts = ({ searchQuery = '' }) => {
         return () => observer.disconnect();
     }, [products]);
 
-    const getImageUrl = (product) => {
+    const getImageUrl = (product, hover = false) => {
+        // API product: uses images[]
         if (product.images && product.images.length > 0) {
-            const img = product.images[0];
+            const img = hover && product.images[1] ? product.images[1] : product.images[0];
             if (img.startsWith('http')) return img;
             return `/${img}`;
         }
-        return '';
+        // Static product: uses image / hoverImage
+        if (hover && product.hoverImage) return product.hoverImage;
+        return product.image || '';
     };
 
     if (loading) {
@@ -91,31 +102,29 @@ const OurProducts = ({ searchQuery = '' }) => {
 
                 {products.length > 0 ? (
                     <div className="our-products-grid">
-                        {products.map(product => (
-                            <div
-                                key={product._id}
-                                className="our-product-card"
-<<<<<<< HEAD
-                                onClick={() => navigate(`/product/${product.id}`)}
-                                onMouseEnter={() => setHoveredProductId(product.id)}
-                                onMouseLeave={() => setHoveredProductId(null)}
-                            >
-                                <div className="our-product-image-container">
-                                    <img 
-                                        src={hoveredProductId === product.id && product.hoverImage ? product.hoverImage : product.image} 
-                                        alt={product.name} 
-                                        className="our-product-image" 
-                                    />
-=======
-                                onClick={() => navigate(`/product/${product._id}`)}
-                            >
-                                <div className="our-product-image-container">
-                                    <img src={getImageUrl(product)} alt={product.name} className="our-product-image" />
->>>>>>> 21895ce55f9dff65f2a636e5ad64009615c7274c
+                        {products.map(product => {
+                            const productId = product._id || product.id;
+                            return (
+                                <div
+                                    key={productId}
+                                    className="our-product-card"
+                                    onClick={() => navigate(`/product/${productId}`)}
+                                    onMouseEnter={e => {
+                                        const img = e.currentTarget.querySelector('.our-product-image');
+                                        if (img) img.src = getImageUrl(product, true);
+                                    }}
+                                    onMouseLeave={e => {
+                                        const img = e.currentTarget.querySelector('.our-product-image');
+                                        if (img) img.src = getImageUrl(product, false);
+                                    }}
+                                >
+                                    <div className="our-product-image-container">
+                                        <img src={getImageUrl(product)} alt={product.name} className="our-product-image" />
+                                    </div>
+                                    <h3 className="our-product-name">{product.name.split('–')[0]}</h3>
                                 </div>
-                                <h3 className="our-product-name">{product.name.split('–')[0]}</h3>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="no-results" style={{ textAlign: 'center', padding: '3rem 0', opacity: 0.7 }}>
