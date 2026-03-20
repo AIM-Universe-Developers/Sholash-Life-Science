@@ -6,18 +6,29 @@ import sertafreeImg from '../assets/PRODUCT HOME IMAGE/Serta Free.png';
 import acnevorCnImg from '../assets/PRODUCT HOME IMAGE/Acnevor CN.png';
 import acnevorImg from '../assets/PRODUCT HOME IMAGE/Acnevor Gel.png';
 
+// Secondary/Hover Images
+import calgroHover from '../assets/product image/tablet box-1.png';
+import ceramoisHover from '../assets/product image/skin care routine -1.png';
+import glazziumHover from '../assets/product image/skin care routine -2.png';
+import uvinorHover from '../assets/product image/Sunscreen.png';
+import sertafreeHover from '../assets/product image/Serta Free.png';
+import acnevorCnHover from '../assets/product image/Acnevor CN with Box.png';
+import acnevorHover from '../assets/product image/Acnevor with box.png';
+
+
 export const products = [
     {
         id: 1,
         name: "Calgro™ – Nutraceutical Tablets",
         tagline: " Complete Nutritional Support for Stronger Bones, Better Energy, and Overall Wellness.",
         image: calgroImg,
+        hoverImage: calgroHover,
 
         description: "Calgro™ is a nutraceutical supplement formulated with vitamins, minerals, amino acids,and botanical extracts to support overall health and nutrition.",
         tar:"Vitamins, Minerals, Amino Acids With Isoflavones and Grape Seed Extract Tablets",
         category: "Protection",
         color: "#e6f2ed",
-        price: 499,
+        price: 325.00,
         rating: 4.8,
         reviewsCount: 6,
         Target:["Target Consumer Group:For Adults (Moderate Men & Women)"],
@@ -56,13 +67,14 @@ export const products = [
         name: "Ceramois™ – Ultra Nourishing Moisturizing Lotion",
         tagline: "Deep Hydration. Stronger Skin Barrier. All-Day Moisture.",
         image: ceramoisImg,
+        hoverImage: ceramoisHover,
         description: "Ceramois lotion this moisturizing lotion helps improve the health of dry skin. It helps prevent & protect dry skin for full 24 hours.",
         tar:"Ultra Nourishing Moisturizing Lotion Strengthens the skin barrier \n\t Ceramides + Hyaluronic Acid + Sheabutter",
         futch:"Invisible Hydration" +"\n\t" + "Normal to dry sensitive skin" +"\n\n"+"Formulated With"+"\n\t"+"Dermatologically Tested Actives",
         precautions:"Avoid contact with eyes. If irritation occurs, rinse thoroughly with water.",
         category: "Moisturizer",
         color: "#f5eceb",
-        price: 299,
+        price: 690.00,
         rating: 4.9,
         reviewsCount: 6,
         features: ["Ceramide Enriched", "24h Hydration", "Fragrance Free", "Deep Nourishment"],
@@ -97,13 +109,14 @@ export const products = [
         name: "Glazzium™ – Anti-Acne Detoxifying Face Wash",
         tagline: " Deep Clean. Oil Control. Clear & Healthy Skin.",
         image: glazziumImg,
+        hoverImage: glazziumHover,
         description: "Glazzium face wash is a gently exfoliating and enriched with natural extracs that reach deep into your skins blocked pores to remove trapped oil, toxins, dead skin and acne. Moisture is locked in, Make your skin cleansed, nourished and toned. ",
         tar:"Removes excess oil,  Relieves impurities, Imparts a healthy glow , Gentle for everday use",
         futch:"Paraben Free , Light & Non Greasy, Non Comedogenic",
          precautions:"Avoid contact with eyes. If Irritation occurs, rinse thoroughly with water.",
         category: "Cleanser",
         color: "#e8f0f2",
-        price: 698,
+        price: 392.00,
         rating: 4.7,
         reviewsCount: 6,
         features: ["Detoxifying Action", "Oil Control", "Gentle Cleansing", "Anti-acne Properties"],
@@ -138,11 +151,12 @@ export const products = [
         name: "Uvinor™ – Clear Radiance Skin Brightening Sunscreen SPF 50+",
         tagline: "Powerful Sun Protection with Hydration and Skin Brightening.",
         image: uvinorImg,
+        hoverImage: uvinorHover,
         description: "Uvinor SPF 50+ helps protect sensitive skin from UV induced damage and also acts as a mositrurizer.  This sunblock offers broad spectrum protection against the sun's damaging rays. Safe on young delicate skin of children. ",
         tar:"Fortified with Niacinamide, Chamomile and Hyaclear 7,  Formulated with Dermatologically Tested Actives.",
         category: "Treatment",
         color: "#f0f0f0",
-        price: 659,
+        price: 498.00,
         rating: 4.6,
         reviewsCount: 6,
         features: ["Clinical Grade", "Pore Minimizing", "Sebum Control", "Fast Acting"],
@@ -177,11 +191,12 @@ export const products = [
         name: "SertaFree™ – Sertaconazole Nitrate Cream",
         tagline: " Effective Relief from Fungal Skin Infections",
         image: sertafreeImg,
+        hoverImage: sertafreeHover,
         description: "Broad-spectrum antifungal cream with Sertaconazole Nitrate,Effectively treats fungal infections like ringworm, athlete’s foot & jock itch,Provides quick relief from itching, redness, and irritation,Smooth, non-greasy formula suitable for daily application.",
         tar:"Avoid contact with eyes, mouth and open wounds. If contact occurs, wash thoroughy with water. Keep the medicine out of reach of children.",
         category: "Treatment",
         color: "#ebf2f5",
-        price: 270,
+        price: 232.00,
         rating: 4.8,
         reviewsCount: 6,
         features: ["Anti-inflammatory", "Texture Improvement", "Soothing Effect", "Dermatological Solution"],
@@ -215,14 +230,15 @@ export const products = [
     },
     {
         id: 6,
-        name: "Acnevor CN™ – Clindamycin & Nicotinamide Gel",
+        name: "Acnevor CN™ – Clindamycin Phosphate & Nicotinamide Gel",
         tagline: " Targeted Treatment for Acne & Skin Inflammation.",
         image: acnevorCnImg,
+        hoverImage: acnevorCnHover,
         description: "Advanced anti-acne gel with Clindamycin & Nicotinamide,Targets acne-causing bacteria and reduces inflammationLightweight, non-greasy formula for quick absorption,Ideal for oily and acne-prone skin.",
         precautions:"Product from direct sunlight,  Avoid contact with eyes.",
         category: "Special Care",
         color: "#f2f5e9",
-        price: 480,
+        price: 186.00,
         rating: 4.9,
         reviewsCount: 6,
         features: ["Fast Relief", "Skin Restoration", "Intensive Care", "Safe for Sensitive Skin"],
@@ -259,12 +275,13 @@ export const products = [
         name: "Acnevor™ – Adapalene & Clindamycin Phosphate Gel",
         tagline: "Advanced Dual Action Acne Therapy",
         image: acnevorImg,
+        hoverImage: acnevorHover,
         description: "Advanced acne treatment gel combining Adapalene (retinoid) & Clindamycin (antibiotic). Targets acne at the root by unclogging pores and fighting acne-causing bacteria. Lightweight, fast-absorbing formula for effective daily treatment. Suitable for oily, acne-prone, and combination skin",
         precautions:"Product from direct sunlight,  Avoid contact with eyes. ",
 
         category: "Nutraceutical",
         color: "#f5f0e6",
-        price: 689,
+        price: 255.00,
         rating: 4.5,
         reviewsCount: 6,
         features: ["Internal Nutrition", "Hair & Skin Health", "Vitamins & Minerals", "Complete Daily Supplement"],

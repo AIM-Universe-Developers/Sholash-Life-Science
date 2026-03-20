@@ -9,6 +9,8 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
+    const [isHovered, setIsHovered] = useState(false);
+
 
     const product = products.find(p => p.id === parseInt(id));
     const [dynamicRating, setDynamicRating] = useState(product ? product.rating : 0);
@@ -60,8 +62,17 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                 <div className="detail-container">
                     <div className="detail-visual fade-in">
-                        <div className="detail-image-wrapper glass" style={{ '--product-accent': product.color }}>
-                            <img src={product.image} alt={product.name} className="detail-image" />
+                        <div 
+                            className="detail-image-wrapper glass" 
+                            style={{ '--product-accent': product.color }}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                        >
+                            <img 
+                                src={isHovered && product.hoverImage ? product.hoverImage : product.image} 
+                                alt={product.name} 
+                                className="detail-image" 
+                            />
                         </div>
                     </div>
 

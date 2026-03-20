@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import './OurProducts.css';
@@ -6,6 +6,8 @@ import './OurProducts.css';
 const OurProducts = ({ searchQuery = '' }) => {
     const navigate = useNavigate();
     const sectionRef = useRef(null);
+    const [hoveredProductId, setHoveredProductId] = useState(null);
+
 
     useEffect(() => {
         const cards = sectionRef.current?.querySelectorAll('.our-product-card');
@@ -58,9 +60,15 @@ const OurProducts = ({ searchQuery = '' }) => {
                                 key={product.id}
                                 className="our-product-card"
                                 onClick={() => navigate(`/product/${product.id}`)}
+                                onMouseEnter={() => setHoveredProductId(product.id)}
+                                onMouseLeave={() => setHoveredProductId(null)}
                             >
                                 <div className="our-product-image-container">
-                                    <img src={product.image} alt={product.name} className="our-product-image" />
+                                    <img 
+                                        src={hoveredProductId === product.id && product.hoverImage ? product.hoverImage : product.image} 
+                                        alt={product.name} 
+                                        className="our-product-image" 
+                                    />
                                 </div>
                                 <h3 className="our-product-name">{product.name.split('-')[0]}</h3>
                             </div>

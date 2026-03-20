@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+
 import './ProductReviews.css';
 
 const ProductReviews = () => {
     const [activeTab, setActiveTab] = useState('reviews');
     const [sortBy, setSortBy] = useState('Highest Rating');
     const [isSortOpen, setIsSortOpen] = useState(false);
+    const { user } = useContext(UserContext);
     
     // Manual Review States
+
     const [userRating, setUserRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -64,7 +68,22 @@ const ProductReviews = () => {
     });
 
     const handleStarClick = (rating) => {
+        if (!user) {
+            alert("Please sign in to rate this product!");
+            return;
+        }
         setUserRating(rating);
+    };
+
+    const toggleForm = () => {
+        if (!user) {
+            alert("Please sign in to write a review!");
+            return;
+        }
+        setIsFormOpen(!isFormOpen);
+        if (!isFormOpen && user) {
+            setReviewForm(prev => ({ ...prev, name: user.name || user.username || '' }));
+        }
     };
 
     const handleReviewSubmit = (e) => {
@@ -120,7 +139,7 @@ const ProductReviews = () => {
                     </div>
 
                     <div className="summary-right">
-                        <button className="btn-review-action fill" onClick={() => setIsFormOpen(!isFormOpen)}>
+                        <button className="btn-review-action fill" onClick={toggleForm}>
                             {isFormOpen ? 'Close Form' : 'Write a review'}
                         </button>
                     </div>
