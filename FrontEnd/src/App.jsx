@@ -29,6 +29,7 @@ import UsersPage from './pages/Admin/UsersPage';
 import OrdersPage from './pages/Admin/OrdersPage';
 import AnalyticsPage from './pages/Admin/AnalyticsPage';
 import SettingsPage from './pages/Admin/SettingsPage';
+import ProductsPage from './pages/Admin/ProductsPage';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -137,7 +138,7 @@ function App() {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="orders" element={<OrdersPage />} />
 
-                <Route path="products" element={<div>Products List</div>} />
+                <Route path="products" element={<ProductsPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="analytics" element={<AnalyticsPage />} />
                 <Route path="roles" element={<div>Roles & Permissions</div>} />

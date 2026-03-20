@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
     createProduct,
+    getAllProductsAdmin,
     getAllProducts,
     getProductById,
     updateProduct,
@@ -9,6 +10,9 @@ const {
 } = require("../controllers/productController");
 const { protect, isAdmin } = require("../middleware/adminAuthMiddleware");
 const { uploadMultiple } = require("../middleware/uploadMiddleware");
+
+// Admin (must be before /:id to avoid route conflict)
+router.get("/admin/all", protect, isAdmin, getAllProductsAdmin);
 
 // Public
 router.get("/", getAllProducts);
