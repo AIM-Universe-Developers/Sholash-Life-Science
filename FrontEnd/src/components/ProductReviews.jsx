@@ -243,7 +243,7 @@ const ProductReviews = () => {
                         <div className="media-grid">
                             {customerPhotos.map((url, i) => (
                                 <div key={i} className="media-item" onClick={() => setSelectedImage(url)}>
-                                    <img src={url} alt={`Customer ${i}`} />
+                                    {/* <img src={url} alt={`Customer ${i}`} /> */}
                                 </div>
                             ))}
                             {userBeforeImage && (
