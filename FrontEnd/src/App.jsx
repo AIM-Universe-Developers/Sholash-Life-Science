@@ -30,6 +30,7 @@ import OrdersPage from './pages/Admin/OrdersPage';
 import AnalyticsPage from './pages/Admin/AnalyticsPage';
 import SettingsPage from './pages/Admin/SettingsPage';
 import ProductsPage from './pages/Admin/ProductsPage';
+import RolesPage from './pages/Admin/RolesPage';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -144,7 +145,7 @@ function App() {
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="analytics" element={<AnalyticsPage />} />
-                <Route path="roles" element={<div>Roles & Permissions</div>} />
+                <Route path="roles" element={<RolesPage />} />
                 <Route path="settings" element={<SettingsPage />} />
             </Route>
 
