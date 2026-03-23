@@ -15,7 +15,13 @@ const protect = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
             // Attach admin doc (without password) to req
-            const admin = await Admin.findById(decoded.id).select("-password");
+            // Now populating 'role' and its 'permissions'
+            const admin = await Admin.findById(decoded.id)
+                .select("-password")
+                .populate({
+                    path: 'role',
+                    populate: { path: 'permissions' }
+                });
             
             if (!admin) {
                 return res.status(401).json({
@@ -31,18 +37,16 @@ const protect = async (req, res, next) => {
                 });
             }
 
-            // Temporarily, if the admin schema hasn't been migrated to reference the Role model
-            // we will simulate the Role population by finding the Role by 'name' matching admin.role
-            // In a full implementation where Admin.role references Role ObjectId, we'd use .populate('role')
-            const roleDoc = await Role.findOne({ name: admin.role }).populate('permissions');
-            
-            req.user = admin.toObject();
-            if (roleDoc) {
-                req.user.roleDetails = roleDoc;
-                req.user.permissions = roleDoc.permissions.map(p => p.name);
-            } else {
-                 req.user.permissions = [];
-            }
+            // Map permissions to a flat array for easy checking
+            const permissions = admin.role?.permissions?.map(p => p.name) || [];
+            const roleName = admin.role?.name || "";
+
+            req.user = {
+                ...admin.toObject(),
+                role: roleName, // Keep the string 'role' for backward compatibility in logic
+                roleId: admin.role?._id,
+                permissions: permissions
+            };
 
             next();
         } catch (error) {

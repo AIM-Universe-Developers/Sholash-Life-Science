@@ -137,7 +137,7 @@ const getAllProducts = async (req, res, next) => {
             "price-desc": { price: -1 },
             rating: { rating: -1 },
         };
-        const sort = sortOptions[req.query.sort] || { createdAt: -1 };
+        const sort = sortOptions[req.query.sort] || { createdAt: 1 };
 
         const [products, total] = await Promise.all([
             Product.find(filter)
