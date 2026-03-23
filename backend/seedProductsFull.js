@@ -1,0 +1,222 @@
+const mongoose = require("mongoose");
+require("dotenv").config();
+const Product = require("./models/Product");
+const Category = require("./models/Category");
+const fs = require("fs");
+
+// Real products with FULL details from products.js
+const fullProducts = [
+    {
+        name: "Calgro™ – Nutraceutical Tablets",
+        tagline: " Complete Nutritional Support for Stronger Bones, Better Energy, and Overall Wellness.",
+        image: "/src/assets/product image/tablet box.png",
+        hoverImage: "/src/assets/product image/tablet box-1.png",
+        description: "Calgro™ is a nutraceutical supplement formulated with vitamins, minerals, amino acids,and botanical extracts to support overall health and nutrition.",
+        tar: "Vitamins, Minerals, Amino Acids With Isoflavones and Grape Seed Extract Tablets",
+        categoryName: "Protection",
+        color: "#e6f2ed",
+        price: 325.00,
+        rating: 4.8,
+        reviewsCount: 6,
+        target: ["Target Consumer Group:For Adults (Moderate Men & Women)"],
+        features: ["Supports bone strength and joint health", "Supports overall nutritional balance", "Helps maintain energy levels and metabolism", "Helps improve general wellness"],
+        details: {
+            benefits: [{ id: 'hair-growth', title: 'Hair Growth', content: 'Calgro™ – Nutraceutical Tablets:\n• Vitamins\n\t◦ Boosts immunity and helps in antioxidant protection.\n\t◦ Support metabolism and energy production.\n\n• Minerals\n\t◦ Supports hair growth and strength\n\t◦ Improves scalp nourishment\n\t◦ Provides essential minerals for overall hair health\n\n• Amino Acid With Isoflavones and Grape Seed Extract Tablets\n\t◦ Grape seed extract helps protect hair with antioxidants\n\t◦ Improves hair thickness and volume.' }],
+            ingredients: [{ id: 'actives', title: 'Ingredients', content:'\t• Vitamins (C, B3, B5, B6, B2, Folic Acid)\n\t• Minerals (Calcium, Magnesium, Iron, Zinc, Copper, Manganese)\n\t• Amino acids\n\t•Soy Isoflavones\n\t•Grape Seed Extract\n\t•Green Tea Extract' }, { id: 'other', title: 'Other Ingredients', content:'• Binder (INS 1420 and 460(i))\n• Diluent (INS 341(ii))\n• Stabilizer (INS 1202)\n• Anti-caking Agent (INS 553(iii) and INS 470(iii))\n• Solvent for coating (MDC and IPA)\n• Class II Preservative (INS 219 and INS 216)\n• Contains Permitted Synthetic Food Colours.(INS 17).'}],
+            beforeAfter: [{ id: 'Before ', title: 'Before Use', content: '• Excessive hair fall and breakage\n• Weak hair follicles and poor scalp nutrition\n• Thin, lifeless hair with low volume\n• Slow or uneven hair growth\n• Dull, unhealthy-looking hair' }, {id: 'After', title:'After Use', content:'•Noticeable reduction in hair fall\n• Stronger, healthier hair follicles\n• Thicker, fuller hair with improved volume\n• Enhanced hair growth cycle\n•Healthier, shinier, and more resilient hair'}],
+            usage: [{ id: 'apply', title: 'How to Use', content: '• Take 1 tablet twice daily\n• Consume after breakfast and dinner\n• Swallow with a glass of water\n• Use daily for best hair growth results\n• Follow the recommended dosage ' }],
+            faq: [{ id: 'white-cast', title: 'Does it leave a white cast?', content: 'No, the ultra-sheer formula blends seamlessly into all skin tones.' }],
+            other: [{ id: 'other information', title: 'Dosage', content: 'One tablet daily or directed bu the Health Practitioner.\n\n•KEEP OUT F REACH OF CHILDREN' }, { id: 'storage', title:'Storage', content: '• Store below 25°C,\n• A cool & dry place\n• Protect from direct light\n• heart & moisture'}],
+            legal: [{ id: 'mfg', title: 'Manufacturer', content: 'Sholash Life Science Pvt. Ltd.' }]
+        }
+    },
+    {
+        name: "Ceramois™ – Ultra Nourishing Moisturizing Lotion",
+        tagline: "Deep Hydration. Stronger Skin Barrier. All-Day Moisture.",
+        image: "/src/assets/PRODUCT HOME IMAGE/lotion.png",
+        hoverImage: "/src/assets/product image/skin care routine -1.png",
+        description: "Ceramois lotion this moisturizing lotion helps improve the health of dry skin. It helps prevent & protect dry skin for full 24 hours.",
+        tar: "Ultra Nourishing Moisturizing Lotion Strengthens the skin barrier \n\t Ceramides + Hyaluronic Acid + Sheabutter",
+        futch: "Invisible Hydration\n\tNormal to dry sensitive skin\n\nFormulated With\n\tDermatologically Tested Actives",
+        precautions: "Avoid contact with eyes. If irritation occurs, rinse thoroughly with water.",
+        categoryName: "Moisturizer",
+        color: "#f5eceb",
+        price: 690.00,
+        rating: 4.9,
+        reviewsCount: 6,
+        features: ["Ceramide Enriched", "24h Hydration", "Fragrance Free", "Deep Nourishment"],
+        details: {
+            benefits: [{ id: 'barrier', title: 'Key Benefits', content: '\t•Provides deep and long-lasting hydration for dry skin \n\t• Improves skin texture for smoother, softer skin \n\t• Strengthens the skin’s natural barrier \n\t• Nourishes and restores dry, dull skin \n\t• Leaves skin healthy, supple, and well-moisturized' }],
+            ingredients: [{ id: 'ceramides', title: 'Ingredients', content: '\t•Aqua\n\t•White petroleum\n\t•Jelly\n\t•Olive oil\n\t•Glycerin\n\t•Isopropyl myristate\n\t•Shea Butter\n\t•Sunflower Oil\n\t•Cetomacrogol 1000\n\t•Emulsifying Wax\n\t•Almond Oil\n\t•Bees Wax\n\t•Ceto Stearyl Alcohol\n\t•YUZU Ceramind B\n\t•Dimethicone\n\t•Phenoxyethanol and Ethylhexylglycerin\n\t•Cerbomer\n\t•Triethanolamine\n\t•GMS SE\n\t•Niacinamide\n\t•Betaine\n\t•Hyaluronic Acid\n\t•Aloe vera Juice\n\t•Jojoba Oil\n\t•Vit E Acerate\n\t•ESTA\n\t•Fragrance' }],
+            beforeAfter: [{ id: 'dryness', title: 'Before Use', content: '\t•Dry and rough skin texture\n\t•Lack of moisture and dull appearance\n\t•Weak skin barrier\n\t•Tight and uncomfortable skin\n\t•Visible dryness and flakiness ' }, {id: 'dryness1', title: 'After Use', content:'\t•Deeply hydrated and moisturized skin\n\t•Smoother and softer skin texture\n\t•Strengthened skin barrier\n\t•Healthy, nourished skin feel\n\t•Radiant and well-balanced skin'}],
+            usage: [{ id: 'daily', title: 'Usage', content: '\t•Apply a small amount of lotion to clean, dry skin\n\t•Gently massage until fully absorbed\n\t•Use twice daily (morning and night) for best results\n\t•Apply on dry or rough areas for extra hydration\n\t•Use regularly to maintain soft, healthy skin' }],
+            faq: [{ id: 'face-body', title: 'Can I use it on my face?', content: 'Yes, it is non-comedogenic and safe for both face and body.' }],
+            other: [{ id: 'texture', title: 'Storage', content: 'Stroe in a cool and dry place below 30°C.\n\t•It is mandatory to perform a patch test before applying this product.\n\t•Do not use on cracked skin or open wounds.\n\t•In  case any irritation occurs stop the use of product with immediate effect and consult your dermatologist.\n\t•KEEP OUT OF REACH OF CHILDREN. ' }],
+            legal: [{ id: 'reg', title: 'Regulatory', content: 'Complaint with cosmetic standards.' }]
+        }
+    },
+    {
+        name: "Glazzium™ – Anti-Acne Detoxifying Face Wash",
+        tagline: " Deep Clean. Oil Control. Clear & Healthy Skin.",
+        image: "/src/assets/PRODUCT HOME IMAGE/glazzium face wash.png",
+        hoverImage: "/src/assets/product image/skin care routine -2.png",
+        description: "Glazzium face wash is a gently exfoliating and enriched with natural extracs that reach deep into your skins blocked pores to remove trapped oil, toxins, dead skin and acne.",
+        tar: "Removes excess oil,  Relieves impurities, Imparts a healthy glow , Gentle for everday use",
+        futch: "Paraben Free , Light & Non Greasy, Non Comedogenic",
+        precautions: "Avoid contact with eyes. If Irritation occurs, rinse thoroughly with water.",
+        categoryName: "Cleanser",
+        color: "#e8f0f2",
+        price: 392.00,
+        rating: 4.7,
+        reviewsCount: 6,
+        features: ["Detoxifying Action", "Oil Control", "Gentle Cleansing", "Anti-acne Properties"],
+        details: {
+            benefits: [{ id: 'detox', title: 'Benefits', content: '•   Helps reduce pimples and breakouts with active ingredients like Salicylic Acid, Tea Tree & Neem.\n•   Removes dirt, oil, and impurities from pores for a fresh, clear, and healthy-looking skin.\n•   Enriched with Glycerin, Aloe Vera & Pentavitin to keep skin soft and moisturized.\n•   Calms irritation and redness with Allantoin & Calendula while maintaining skin balance.' }],
+            ingredients: [{ id: 'salicylic', title: 'Ingredients', content: '\t•Aqua\n\t•Sodium lauryl ether sulfate\n\t•Cocamidopropyl Betaine\n\t•Glycerin\n\t•Acrylate copolymer\n\t•Lauryl Glucosides\n\t•Cocoglucosides\n\t•Polyquaternium 7\n\t•Aloe vera\n\t•Salicylic acid\n\t•PEG-40 Hydrogenated Castor Oil\n\t•Phenoxyethanol and ethylhexylglycerin\n\t•Triethanolamine D-panthanol\n\t•Pentavitin\n\t•Natural Betaine\n\t•Tea tree oil\n\t•Neem Extract\n\t•Allantoin\n\t•Calendula Extract\n\t•EDTA. ' }],
+            beforeAfter: [{ id: 'oil', title: 'Before Use', content: '•Excess oil buildup with greasy, shiny skin\n•Frequent acne breakouts and clogged pores\n•Dull, uneven skin tone with rough texture\n•Redness, irritation, and sensitive skin feel' }, {id:'oil', title:'After Use', content:'•Oil-free, fresh, and deeply cleansed skin\n•Reduced acne, clearer pores, and smoother texture\n•Brighter, more even, and healthy-looking skin\n•Calm, soothed, and well-balanced skin'}],
+            usage: [{ id: 'wash', title: 'Washing Instructions', content: '•Take small amount of face wash on your palm\n• Massage gently\n•Rinse well and pat dry\n•Use it twice daily for best Results.' }],
+            faq: [{ id: 'drying', title: 'Will it dry out my skin?', content: 'No, it contains soothing agents to maintain skin moisture balance.' }],
+            other: [{ id: 'type', title: 'Other Informations', content: '•  Store in a cool and dry place below 30°C.\n•  It is mandatory to perform a patch test before applying this product.\n•  Do not use on cracked skin or open wounds.\n•  In case any irritation occurs stop the use of product with immediate effect and consult your dermatologist.\n•  Place cap tightly after use.\n•  Keep out of reach of children.' }],
+            legal: [{ id: 'safety', title: 'Safety Info', content: 'Dermatologically tested.' }]
+        }
+    },
+    {
+        name: "Uvinor™ – Clear Radiance Skin Brightening Sunscreen SPF 50+",
+        tagline: "Powerful Sun Protection with Hydration and Skin Brightening.",
+        image: "/src/assets/PRODUCT HOME IMAGE/Sunscreen2.png",
+        hoverImage: "/src/assets/product image/Sunscreen.png",
+        description: "Uvinor SPF 50+ helps protect sensitive skin from UV induced damage and also acts as a mositrurizer.  This sunblock offers broad spectrum protection against the sun's damaging rays. Safe on young delicate skin of children. ",
+        tar: "Fortified with Niacinamide, Chamomile and Hyaclear 7,  Formulated with Dermatologically Tested Actives.",
+        categoryName: "Treatment",
+        color: "#f0f0f0",
+        price: 498.00,
+        rating: 4.6,
+        reviewsCount: 6,
+        features: ["Clinical Grade", "Pore Minimizing", "Sebum Control", "Fast Acting"],
+        details: {
+            benefits: [{ id: 'dual-action', title: 'Dual Action', content: '• Shields skin from harmful UVA & UVB rays, preventing sunburn and tanning.\n•  Enhances natural glow and helps reduce dullness for a radiant look\n•  Absorbs quickly without white cast or sticky feel—perfect for daily use\n•  Helps protect against dark spots, pigmentation, and premature aging'}],
+            ingredients: [{ id: 'formulas', title: 'Ingredients', content: '• Aqua\n•Sun care Zen Kt\n• shea Butter\n• Hydorxyethyl Acrylate\n•Dimethicone \n• Polyarcrylate-13\n• Benzyl Alcohol\n•Triethylene Glycol\n•Niacinamide\n•Sodium Hyaluronate\n•Almond oil\n•Triethanolamine\n• Carbomer\n• Cocont oil\n• Vanilla extract\n• Green tea extract\n• Kaempferia galanga extract\n• Zinc Oxide\n• Titanium Oxide\n• Chamomile extract\n• Allantion\n• Diethylamino Hydroxybenzoyl Hexyl Benzoate\n• Vitamin E.' }],
+            beforeAfter: [{ id: 'acne-reduction', title: 'Before Use', content: '• Skin exposed to harmful UV rays and sun damage\n• Dull, tanned, and uneven skin tone\n• Risk of dark spots and pigmentation\n• Dry, unprotected skin prone to premature aging' }, {id: 'acne-reduction', title: 'After Use', content:'• Strong protection against UVA & UVB rays\n• Brighter, more even, and radiant skin tone\n• Reduced tanning, dark spots, and pigmentation\n• Hydrated, smooth, and healthy-looking skin'}],
+            usage: [{ id: 'night', title: 'Night Application', content: '• Start with a clean, dry face before application.\n• ake an adequate amount and spread evenly on face & neck\n• Apply at least 15–20 minutes before going outdoors\n• Reapply every 2–3 hours or after sweating/washing for continuous protection' }],
+            faq: [{ id: 'purging', title: 'Will I experience purging?', content: 'Some initial breakouts may occur as the skin adjusts to the retinoid.' }],
+            other: [{ id: 'sun-sensitivity', title: 'Sun Sensitivity', content: '•  Store in a cool and dry place below 30°C.\n•  It is mandatory to perform a patch test before applying this product.\n•  Do not use on cracked skin or open wounds.\n•  In case any irritation occurs stop the use of product with immediate effect and consult your dermatologist.\n•  Place cap tightly after use.\n•  Keep out of reach of children.' }],
+            legal: [{ id: 'rx', title: 'Prescription', content: 'Use as directed by a healthcare professional.' }]
+        }
+    },
+    {
+        name: "SertaFree™ – Sertaconazole Nitrate Cream",
+        tagline: " Effective Relief from Fungal Skin Infections",
+        image: "/src/assets/PRODUCT HOME IMAGE/Serta Free.png",
+        hoverImage: "/src/assets/product image/Serta Free.png",
+        description: "Broad-spectrum antifungal cream with Sertaconazole Nitrate,Effectively treats fungal infections like ringworm, athlete’s foot & jock itch.",
+        tar: "Avoid contact with eyes, mouth and open wounds. If contact occurs, wash thoroughy with water. Keep the medicine out of reach of children.",
+        categoryName: "Treatment",
+        color: "#ebf2f5",
+        price: 232.00,
+        rating: 4.8,
+        reviewsCount: 6,
+        features: ["Anti-inflammatory", "Texture Improvement", "Soothing Effect", "Dermatological Solution"],
+        details: {
+            benefits: [{ id: 'inflammation', title: ' Benefits', content: '• Eliminates Fungal Infection at Source\n• Relieves Itching, Burning & Redness\n• Prevents Recurrence of Infection\n• Promotes Faster Skin Healing' }],
+            ingredients: [{ id: 'cn-actives', title: 'Key Ingredients', content: '• Sertaconazole Nitrate – Powerful antifungal agent\n• Cream Base – Ensures smooth and even application\n• Moisturizing Agents – Prevent dryness and irritation\n• Stabilizers & Preservatives – Maintain product safety and effectiveness' }],
+            beforeAfter: [{ id: 'redness', title: 'Before Use', content: '• Fungal infection with itching and discomfort\n• Red, inflamed, or scaly skin patches \n• Burning sensation and skin irritation \n• Spreading or recurring infection areas ' }, { id: 'redness', title: 'After Use', content: '• Relief from itching, burning, and irritation \n• Reduced redness and clearer skin \n• Controlled and eliminated fungal infection \n• Healthy, smooth, and restored skin' }],
+            usage: [{ id: 'spot-treat', title: 'Usage', content: '• Clean and dry the affected area thoroughly\n• Apply a thin layer to the affected skin\n• Use once or twice daily as directed\n• Continue usage for the full prescribed duration' }],
+            faq: [{ id: 'moisturizer', title: 'Can I use moisturizer?', content: 'Yes, apply after the gel has completely absorbed.' }],
+            other: [{ id: 'storage-temp', title: 'Other Information', content: '• Keep the cap tightly closed after use.\n• Keep out of reach of children.' }],
+            legal: [{ id: 'mfg-info', title: 'Manufacturing', content: 'Certified GMP facility.' }]
+        }
+    },
+    {
+        name: "Acnevor CN™ – Clindamycin Phosphate & Nicotinamide Gel",
+        tagline: " Targeted Treatment for Acne & Skin Inflammation.",
+        image: "/src/assets/PRODUCT HOME IMAGE/Acnevor CN.png",
+        hoverImage: "/src/assets/product image/Acnevor CN with Box.png",
+        description: "Advanced anti-acne gel with Clindamycin & Nicotinamide,Targets acne-causing bacteria and reduces inflammation.",
+        precautions:"Product from direct sunlight,  Avoid contact with eyes.",
+        categoryName: "Special Care",
+        color: "#f2f5e9",
+        price: 186.00,
+        rating: 4.9,
+        reviewsCount: 6,
+        features: ["Fast Relief", "Skin Restoration", "Intensive Care", "Safe for Sensitive Skin"],
+        details: {
+            benefits: [{ id: 'antifungal', title: 'Benefitsn', content: '• Reduces Acne & Breakouts Effectively\n• Controls Oil & Prevents Clogged Pores\n• Soothes Redness & Skin Irritation\n• Improves Skin Clarity & Texture' }],
+            ingredients: [{ id: 'serta', title: 'Key Ingredients', content: '• Clindamycin – Fights acne-causing bacteria\n• Nicotinamide (Vitamin B3) – Reduces inflammation & brightens skin\n• Gel Base – Lightweight and fast-absorbing\n• Stabilizing Agents – Maintain product effectiveness' }],
+            beforeAfter: [{ id: 'infection-clear', title: 'Before Use', content: '• Active acne, pimples, and breakouts\n• Oily skin with clogged pores\n• Redness, irritation, and inflammation\n• Uneven and rough skin texture' }, { id: 'cream-apply', title: 'After Use', content: '• Reduced acne and clearer skin\n• Balanced oil and cleaner pores\n• Calm, soothed, and less irritated skin\n• Smoother and more even skin texture' }],
+            usage: [{ id: 'cream-apply', title: 'Usage', content: '• Cleanse and dry your face properly\n• Apply a thin layer to affected areas\n• Use once or twice daily as directed\n• Avoid eye area and use sunscreen during the day' }],
+            faq: [{ id: 'contagious', title: 'Is it contagious?', content: 'Fungal infections can be contagious; maintain good hygiene during treatment.' }],
+            other: [{ id: 'duration', title: 'Other Information', content: '• Keep the cap tightly closed after use.\n• Keep out of reach of children.' }],
+            legal: [{ id: 'schedule', title: 'Schedule', content: 'Schedule H Drug.' }]
+        }
+    },
+    {
+        name: "Acnevor™ – Adapalene & Clindamycin Phosphate Gel",
+        tagline: "Advanced Dual Action Acne Therapy",
+        image: "/src/assets/PRODUCT HOME IMAGE/Acnevor Gel.png",
+        hoverImage: "/src/assets/product image/Acnevor with box.png",
+        description: "Advanced acne treatment gel combining Adapalene (retinoid) & Clindamycin (antibiotic). Targets acne at the root by unclogging pores.",
+        precautions: "Product from direct sunlight,  Avoid contact with eyes. ",
+        categoryName: "Nutraceutical",
+        color: "#f5f0e6",
+        price: 255.00,
+        rating: 4.5,
+        reviewsCount: 6,
+        features: ["Internal Nutrition", "Hair & Skin Health", "Vitamins & Minerals", "Complete Daily Supplement"],
+        details: {
+            benefits: [{ id: 'uv-protection', title: 'Benefits', content: '• Reduces Acne & Pimples \n• Unclogs Pores & Prevents Breakouts\n• Controls Bacteria & Inflammation\n• Improves Skin Texture & Clarity' }],
+            ingredients: [{ id: 'vits', title: 'Vitamins', content: '• Adapalene – Promotes skin renewal & prevents clogged pores\n• Clindamycin Phosphate – Fights acne-causing bacteria \n• Gel Base – Lightweight, non-greasy formulation \n• Stabilizing Agents – Ensure effectiveness & safety' }],
+            beforeAfter: [{ id: 'hair-fall', title: 'Before Use', content: '• Active acne, pimples, and inflamed skin\n• Clogged pores with blackheads/whiteheads\n• Oily skin with frequent breakouts\n• Uneven, rough skin texture' }, { id: 'hair-fall', title: 'After Use', content: '• Reduced acne and clearer skin\n• Clean, unclogged pores\n• Balanced oil production\n• Smoother, healthier skin texture' }],
+            usage: [{ id: 'tablet', title: 'Dosage', content: '• Cleanse and dry your face thoroughly\n• Apply a thin layer to affected areas (preferably at night)\n• Avoid eyes, lips, and sensitive areas\n• Use regularly as advised; apply sunscreen during daytime' }],
+            faq: [{ id: 'ayurvedic', title: 'Is it ayurvedic?', content: 'It is a scientifically formulated nutraceutical supplement.' }],
+            other: [{ id: 'vegetarian', title: 'Other Information', content: '• Protect from direct sunlight Avoid contact with eyes.\n•  Keep out of reach of children.\n• Keep the cap tightly closed after Use' }],
+            legal: [{ id: 'fssai', title: 'FSSAI Approved', content: 'Certified as a safe dietary supplement.' }]
+        }
+    }
+];
+
+mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/sholash")
+    .then(async () => {
+        console.log("Connected to MongoDB...");
+        
+        try {
+            await Product.deleteMany({});
+            
+            for (let prod of fullProducts) {
+                let category = await Category.findOne({ name: prod.categoryName });
+                if (!category) {
+                    category = await Category.create({ 
+                        name: prod.categoryName, 
+                        description: `${prod.categoryName} category` 
+                    });
+                }
+                
+                // Construct the full features, target from the schema.
+                // Note: The schema for details matches beforeAfter, ingredients, usage, faq, other, legal.
+                await Product.create({
+                    name: prod.name,
+                    description: prod.description,
+                    tagline: prod.tagline,
+                    price: prod.price,
+                    stock: 100,
+                    category: category._id,
+                    color: prod.color,
+                    rating: prod.rating,
+                    numReviews: prod.reviewsCount,
+                    target: prod.target || [],
+                    features: prod.features || [],
+                    images: [prod.image, prod.hoverImage],
+                    details: prod.details,
+                    tagline: prod.tar || prod.tagline
+                });
+            }
+            console.log("SUCCESSFULLY seeded FULL products into the DB!");
+            process.exit(0);
+        } catch (err) {
+            console.error("Error seeding DB:", err);
+            process.exit(1);
+        }
+    })
+    .catch((err) => {
+        console.error("DB Connection Error:", err);
+        process.exit(1);
+    });

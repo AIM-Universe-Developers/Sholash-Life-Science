@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products } from '../data/products'; // ✅ adjust path if needed
+import axios from 'axios';
+import { products as staticProducts } from '../data/products'; // ✅ adjust path if needed
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
 import './ProductDetail.css';
@@ -10,15 +11,53 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const navigate = useNavigate();
 
     const [quantity, setQuantity] = useState(1);
-
-    // ✅ Get product from static data
-    const product = products.find(p => String(p.id) === String(id));
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // ✅ Dynamic rating state
     const [dynamicRating, setDynamicRating] = useState(0);
     const [dynamicReviewsCount, setDynamicReviewsCount] = useState(0);
+    const [currentImage, setCurrentImage] = useState('');
 
-    // ✅ Load reviews from localStorage
+    const getImageUrl = (img) => {
+        if (!img) return '';
+        if (img.startsWith('http')) return img;
+        return `/${img}`;
+    };
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            setLoading(true);
+            try {
+                // First, check static data
+                const staticProd = staticProducts.find(p => String(p.id) === String(id));
+                if (staticProd) {
+                    setProduct(staticProd);
+                    setCurrentImage(staticProd.image || '');
+                    setLoading(false);
+                    return;
+                }
+
+                // If not found statically, fetch from API
+                const res = await axios.get(`/api/products/${id}`);
+                if (res.data && res.data.success) {
+                    setProduct(res.data.data);
+                    // Use first image array element or fallback
+                    setCurrentImage(getImageUrl(res.data.data.images?.[0] || res.data.data.image));
+                } else {
+                    setProduct(null);
+                }
+            } catch (err) {
+                console.error('Failed to fetch product', err);
+                setProduct(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [id]);
+
+    // ✅ Load reviews from localStorage whenever product is set
     useEffect(() => {
         if (id && product) {
             const storageKey = `sholash_reviews_${id}`;
@@ -39,15 +78,19 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                 }
             } else {
                 setDynamicRating(product.rating || 0);
-                setDynamicReviewsCount(product.reviewsCount || 0);
+                setDynamicReviewsCount(product.reviewsCount || product.numReviews || 0);
             }
         }
     }, [id, product]);
 
-    // ✅ Hover image logic
-    const [currentImage, setCurrentImage] = useState(product?.image || '');
+    if (loading) {
+        return (
+            <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
+                <p>Loading product...</p>
+            </div>
+        );
+    }
 
-    // ✅ Product not found
     if (!product) {
         return (
             <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
@@ -87,38 +130,40 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 src={currentImage}
                                 alt={product.name}
                                 className="detail-image"
-                                // onMouseEnter={() => setCurrentImage(product.hoverImage || product.image)}
-                                onMouseLeave={() => setCurrentImage(product.image)}
+                                onMouseLeave={() => setCurrentImage(getImageUrl(product.images?.[0] || product.image))}
                             />
                         </div>
                     </div>
 
                     {/* Info */}
                     <div className="detail-info fade-in">
-
-                        <span className="detail-category">{product.category}</span>
-
+                        <span className="detail-category">{categoryName}</span>
                         <h1 className="product-title">{product.name}</h1>
-                        <p className="tag">{product.tagline}</p>
+                        <h2 className='tag'>{product.tagline}</h2>
 
                         <div className="detail-meta">
                             <div className="detail-price">MRP: ₹{product.price}</div>
 
                             <div className="detail-rating">
                                 <span className="star">★</span>
-                                <span>{dynamicRating}</span>
-                                <span> ({dynamicReviewsCount} reviews)</span>
+                                <span className="rating-val">{dynamicRating}</span>
+                                <span className="rev-count">({dynamicReviewsCount} reviews)</span>
                             </div>
                         </div>
 
                         <p className="detail-desc">{product.description}</p>
 
-                        {/* Features */}
+                        {product.target && product.target.length > 0 && (
+                            <h3 className='target'>{product.target.join(', ')}</h3>
+                        )}
+
                         <div className="detail-features">
                             <h3>Key Benefits:</h3>
                             <ul>
                                 {product.features?.map((feature, index) => (
-                                    <li key={index}>✓ {feature}</li>
+                                    <li key={index}>
+                                        <span className="check">✓</span> {feature}
+                                    </li>
                                 ))}
                             </ul>
                         </div>
@@ -139,7 +184,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 BUY
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>
