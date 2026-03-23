@@ -106,7 +106,14 @@ const ProductReviews = () => {
             rating: userRating,
             title: reviewForm.title || "Customer Review",
             content: reviewForm.content,
-            date: "Just now"
+            date: new Date().toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            })
         };
 
         setAllReviews([newReview, ...allReviews]);
