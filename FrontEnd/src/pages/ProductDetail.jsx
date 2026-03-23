@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products } from '../data/products'; // ✅ adjust path if needed
+import axios from 'axios';
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
+import { products as staticProducts } from '../data/products';
 import './ProductDetail.css';
 
 const ProductDetail = ({ onAddToCart, onBuyClick }) => {
@@ -10,17 +11,37 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const navigate = useNavigate();
 
     const [quantity, setQuantity] = useState(1);
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [currentImage, setCurrentImage] = useState('');
 
-<<<<<<< HEAD
     useEffect(() => {
         const fetchProduct = async () => {
+            setLoading(true);
             try {
+                // Determine if it's strongly a static ID (numeric and short)
+                const isPossibleStaticId = !isNaN(id) && id.length < 10;
+                
+                if (isPossibleStaticId) {
+                    const found = staticProducts.find(p => String(p.id) === id);
+                    if (found) {
+                        setProduct(found);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
                 const res = await axios.get(`/api/products/${id}`);
                 if (res.data.success) {
                     setProduct(res.data.data);
+                } else {
+                    const found = staticProducts.find(p => String(p.id) === id);
+                    if (found) setProduct(found);
                 }
             } catch (err) {
                 console.error('Failed to fetch product', err);
+                const found = staticProducts.find(p => String(p.id) === id);
+                if (found) setProduct(found);
             } finally {
                 setLoading(false);
             }
@@ -30,9 +51,21 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
     const getImageUrl = (img) => {
         if (!img) return '';
+        img = img.replace(/\\/g, '/');
         if (img.startsWith('http')) return img;
-        return `/${img}`;
+        return img.startsWith('/') ? img : `/${img}`;
     };
+
+    // Update current image when product is loaded
+    useEffect(() => {
+        if (product) {
+            if (product.images && product.images.length > 0) {
+                setCurrentImage(getImageUrl(product.images[0]));
+            } else if (product.image) {
+                setCurrentImage(getImageUrl(product.image));
+            }
+        }
+    }, [product]);
 
     if (loading) {
         return (
@@ -42,42 +75,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         );
     }
 
-=======
-    // ✅ Get product from static data
-    const product = products.find(p => String(p.id) === String(id));
-
-    // ✅ Dynamic rating state
-    const [dynamicRating, setDynamicRating] = useState(0);
-    const [dynamicReviewsCount, setDynamicReviewsCount] = useState(0);
-
-    // ✅ Load reviews from localStorage
-    useEffect(() => {
-        if (id && product) {
-            const storageKey = `sholash_reviews_${id}`;
-            const savedReviews = localStorage.getItem(storageKey);
-
-            if (savedReviews) {
-                const reviews = JSON.parse(savedReviews);
-
-                if (reviews.length > 0) {
-                    const total = reviews.length;
-                    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / total;
-
-                    setDynamicRating(avg.toFixed(1));
-                    setDynamicReviewsCount(total);
-                } else {
-                    setDynamicRating(product.rating || 0);
-                    setDynamicReviewsCount(0);
-                }
-            } else {
-                setDynamicRating(product.rating || 0);
-                setDynamicReviewsCount(product.reviewsCount || 0);
-            }
-        }
-    }, [id, product]);
-
-    // ✅ Product not found
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
     if (!product) {
         return (
             <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
@@ -93,12 +90,12 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         ? product.category?.name
         : product.category;
 
-    // ✅ Hover image logic
-    const [currentImage, setCurrentImage] = useState(product.image);
-
     const handleAddToCart = () => {
         onAddToCart(product, quantity);
     };
+
+    const mainImage = product.images?.[0] ? getImageUrl(product.images[0]) : (product.image ? getImageUrl(product.image) : '');
+    const hoverImg = product.images?.[1] ? getImageUrl(product.images[1]) : (product.hoverImage ? getImageUrl(product.hoverImage) : mainImage);
 
     return (
         <div className="product-detail-page">
@@ -120,44 +117,31 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 src={currentImage}
                                 alt={product.name}
                                 className="detail-image"
-                                onMouseEnter={() => setCurrentImage(product.hoverImage || product.image)}
-                                onMouseLeave={() => setCurrentImage(product.image)}
+                                onMouseEnter={() => setCurrentImage(hoverImg)}
+                                onMouseLeave={() => setCurrentImage(mainImage)}
                             />
                         </div>
                     </div>
 
                     {/* Info */}
                     <div className="detail-info fade-in">
-<<<<<<< HEAD
                         <span className="detail-category">{categoryName}</span>
                         <h1 className="serif">{product.name}</h1>
                         <h2 className='tag'>{product.tagline}</h2>
-                        
-=======
-
-                        <span className="detail-category">{product.category}</span>
-
-                        <h1 className="product-title">{product.name}</h1>
-                        <p className="tag">{product.tagline}</p>
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
 
                         <div className="detail-meta">
                             <div className="detail-price">MRP: ₹{product.price}</div>
 
                             <div className="detail-rating">
                                 <span className="star">★</span>
-<<<<<<< HEAD
                                 <span className="rating-val">{product.rating}</span>
-                                <span className="rev-count">({product.numReviews} verified reviews)</span>
-=======
-                                <span>{dynamicRating}</span>
-                                <span> ({dynamicReviewsCount} reviews)</span>
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
+                                <span className="rev-count">({product.numReviews || product.reviewsCount || 0} verified reviews)</span>
                             </div>
                         </div>
 
                         <p className="detail-desc">{product.description}</p>
-<<<<<<< HEAD
+
+                        {/* Features */}
                         {product.target && product.target.length > 0 && (
                             <h3 className='target'>{product.target.join(', ')}</h3>
                         )}
@@ -173,18 +157,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 </ul>
                             </div>
                         )}
-=======
-
-                        {/* Features */}
-                        <div className="detail-features">
-                            <h3>Key Benefits:</h3>
-                            <ul>
-                                {product.features?.map((feature, index) => (
-                                    <li key={index}>✓ {feature}</li>
-                                ))}
-                            </ul>
-                        </div>
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
 
                         {/* Quantity + Buttons */}
                         <div className="purchase-controls">
@@ -203,6 +175,18 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                             </button>
                         </div>
 
+                        <div className="detail-trust-badges">
+                            <div className="badge-item">
+                                <span>Dermatologist Tested</span>
+                            </div>
+                            <div className="badge-item">
+                                <span>100% Ingredients</span>
+                            </div>
+                            <div className="badge-item">
+                                <span>Cruelty Free</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -214,4 +198,4 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     );
 };
 
-export default ProductDetail;
+export default ProductDetail;

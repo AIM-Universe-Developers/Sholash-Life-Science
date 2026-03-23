@@ -27,11 +27,11 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
 
     const getImageUrl = (product) => {
         if (product.images && product.images.length > 0) {
-            const img = product.images[0];
+            const img = product.images[0].replace(/\\/g, '/');
             if (img.startsWith('http')) return img;
-            return `/${img}`;
+            return img.startsWith('/') ? img : `/${img}`;
         }
-        return '';
+        return product.image || '';
     };
 
     if (loading) {

@@ -116,8 +116,9 @@ const ProductsPage = () => {
     // ─── Image URL helper ────────────────────────────────────────────────
     const getImageUrl = (img) => {
         if (!img) return null;
+        img = img.replace(/\\/g, '/');
         if (img.startsWith('http')) return img;
-        return `/${img}`;
+        return img.startsWith('/') ? img : `/${img}`;
     };
 
     // ─── Render ──────────────────────────────────────────────────────────
