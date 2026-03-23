@@ -15,26 +15,47 @@ const OurProducts = ({ searchQuery = '' }) => {
             try {
                 const params = {};
                 if (searchQuery.trim()) params.search = searchQuery;
-                const res = await axios.get('/api/products', { params });
-                if (res.data.success && res.data.data.length > 0) {
-                    setProducts(res.data.data);
-                } else {
-                    // Fallback to static data
-                    const filtered = searchQuery.trim()
-                        ? staticProducts.filter(p =>
-                            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            p.category.toLowerCase().includes(searchQuery.toLowerCase())
-                          )
-                        : staticProducts;
-                    setProducts(filtered);
+                
+                let combinedProducts = [];
+                
+                // 1. Get API products
+                try {
+                    const res = await axios.get('/api/products', { params });
+                    if (res.data.success) {
+                        combinedProducts = [...res.data.data];
+                    }
+                } catch (apiErr) {
+                    console.error('API Error:', apiErr);
                 }
+
+                // 2. Filter static products based on search query
+                const filteredStatic = searchQuery.trim()
+                    ? staticProducts.filter(p =>
+                        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    : staticProducts;
+
+                // 3. Merge both (API first, then static)
+                // Filter out static products that might already be in API (by name)
+                const apiNames = new Set(combinedProducts.map(p => p.name.toLowerCase().split('–')[0].trim()));
+                const uniqueStatic = filteredStatic.filter(p => !apiNames.has(p.name.toLowerCase().split('–')[0].trim()));
+                
+                const allProducts = [...combinedProducts, ...uniqueStatic];
+
+                // 4. Filter out 'Sample Skincare Bottle' if requested
+                const finalProducts = allProducts.filter(p => p.name !== 'Sample Skincare Bottle');
+                
+                setProducts(finalProducts);
+
             } catch (err) {
-                // API unavailable — use static data
+                console.error('General Error in fetchProducts:', err);
+                // Last resort fallback
                 const filtered = searchQuery.trim()
                     ? staticProducts.filter(p =>
                         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         p.category.toLowerCase().includes(searchQuery.toLowerCase())
-                      )
+                    )
                     : staticProducts;
                 setProducts(filtered);
             } finally {
