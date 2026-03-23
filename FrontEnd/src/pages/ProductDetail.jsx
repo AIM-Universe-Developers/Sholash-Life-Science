@@ -44,6 +44,9 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         }
     }, [id, product]);
 
+    // ✅ Hover image logic
+    const [currentImage, setCurrentImage] = useState(product?.image || '');
+
     // ✅ Product not found
     if (!product) {
         return (
@@ -59,9 +62,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const categoryName = typeof product.category === 'object'
         ? product.category?.name
         : product.category;
-
-    // ✅ Hover image logic
-    const [currentImage, setCurrentImage] = useState(product.image);
 
     const handleAddToCart = () => {
         onAddToCart(product, quantity);
