@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+
 import './ProductReviews.css';
 
 const ProductReviews = () => {
     const [activeTab, setActiveTab] = useState('reviews');
     const [sortBy, setSortBy] = useState('Highest Rating');
     const [isSortOpen, setIsSortOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [userBeforeImage, setUserBeforeImage] = useState(null);
+    const { user } = useContext(UserContext);
     
     // Manual Review States
+
     const [userRating, setUserRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -64,7 +70,22 @@ const ProductReviews = () => {
     });
 
     const handleStarClick = (rating) => {
+        if (!user) {
+            alert("Please sign in to rate this product!");
+            return;
+        }
         setUserRating(rating);
+    };
+
+    const toggleForm = () => {
+        if (!user) {
+            alert("Please sign in to write a review!");
+            return;
+        }
+        setIsFormOpen(!isFormOpen);
+        if (!isFormOpen && user) {
+            setReviewForm(prev => ({ ...prev, name: user.name || user.username || '' }));
+        }
     };
 
     const handleReviewSubmit = (e) => {
@@ -120,7 +141,7 @@ const ProductReviews = () => {
                     </div>
 
                     <div className="summary-right">
-                        <button className="btn-review-action fill" onClick={() => setIsFormOpen(!isFormOpen)}>
+                        <button className="btn-review-action fill" onClick={toggleForm}>
                             {isFormOpen ? 'Close Form' : 'Write a review'}
                         </button>
                     </div>
@@ -186,15 +207,36 @@ const ProductReviews = () => {
                     </div>
                 )}
 
+                {selectedImage && (
+                    <div className="lightbox-overlay" onClick={() => setSelectedImage(null)}>
+                        <div className="lightbox-box" onClick={e => e.stopPropagation()}>
+                            <button className="lightbox-close" onClick={() => setSelectedImage(null)}>✕</button>
+                            <img src={selectedImage} alt="Full view" className="lightbox-img" />
+                        </div>
+                    </div>
+                )}
+
                 <div className="reviews-media-section">
                     <div className="media-left">
-                        <h3 className="media-title">Customer photos & videos</h3>
+                        <h3 className="media-title">Customer photos &amp; videos</h3>
                         <div className="media-grid">
                             {customerPhotos.map((url, i) => (
-                                <div key={i} className="media-item">
+                                <div key={i} className="media-item" onClick={() => setSelectedImage(url)}>
                                     <img src={url} alt={`Customer ${i}`} />
                                 </div>
                             ))}
+                            {userBeforeImage && (
+                                <div className="media-item user-upload-item" onClick={() => setSelectedImage(userBeforeImage)}>
+                                    <img src={userBeforeImage} alt="My Photo" />
+                                    <span className="upload-label">My Photo</span>
+                                </div>
+                            )}
+                            {user && (
+                                <label className="upload-btn" title="Add your photo">
+                                    <input type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f = e.target.files[0]; if(f) setUserBeforeImage(URL.createObjectURL(f)); }} />
+                                    <span>＋</span><span className="upload-btn-text">Add Photo</span>
+                                </label>
+                            )}
                         </div>
                     </div>
                     <div className="media-right">

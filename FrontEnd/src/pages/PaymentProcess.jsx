@@ -156,7 +156,9 @@ const PaymentProcess = ({ cart, clearCart }) => {
                                     className={`payment-method-option ${selectedMethod === 'card' ? 'selected' : ''}`}
                                     onClick={() => setSelectedMethod('card')}
                                 >
-                                    <div className="method-icon">💳</div>
+                                    <div className="method-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                                    </div>
                                     <div className="method-info">
                                         <span>Credit / Debit Card</span>
                                         <small>Visa, Mastercard, AMEX</small>
@@ -166,7 +168,9 @@ const PaymentProcess = ({ cart, clearCart }) => {
                                     className={`payment-method-option ${selectedMethod === 'upi' ? 'selected' : ''}`}
                                     onClick={() => setSelectedMethod('upi')}
                                 >
-                                    <div className="method-icon">📱</div>
+                                    <div className="method-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                                    </div>
                                     <div className="method-info">
                                         <span>UPI / Google Pay</span>
                                         <small>Fast & Secure</small>
@@ -176,7 +180,9 @@ const PaymentProcess = ({ cart, clearCart }) => {
                                     className={`payment-method-option ${selectedMethod === 'cod' ? 'selected' : ''}`}
                                     onClick={() => setSelectedMethod('cod')}
                                 >
-                                    <div className="method-icon">🚚</div>
+                                    <div className="method-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                    </div>
                                     <div className="method-info">
                                         <span>Cash on Delivery</span>
                                         <small>Pay when you receive</small>
@@ -193,10 +199,13 @@ const PaymentProcess = ({ cart, clearCart }) => {
                         <div className="summary-items">
                             {cart.map(item => (
                                 <div key={item.id} className="summary-item">
-                                    <div className="summary-item-image" style={{ backgroundColor: item.color || '#f0f0f0' }}></div>
+                                    <div className="summary-item-image">
+                                        <img src={item.image} alt={item.name} className="item-img-mini" />
+                                    </div>
                                     <div className="summary-item-info">
+                                        <span className="item-cat-mini">{item.category}</span>
                                         <h4>{item.name}</h4>
-                                        <p>Qty: {item.quantity} × ₹{item.price}</p>
+                                        <p>Qty: {item.quantity}</p>
                                     </div>
                                     <div className="summary-item-price">
                                         ₹{item.price * item.quantity}
