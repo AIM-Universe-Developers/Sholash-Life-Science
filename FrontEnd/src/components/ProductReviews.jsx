@@ -9,7 +9,11 @@ const ProductReviews = () => {
     const [sortBy, setSortBy] = useState('Highest Rating');
     const [isSortOpen, setIsSortOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [userBeforeImage, setUserBeforeImage] = useState(null);
+    const { id: productId } = useParams();
+    const imageStorageKey = `sholash_uploaded_image_${productId}`;
+    const [userBeforeImage, setUserBeforeImage] = useState(() => {
+        return localStorage.getItem(imageStorageKey) || null;
+    });
     const { user } = useContext(UserContext);
     
     // Manual Review States
@@ -40,7 +44,6 @@ const ProductReviews = () => {
         'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
     ];
 
-    const { id: productId } = useParams();
     const storageKey = `sholash_reviews_${productId}`;
 
     const [allReviews, setAllReviews] = useState(() => {
@@ -110,6 +113,24 @@ const ProductReviews = () => {
         setIsFormOpen(false);
         setUserRating(0);
         setReviewForm({ name: '', title: '', content: '' });
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                setUserBeforeImage(base64String);
+                try {
+                    localStorage.setItem(imageStorageKey, base64String);
+                } catch (error) {
+                    console.error("Error saving image:", error);
+                    alert("Image is too large to save! Try a smaller image.");
+                }
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     return (
@@ -233,7 +254,7 @@ const ProductReviews = () => {
                             )}
                             {user && (
                                 <label className="upload-btn" title="Add your photo">
-                                    <input type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f = e.target.files[0]; if(f) setUserBeforeImage(URL.createObjectURL(f)); }} />
+                                    <input type="file" accept="image/*" style={{display:'none'}} onChange={handleImageUpload} />
                                     <span>＋</span><span className="upload-btn-text">Add Photo</span>
                                 </label>
                             )}

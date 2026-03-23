@@ -87,7 +87,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 src={currentImage}
                                 alt={product.name}
                                 className="detail-image"
-                                onMouseEnter={() => setCurrentImage(product.hoverImage || product.image)}
+                                // onMouseEnter={() => setCurrentImage(product.hoverImage || product.image)}
                                 onMouseLeave={() => setCurrentImage(product.image)}
                             />
                         </div>
