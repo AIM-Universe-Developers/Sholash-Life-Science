@@ -19,6 +19,13 @@ const PaymentProcess = ({ cart, clearCart }) => {
 
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+    const getImageUrl = (img) => {
+        if (!img) return '';
+        if (img.startsWith('http')) return img;
+        if (img.startsWith('/')) return img;
+        return `/${img}`;
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -198,12 +205,14 @@ const PaymentProcess = ({ cart, clearCart }) => {
                         <h2 className="serif">Order Summary</h2>
                         <div className="summary-items">
                             {cart.map(item => (
-                                <div key={item.id} className="summary-item">
+                                <div key={item.id || item._id} className="summary-item">
                                     <div className="summary-item-image">
-                                        <img src={item.image} alt={item.name} className="item-img-mini" />
+                                        <img src={getImageUrl(item.image)} alt={item.name} className="item-img-mini" />
                                     </div>
                                     <div className="summary-item-info">
-                                        <span className="item-cat-mini">{item.category}</span>
+                                        <span className="item-cat-mini">
+                                            {typeof item.category === 'object' ? item.category.name : item.category}
+                                        </span>
                                         <h4>{item.name}</h4>
                                         <p>Qty: {item.quantity}</p>
                                     </div>

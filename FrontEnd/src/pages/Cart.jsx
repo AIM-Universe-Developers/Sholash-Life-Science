@@ -7,6 +7,13 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+    const getImageUrl = (img) => {
+        if (!img) return '';
+        if (img.startsWith('http')) return img;
+        if (img.startsWith('/')) return img;
+        return `/${img}`;
+    };
+
     return (
         <div className="cart-page fade-in">
             <div className="container">
@@ -28,22 +35,24 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
                     <div className="cart-content">
                         <div className="cart-items-list">
                             {cart.map((item) => (
-                                <div key={item.id} className="cart-item glass fade-in">
+                                <div key={item.id || item._id} className="cart-item glass fade-in">
                                     <div className="item-image-container">
-                                        <img src={item.image} alt={item.name} className="item-img" />
+                                        <img src={getImageUrl(item.image)} alt={item.name} className="item-img" />
                                     </div>
                                     <div className="item-details">
-                                        <span className="item-category">{item.category}</span>
+                                        <span className="item-category">
+                                            {typeof item.category === 'object' ? item.category.name : item.category}
+                                        </span>
                                         <h3 className="serif">{item.name}</h3>
                                         <div className="item-price">₹{item.price}</div>
                                     </div>
                                     <div className="item-actions">
                                         <div className="cart-quantity-selector">
-                                            <button onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}>−</button>
+                                            <button onClick={() => onUpdateQuantity(item.id || item._id, item.quantity - 1)}>−</button>
                                             <span>{item.quantity}</span>
-                                            <button onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}>+</button>
+                                            <button onClick={() => onUpdateQuantity(item.id || item._id, item.quantity + 1)}>+</button>
                                         </div>
-                                        <button className="btn-remove" onClick={() => onRemoveFromCart(item.id)}>
+                                        <button className="btn-remove" onClick={() => onRemoveFromCart(item.id || item._id)}>
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                                         </button>
                                     </div>

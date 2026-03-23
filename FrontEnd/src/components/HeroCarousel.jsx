@@ -24,7 +24,7 @@ const offers = [
         link: "/product/2"
     },
     {
-        id: 4,
+        id: 1,
         image: Glazzium,
         btn: "Discover Now",
         color: "#f8f9fa",
@@ -40,7 +40,7 @@ const offers = [
         color: "#dcbceaff"
     },
     {
-        id: 2,
+        id: 3,
         title: "Goat Milk Shampoo",
         desc: "Use code HURRY20",
         image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&q=80&w=1200",
@@ -48,15 +48,13 @@ const offers = [
         color: "#93a9baff"
     },
     {
-        id: 3,
+        id: 4,
         title: "Natural Face Wash",
         desc: "Buy 1 Get 1 Free",
         image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d538?auto=format&fit=crop&q=80&w=1200",
         btn: "Explore",
         color: "#a79484ff"
     }
-
-
 ];
 
 const HeroCarousel = () => {

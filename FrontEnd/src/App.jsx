@@ -53,16 +53,19 @@ function App() {
   };
 
   const handleAddToCart = (product, quantity = 1) => {
+    const productId = product._id || product.id;
+    const categoryName = typeof product.category === 'object' ? product.category.name : product.category;
+
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === product.id);
+      const existingItem = prevCart.find(item => (item._id || item.id) === productId);
       if (existingItem) {
         return prevCart.map(item =>
-          item.id === product.id
+          (item._id || item.id) === productId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prevCart, { ...product, quantity }];
+      return [...prevCart, { ...product, id: productId, category: categoryName, quantity }];
     });
     console.log(`Added ${quantity} of ${product.name} to cart.`);
   };
@@ -74,13 +77,13 @@ function App() {
     }
     setCart(prevCart =>
       prevCart.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        (item._id || item.id) === productId ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   const handleRemoveFromCart = (productId) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+    setCart(prevCart => prevCart.filter(item => (item._id || item.id) !== productId));
   };
 
   return (
