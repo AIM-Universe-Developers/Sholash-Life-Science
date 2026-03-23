@@ -1,4 +1,7 @@
+const mongoose = require("mongoose");
 const Product = require("../models/Product");
+const Review = require("../models/Review");
+const User = require("../models/User");
 
 // ─── @desc   Create a Product
 // ─── @route  POST /api/products
@@ -134,7 +137,7 @@ const getAllProducts = async (req, res, next) => {
             "price-desc": { price: -1 },
             rating: { rating: -1 },
         };
-        const sort = sortOptions[req.query.sort] || { createdAt: -1 };
+        const sort = sortOptions[req.query.sort] || { createdAt: 1 };
 
         const [products, total] = await Promise.all([
             Product.find(filter)
@@ -161,6 +164,13 @@ const getAllProducts = async (req, res, next) => {
 // ─── @access Public
 const getProductById = async (req, res, next) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid product ID format",
+            });
+        }
+
         const product = await Product.findById(req.params.id)
             .populate("category", "name description")
             .populate({ path: "reviews", populate: { path: "user", select: "name" } });
