@@ -22,9 +22,9 @@ const adminSchema = new mongoose.Schema(
             select: false, // Never return password in queries by default
         },
         role: {
-            type: String,
-            enum: ["admin", "superadmin"],
-            default: "admin",
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Role",
+            required: true,
         },
         isActive: {
             type: Boolean,

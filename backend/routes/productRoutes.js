@@ -8,11 +8,11 @@ const {
     updateProduct,
     deleteProduct,
 } = require("../controllers/productController");
-const { protect, isAdmin } = require("../middleware/adminAuthMiddleware");
+const { protect, isAdmin, checkPermission } = require("../middleware/adminAuthMiddleware");
 const { uploadMultiple } = require("../middleware/uploadMiddleware");
 
 // Admin (must be before /:id to avoid route conflict)
-router.get("/admin/all", protect, isAdmin, getAllProductsAdmin);
+router.get("/admin/all", protect, checkPermission("read:products"), getAllProductsAdmin);
 
 // Public
 router.get("/", getAllProducts);
@@ -22,17 +22,17 @@ router.get("/:id", getProductById);
 router.post(
     "/",
     protect,
-    isAdmin,
+    checkPermission("create:products"),
     uploadMultiple("images", 5),
     createProduct
 );
 router.put(
     "/:id",
     protect,
-    isAdmin,
+    checkPermission("update:products"),
     uploadMultiple("images", 5),
     updateProduct
 );
-router.delete("/:id", protect, isAdmin, deleteProduct);
+router.delete("/:id", protect, checkPermission("delete:products"), deleteProduct);
 
 module.exports = router;

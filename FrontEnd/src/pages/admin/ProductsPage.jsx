@@ -16,6 +16,7 @@ const ProductsPage = () => {
     const [editingProduct, setEditingProduct] = useState(null);
     const [saving, setSaving] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
 
     const statusTabs = ['All', 'Active', 'Inactive'];
 
@@ -191,6 +192,10 @@ const ProductsPage = () => {
                                                     src={getImageUrl(product.images[0])}
                                                     alt={product.name}
                                                     className={styles.productThumb}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setPreviewImage(getImageUrl(product.images[0]));
+                                                    }}
                                                 />
                                             ) : (
                                                 <div className={styles.productThumb} style={{
@@ -269,6 +274,18 @@ const ProductsPage = () => {
                 isDanger={true}
                 confirmText="Delete"
             />
+
+            {/* ─── Image Preview Modal ─────────────────────────────────── */}
+            {previewImage && (
+                <div className={styles.imagePreviewOverlay} onClick={() => setPreviewImage(null)}>
+                    <div className={styles.imagePreviewContent} onClick={e => e.stopPropagation()}>
+                        <button className={styles.previewCloseBtn} onClick={() => setPreviewImage(null)}>
+                            <X size={24} />
+                        </button>
+                        <img src={previewImage} alt="Preview" className={styles.previewImageLarge} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
@@ -289,6 +306,15 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         color: product?.color || '#f0f0f0',
         target: product?.target || [],
         features: product?.features || [],
+        details: {
+            benefits: product?.details?.benefits || [],
+            ingredients: product?.details?.ingredients || [],
+            beforeAfter: product?.details?.beforeAfter || [],
+            usage: product?.details?.usage || [],
+            faq: product?.details?.faq || [],
+            other: product?.details?.other || [],
+            legal: product?.details?.legal || [],
+        }
     });
     const [newFiles, setNewFiles] = useState([]);
     const [existingImages, setExistingImages] = useState(product?.images || []);
@@ -314,6 +340,38 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         setForm(prev => ({
             ...prev,
             [field]: prev[field].filter((_, i) => i !== index),
+        }));
+    };
+
+    // ─── Nested Details Helpers ─────────────────────────────────────
+    const addDetailItem = (section) => {
+        setForm(prev => ({
+            ...prev,
+            details: {
+                ...prev.details,
+                [section]: [...prev.details[section], { id: Date.now().toString(), title: '', content: '' }]
+            }
+        }));
+    };
+
+    const updateDetailItem = (section, index, field, value) => {
+        setForm(prev => {
+            const arr = [...prev.details[section]];
+            arr[index] = { ...arr[index], [field]: value };
+            return {
+                ...prev,
+                details: { ...prev.details, [section]: arr }
+            };
+        });
+    };
+
+    const removeDetailItem = (section, index) => {
+        setForm(prev => ({
+            ...prev,
+            details: {
+                ...prev.details,
+                [section]: prev.details[section].filter((_, i) => i !== index)
+            }
         }));
     };
 
@@ -346,6 +404,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         fd.append('color', form.color);
         fd.append('target', JSON.stringify(form.target.filter(Boolean)));
         fd.append('features', JSON.stringify(form.features.filter(Boolean)));
+        fd.append('details', JSON.stringify(form.details));
 
         // For editing, pass existing images that weren't removed
         if (product) {
@@ -568,6 +627,50 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                     <button type="button" className={styles.listAddBtn} onClick={() => addListItem('target')}>
                                         <Plus size={14} /> Add Target
                                     </button>
+                                </div>
+                            </div>
+
+                            {/* ─── Complex Details Section ─── */}
+                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
+                                <h3 className={styles.sectionHeader}>Product Details (Benefits, Usage, FAQ, etc.)</h3>
+                                <div className={styles.detailsGrid}>
+                                    {Object.entries(form.details).map(([section, items]) => (
+                                        <div key={section} className={styles.detailSection}>
+                                            <div className={styles.detailSectionHeader}>
+                                                <label style={{ textTransform: 'capitalize' }}>{section.replace(/([A-Z])/g, ' $1')}</label>
+                                                <button type="button" className={styles.listAddBtn} onClick={() => addDetailItem(section)}>
+                                                    <Plus size={12} /> Add {section.slice(0, -1)}
+                                                </button>
+                                            </div>
+                                            <div className={styles.nestedItems}>
+                                                {items.map((item, idx) => (
+                                                    <div key={item.id || idx} className={styles.nestedItemRow}>
+                                                        <div className={styles.nestedInputs}>
+                                                            <input
+                                                                value={item.title}
+                                                                onChange={e => updateDetailItem(section, idx, 'title', e.target.value)}
+                                                                placeholder="Title (e.g. How to use)"
+                                                                className={styles.compactInput}
+                                                            />
+                                                            <textarea
+                                                                value={item.content}
+                                                                onChange={e => updateDetailItem(section, idx, 'content', e.target.value)}
+                                                                placeholder="Content..."
+                                                                className={styles.compactTextarea}
+                                                            />
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            className={styles.listRemoveBtn}
+                                                            onClick={() => removeDetailItem(section, idx)}
+                                                        >
+                                                            <Trash2 size={12} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
