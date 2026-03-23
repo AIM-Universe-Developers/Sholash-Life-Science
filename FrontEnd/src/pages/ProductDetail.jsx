@@ -11,38 +11,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
     const [quantity, setQuantity] = useState(1);
 
-<<<<<<< HEAD
-    useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const res = await axios.get(`/api/products/${id}`);
-                if (res.data.success) {
-                    setProduct(res.data.data);
-                }
-            } catch (err) {
-                console.error('Failed to fetch product', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProduct();
-    }, [id]);
-
-    const getImageUrl = (img) => {
-        if (!img) return '';
-        if (img.startsWith('http')) return img;
-        return `/${img}`;
-    };
-
-    if (loading) {
-        return (
-            <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
-                <p>Loading product...</p>
-            </div>
-        );
-    }
-
-=======
     // ✅ Get product from static data
     const product = products.find(p => String(p.id) === String(id));
 
@@ -77,7 +45,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     }, [id, product]);
 
     // ✅ Product not found
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
     if (!product) {
         return (
             <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
@@ -128,52 +95,23 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                     {/* Info */}
                     <div className="detail-info fade-in">
-<<<<<<< HEAD
-                        <span className="detail-category">{categoryName}</span>
-                        <h1 className="serif">{product.name}</h1>
-                        <h2 className='tag'>{product.tagline}</h2>
-                        
-=======
 
                         <span className="detail-category">{product.category}</span>
 
                         <h1 className="product-title">{product.name}</h1>
                         <p className="tag">{product.tagline}</p>
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
 
                         <div className="detail-meta">
                             <div className="detail-price">MRP: ₹{product.price}</div>
 
                             <div className="detail-rating">
                                 <span className="star">★</span>
-<<<<<<< HEAD
-                                <span className="rating-val">{product.rating}</span>
-                                <span className="rev-count">({product.numReviews} verified reviews)</span>
-=======
                                 <span>{dynamicRating}</span>
                                 <span> ({dynamicReviewsCount} reviews)</span>
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
                             </div>
                         </div>
 
                         <p className="detail-desc">{product.description}</p>
-<<<<<<< HEAD
-                        {product.target && product.target.length > 0 && (
-                            <h3 className='target'>{product.target.join(', ')}</h3>
-                        )}
-                        {product.features && product.features.length > 0 && (
-                            <div className="detail-features">
-                                <h3>Key Benefits:</h3>
-                                <ul>
-                                    {product.features.map((feature, index) => (
-                                        <li key={index}>
-                                            <span className="check">✓</span> {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-=======
 
                         {/* Features */}
                         <div className="detail-features">
@@ -184,7 +122,6 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 ))}
                             </ul>
                         </div>
->>>>>>> 22b016bb42fcf4c3c69067396a8f6e86945f3085
 
                         {/* Quantity + Buttons */}
                         <div className="purchase-controls">
