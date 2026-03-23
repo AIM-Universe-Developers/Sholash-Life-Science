@@ -22,6 +22,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const getImageUrl = (img) => {
         if (!img) return '';
         if (img.startsWith('http')) return img;
+        if (img.startsWith('/')) return img;
         return `/${img}`;
     };
 
