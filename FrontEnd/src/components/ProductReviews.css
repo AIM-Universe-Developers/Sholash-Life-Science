@@ -284,44 +284,157 @@
 }
 
 .sort-trigger {
-    background: #fff;
-    border: 1px solid #eee;
+    background: #eff4fe; /* Light blue background from image */
+    border: none;
     padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    color: #aa6080;
-    /* Specific color from screen */
+    border-radius: 8px; /* Softer border radius */
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #aa6080; /* Deep blue from image */
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
+    min-width: 170px;
+    white-space: nowrap; 
+    transition: background 0.2s ease;
+}
+
+.sort-trigger:hover {
+    background: #e4ebfd;
+}
+
+/* The checkmark before the text in the button */
+.sort-trigger::before {
+    content: "✓";
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #aa6080;
+    margin-right: 0.3rem;
+}
+
+.sort-trigger .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    color: transparent; /* Hide the plus sign */
+    transition: transform 0.3s ease;
+    margin-left: auto; /* Push the arrow to the far right */
+}
+
+/* Custom dropdown arrow to replace the + */
+.sort-trigger .arrow::after {
+    content: "▼";
+    display: flex;
+    align-items: center;
+    
+    color: #aa6080;
+    font-size: 0.65rem;
+}
+
+.sort-trigger .arrow.up {
+    transform: rotate(180deg);
 }
 
 .sort-dropdown {
     position: absolute;
-    top: 110%;
+    top: calc(100% + 8px);
     right: 0;
-    background: white;
+    background: #ffffff;
     border-radius: 8px;
     min-width: 180px;
     z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 1px solid #f0f0f0;
     overflow: hidden;
+    padding: 0.5rem 0; /* Space at top and bottom inside dropdown */
 }
 
 .sort-option {
-    padding: 0.8rem 1.2rem;
-    font-size: 0.9rem;
-    color:#aa6080;
+    padding: 0.7rem 1.2rem 0.7rem 2.5rem; /* Padding left for checkmark alignment */
+    font-size: 0.95rem;
+    color: #333;
     cursor: pointer;
+    transition: background 0.2s ease;
+    position: relative;
+    border-bottom: none;
 }
 
 .sort-option:hover {
-    background: #f5f5f5;
+    background: #f8f9fa;
+    color: #333;
 }
 
 .sort-option.selected {
-    background: #3b82f6;
-    color: white;
+    background: #fff;
+    color: #333;
+    font-weight: 500;
+    border-left: none;
+}
+
+/* Checkmark on the selected dropdown item */
+.sort-option.selected::before {
+    /* content: "✓"; */
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777; /* Grey checkmark from the image */
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.sort-trigger .arrow.up {
+    transform: rotate(180deg);
+}
+
+.sort-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: #ffffff;
+    border-radius: 16px;
+    min-width: 220px;
+    z-index: 100;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border: 1px solid #f0f0f0;
+    animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.sort-option {
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+.sort-option:last-child {
+    border-bottom: none;
+}
+
+.sort-option:hover {
+    background: #fafafa;
+    color: #aa6080;
+    padding-left: 1.8rem;
+}
+
+.sort-option.selected {
+    background: #fdf0f4;
+    color: #aa6080;
+    font-weight: 600;
+    border-left: 4px solid #aa6080;
 }
 
 .reviews-grid {

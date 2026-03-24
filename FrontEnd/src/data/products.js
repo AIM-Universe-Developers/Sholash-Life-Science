@@ -84,11 +84,12 @@ export const products = [
                 
             ],
             ingredients: [
-                { id: 'ceramides', title: 'Ingredients', content: '\t•Aqua\n\t•White petroleum\n\t•Jelly\n\t•Olive oil\n\t•Glycerin\n\t•Isopropyl myristate\n\t•Shea Butter\n\t•Sunflower Oil\n\t•Cetomacrogol 1000\n\t•Emulsifying Wax\n\t•Almond Oil\n\t•Bees Wax\n\t•Ceto Stearyl Alcohol\n\t•YUZU Ceramind B (Butylene Glycol (and) Water (and)\n\t•Citrus Junos Fruit Extract)\n\t•Dimethicone\n\t•Phenoxyethanol and Ethylhexylglycerin\n\t•Cerbomer\n\t•Triethanolamine\n\t•GMS SE\n\t•Niacinamide\n\t•Betaine\n\t•Hyaluronic Acid\n\t•Aloe vera Juice\n\t•Jojoba Oil\n\t•Vit\n\t•E Acerate\n\t•ESTA\n\t•Fragrance' }
+                { id: 'ceramides', title: 'Ingredients', content: '\t•Aqua\n\t•White petroleum\n\t•Jelly\n\t•Olive oil\n\t•Glycerin\n\t•Isopropyl myristate\n\t•Shea Butter\n\t•Sunflower Oil\n\t•Cetomacrogol 1000\n\t•Emulsifying Wax' },
+                { id: 'ceramides', title: 'Other Ingredients', content:'\n\t•Almond Oil\n\t•Bees Wax\n\t•Ceto Stearyl Alcohol\n\t•YUZU Ceramind B (Butylene Glycol (and) Water (and)\n\t•Citrus Junos Fruit Extract)\n\t•Dimethicone\n\t•Phenoxyethanol and Ethylhexylglycerin\n\t•Cerbomer\n\t•Triethanolamine\n\t•GMS SE\n\t•Niacinamide\n\t•Betaine\n\t•Hyaluronic Acid\n\t•Aloe vera Juice\n\t•Jojoba Oil\n\t•Vit\n\t•E Acerate\n\t•ESTA\n\t•Fragrance'}
             ],
             'before-after': [
                 { id: 'dryness', title: 'Before Use', content: '\t•Dry and rough skin texture\n\t•Lack of moisture and dull appearance\n\t•Weak skin barrier\n\t•Tight and uncomfortable skin\n\t•Visible dryness and flakiness ' },
-                {id: 'dryness1', title: 'After Use', content:'\t•Deeply hydrated and moisturized skin\n\t•Smoother and softer skin texture\n\t•Strengthened skin barrier\n\t•Healthy, nourished skin feel\n\t•Radiant and well-balanced skin'},
+                {id: 'dryness1', title: 'After Use', content:'\t• Deeply hydrated and moisturized skin\n\t•Smoother and softer skin texture\n\t•Strengthened skin barrier\n\t•Healthy, nourished skin feel\n\t•Radiant and well-balanced skin'},
             ],
             usage: [
                 { id: 'daily', title: 'Usage', content: '\t•Apply a small amount of lotion to clean, dry skin\n\t•Gently massage until fully absorbed\n\t•Use twice daily (morning and night) for best results\n\t•Apply on dry or rough areas for extra hydration\n\t•Use regularly to maintain soft, healthy skin' }

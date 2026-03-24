@@ -57,8 +57,16 @@ const ProductReviews = () => {
     }, [allReviews, storageKey]);
 
 
-    // Show all reviews including 1 star
-    const filteredReviews = allReviews;
+    // Show all reviews and sort them according to the selected "sortBy" option
+    let filteredReviews = [...allReviews];
+
+    if (sortBy === 'Highest Rating') {
+        filteredReviews.sort((a, b) => b.rating - a.rating);
+    } else if (sortBy === 'Lowest Rating') {
+        filteredReviews.sort((a, b) => a.rating - b.rating);
+    } else if (sortBy === 'Most Recent') {
+        filteredReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
 
     // Dynamic calculations
     const totalReviews = filteredReviews.length;
@@ -310,7 +318,7 @@ const ProductReviews = () => {
 
                             <div className="review-sort">
                                 <button className="sort-trigger" onClick={() => setIsSortOpen(!isSortOpen)}>
-                                    {sortBy} <span className={`arrow ${isSortOpen ? 'up' : 'down'}`}>⌄</span>
+                                    {sortBy} <span className={`arrow ${isSortOpen ? 'up' : 'down'}`}>+</span>
                                 </button>
                                 {isSortOpen && (
                                     <div className="sort-dropdown shadow-lg">
