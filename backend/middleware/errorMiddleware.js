@@ -7,7 +7,10 @@ const notFound = (req, res, next) => {
 
 // ─── Global Error Handler ─────────────────────────────────────────────────────
 const errorHandler = (err, req, res, next) => {
-    console.error("SERVER_ERROR:", err);
+    // Don't log expected token errors as "SERVER_ERROR"
+    if (err.name !== "TokenExpiredError" && err.name !== "JsonWebTokenError") {
+        console.error("SERVER_ERROR:", err);
+    }
     // Use error's own status if available, otherwise check res.statusCode, else default to 500
     let statusCode = err.statusCode || err.status || (res.statusCode === 200 ? 500 : res.statusCode);
     let message = err.message;

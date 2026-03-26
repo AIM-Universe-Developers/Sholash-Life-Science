@@ -11,32 +11,56 @@ import OrdersChart from '../../components/Admin/Dashboard/OrdersChart';
 import SalesPieChart from '../../components/Admin/Dashboard/SalesPieChart';
 
 // Icons
-import { IndianRupee, ShoppingCart, Package, Users, Calendar, Download, Eye, ArrowUpRight } from 'lucide-react';
+import { IndianRupee, ShoppingCart, Package, Users, Calendar, Download, Eye, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const DashboardPage = () => {
     const { token } = useAdminAuth();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const fetchDashboardData = async () => {
+        try {
+            setLoading(true);
+            const month = selectedDate.getMonth() + 1;
+            const year = selectedDate.getFullYear();
+            
+            const headers = token ? { Authorization: `Bearer ${token}` } : {};
+            const res = await axios.get(`/api/admin/dashboard?month=${month}&year=${year}`, { headers });
+            
+            if (res.data.success) {
+                setStats(res.data.data);
+            }
+        } catch (err) {
+            console.error("Failed to fetch dashboard stats", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchDashboardData = async () => {
-            try {
-                // If token exists, use it. Otherwise, assume local dev / open endpoint
-                const headers = token ? { Authorization: `Bearer ${token}` } : {};
-                const res = await axios.get('/api/admin/dashboard', { headers });
-                
-                if (res.data.success) {
-                    setStats(res.data.data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch dashboard stats", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchDashboardData();
-    }, [token]);
+    }, [token, selectedDate]);
+
+    const handlePrevMonth = () => {
+        setSelectedDate(prev => {
+            const newDate = new Date(prev);
+            newDate.setMonth(prev.getMonth() - 1);
+            return newDate;
+        });
+    };
+
+    const handleNextMonth = () => {
+        setSelectedDate(prev => {
+            const newDate = new Date(prev);
+            newDate.setMonth(prev.getMonth() + 1);
+            return newDate;
+        });
+    };
+
+    const formatMonthYear = (date) => {
+        return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    };
 
     const [revenueTimeRange, setRevenueTimeRange] = useState('Monthly');
 
@@ -54,9 +78,17 @@ const DashboardPage = () => {
                     <p>Welcome back, Admin. Here's what's happening.</p>
                 </div>
                 <div className={styles.headerActions}>
-                    <div className={styles.btnGroup}>
-                        <Calendar size={16} />
-                        <span>Feb 2026</span>
+                    <div className={styles.dateNavigator}>
+                        <button className={styles.navBtn} onClick={handlePrevMonth}>
+                            <ChevronLeft size={18} />
+                        </button>
+                        <div className={styles.currentDate}>
+                            <Calendar size={16} />
+                            <span>{formatMonthYear(selectedDate)}</span>
+                        </div>
+                        <button className={styles.navBtn} onClick={handleNextMonth}>
+                            <ChevronRight size={18} />
+                        </button>
                     </div>
                     <button className={styles.btnExport}>
                         <Download size={16} />

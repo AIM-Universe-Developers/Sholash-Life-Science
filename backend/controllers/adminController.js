@@ -7,6 +7,22 @@ const Product = require("../models/Product");
 // ─── @access Private (Admin)
 const getDashboardStats = async (req, res, next) => {
     try {
+        const { month, year } = req.query;
+        
+        // Define date range for the selected month/year
+        // Default to current date if not provided
+        const now = new Date();
+        const targetYear = year ? parseInt(year) : now.getFullYear();
+        const targetMonth = month ? parseInt(month) - 1 : now.getMonth(); // 0-indexed month
+
+        const startDate = new Date(targetYear, targetMonth, 1);
+        const endDate = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999);
+
+        // Date filter for queries that should be month-specific
+        const dateFilter = {
+            createdAt: { $gte: startDate, $lte: endDate }
+        };
+
         const [
             totalUsers, 
             totalOrders, 
@@ -15,34 +31,37 @@ const getDashboardStats = async (req, res, next) => {
             categoryData,
             monthlyRevenueData
         ] = await Promise.all([
-            User.countDocuments(),
-            Order.countDocuments(),
-            Product.countDocuments(),
+            User.countDocuments(dateFilter),
+            Order.countDocuments(dateFilter),
+            Product.countDocuments(), // Total products shouldn't be filtered by date usually
             Order.aggregate([
-                { $match: { paymentStatus: "paid" } },
+                { $match: { ...dateFilter, paymentStatus: "paid" } },
                 { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" } } },
             ]),
             // Data for "Sales by Category" Pie Chart
-            Product.aggregate([
-                { $group: { _id: "$category", count: { $sum: 1 } } },
+            Order.aggregate([
+                { $match: { ...dateFilter, paymentStatus: "paid" } },
+                { $unwind: "$orderItems" }, // Assume orderItems exists based on standard patterns, or check schema
+                { $lookup: { from: "products", localField: "orderItems.product", foreignField: "_id", as: "productDetail" } },
+                { $unwind: "$productDetail" },
+                { $group: { _id: "$productDetail.category", count: { $sum: "$orderItems.quantity" } } },
                 { $lookup: { from: "categories", localField: "_id", foreignField: "_id", as: "categoryDoc" } },
                 { $unwind: { path: "$categoryDoc", preserveNullAndEmptyArrays: true } },
                 { $project: { name: { $ifNull: ["$categoryDoc.name", "Uncategorized"] }, value: "$count" } }
             ]),
-            // Data for "Revenue Overview" Line Chart (Last 6 months)
+            // Data for "Revenue Overview" Line Chart (Daily for the selected month)
             Order.aggregate([
-                { $match: { paymentStatus: "paid" } },
+                { $match: { ...dateFilter, paymentStatus: "paid" } },
                 {
                     $group: {
-                        _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+                        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
                         Revenue: { $sum: "$totalPrice" }
                     }
                 },
                 { $sort: { _id: 1 } },
-                { $limit: 6 },
                 {
                     $project: {
-                        name: "$_id", // e.g. "2023-10"
+                        name: "$_id",
                         Revenue: 1,
                         _id: 0
                     }
@@ -52,8 +71,8 @@ const getDashboardStats = async (req, res, next) => {
 
         const totalRevenue = revenueData.length > 0 ? revenueData[0].totalRevenue : 0;
 
-        // Recent 5 orders
-        const recentOrders = await Order.find()
+        // Recent 5 orders within this range
+        const recentOrders = await Order.find(dateFilter)
             .sort({ createdAt: -1 })
             .limit(5)
             .populate("user", "name email");
@@ -67,6 +86,11 @@ const getDashboardStats = async (req, res, next) => {
                 totalProducts,
                 totalRevenue,
                 recentOrders,
+                selectedPeriod: {
+                    month: targetMonth + 1,
+                    year: targetYear,
+                    name: startDate.toLocaleString('default', { month: 'long' })
+                },
                 charts: {
                     salesByCategory: categoryData,
                     revenueOverview: monthlyRevenueData

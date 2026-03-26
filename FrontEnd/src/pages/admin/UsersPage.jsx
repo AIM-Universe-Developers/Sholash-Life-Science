@@ -16,25 +16,36 @@ const UsersPage = () => {
     // Modal State
     const [modalConfig, setModalConfig] = useState({ isOpen: false, type: null, user: null });
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (signal) => {
         try {
             setLoading(true);
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const res = await axios.get('/api/admin/users', { headers });
+            const res = await axios.get('/api/admin/users', { 
+                headers,
+                signal // Pass the AbortSignal to axios
+            });
             
-            // Assume the response returns an array directly or inside data array
             const data = Array.isArray(res.data) ? res.data : (res.data.data || []);
             setUsers(data);
             setFilteredUsers(data);
         } catch (error) {
-            console.error('Failed to fetch users', error);
+            // Only log if it's not a cancellation error
+            if (!axios.isCancel(error)) {
+                console.error('Failed to fetch users', error);
+            }
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchUsers();
+        const controller = new AbortController();
+        
+        fetchUsers(controller.signal);
+
+        return () => {
+            controller.abort();
+        };
     }, [token]);
 
     useEffect(() => {

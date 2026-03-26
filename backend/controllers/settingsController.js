@@ -33,8 +33,8 @@ const updateSettings = async (req, res, next) => {
         const updatePromises = settings.map((s) =>
             Settings.findOneAndUpdate(
                 { key: s.key },
-                { value: s.value },
-                { new: true, upsert: true }
+                { $set: { value: s.value, ...(s.group && { group: s.group }) } },
+                { returnDocument: 'after', upsert: true }
             )
         );
 
