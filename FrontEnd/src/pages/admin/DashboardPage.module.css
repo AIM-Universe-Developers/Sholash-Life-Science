@@ -38,17 +38,46 @@
   gap: 1rem;
 }
 
-.btnGroup {
+.dateNavigator {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background-color: var(--admin-surface);
   border: 1px solid var(--admin-border);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0.25rem;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navBtn:hover {
+  background-color: var(--admin-surface-hover);
+  color: var(--admin-primary);
+}
+
+.currentDate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
   color: var(--admin-text-main);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
+  min-width: 90px;
+  justify-content: center;
 }
 
 .btnExport {

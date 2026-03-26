@@ -17,6 +17,22 @@ export const AdminAuthProvider = ({ children }) => {
             setAdminUser(JSON.parse(savedUser));
         }
         setIsAdminRehydrated(true);
+
+        // Axios interceptor for 401/403
+        const interceptor = axios.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response?.status === 401) {
+                    // Logic to handle unauthorized access (logout)
+                    logoutAdmin();
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        return () => {
+            axios.interceptors.response.eject(interceptor);
+        };
     }, []);
 
     const loginAdmin = async (email, password) => {

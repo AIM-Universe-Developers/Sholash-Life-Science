@@ -39,21 +39,67 @@ const SettingsPage = () => {
                 role: adminUser.role
             });
         }
+        fetchSettings();
     }, [adminUser]);
+
+    const fetchSettings = async () => {
+        try {
+            const token = localStorage.getItem('sholash_admin_token');
+            const res = await axios.get('/api/admin/settings', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (res.data.success && Array.isArray(res.data.data)) {
+                const settingsArray = res.data.data;
+                const newNotifs = { ...notifications };
+                const newApp = { ...appearance };
+                
+                settingsArray.forEach(s => {
+                    if (s.group === 'notifications' && newNotifs.hasOwnProperty(s.key)) {
+                        newNotifs[s.key] = s.value;
+                    } else if (s.group === 'appearance' && newApp.hasOwnProperty(s.key)) {
+                        newApp[s.key] = s.value;
+                    }
+                });
+                
+                setNotifications(newNotifs);
+                setAppearance(newApp);
+            }
+        } catch (error) {
+            console.error("Failed to fetch settings", error);
+        }
+    };
+
+    const saveSetting = async (key, value, group) => {
+        try {
+            const token = localStorage.getItem('sholash_admin_token');
+            await axios.put('/api/admin/settings', {
+                settings: [{ key, value, group }]
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+        } catch (error) {
+            console.error(`Failed to save setting ${key}`, error);
+            setMessage({ type: 'error', text: `Failed to save ${key}. Please try again.` });
+        }
+    };
 
     const handleProfileChange = (e) => {
         setProfile({ ...profile, [e.target.name]: e.target.value });
     };
 
     const handleToggleNotification = (key) => {
-        setNotifications({ ...notifications, [key]: !notifications[key] });
+        const newValue = !notifications[key];
+        setNotifications({ ...notifications, [key]: newValue });
+        saveSetting(key, newValue, 'notifications');
     };
 
     const handleToggleAppearance = (key) => {
+        const newValue = !appearance[key];
         if (key === 'darkMode') {
             toggleTheme();
         }
-        setAppearance({ ...appearance, [key]: !appearance[key] });
+        setAppearance({ ...appearance, [key]: newValue });
+        saveSetting(key, newValue, 'appearance');
     };
 
     const handleSaveProfile = async (e) => {
