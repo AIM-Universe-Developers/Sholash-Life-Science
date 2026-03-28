@@ -147,3 +147,14 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(185, 28, 28, 0.3);
 }
+
+@media (max-width: 768px) {
+    .product-card {
+        margin-bottom: 10px;
+    }
+
+    .btn-cart {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+}

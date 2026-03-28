@@ -146,3 +146,38 @@
         height: 300px;
     }
 }
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 60vh;
+        padding-top: 100px;
+        padding-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-description {
+        font-size: 0.9rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .hero-visual {
+        height: 200px;
+        order: -1;
+        margin: 0 auto 30px;
+    }
+}

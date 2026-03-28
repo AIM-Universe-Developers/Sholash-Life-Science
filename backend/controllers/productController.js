@@ -106,11 +106,14 @@ const getAllProductsAdmin = async (req, res, next) => {
     }
 };
 
+const fs = require("fs");
+
 // ─── @desc   Get All Products (with search, filter & pagination)
 // ─── @route  GET /api/products
 // ─── @access Public
 const getAllProducts = async (req, res, next) => {
     try {
+        fs.appendFileSync("debug_api.txt", `Request: ${JSON.stringify(req.query)}\n`);
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 12;
         const skip = (page - 1) * limit;
@@ -155,6 +158,7 @@ const getAllProducts = async (req, res, next) => {
             pagination: { page, limit, total, pages: Math.ceil(total / limit) },
         });
     } catch (error) {
+        fs.appendFileSync("debug_api.txt", `Error: ${error.message}\nStack: ${error.stack}\n`);
         next(error);
     }
 };
