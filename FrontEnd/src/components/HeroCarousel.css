@@ -294,23 +294,22 @@
 .image-marquee {
     display: flex;
     gap: 60px;
-    animation: scroll 40s linear infinite;
+    animation: scroll 20s linear infinite;
 }
 
 .marquee-item {
     flex: 0 0 auto;
-    width: 120px;
-    height: 120px;
+    width: 220px;
+    height: 220px;
     display: flex;
     justify-content: center;
     align-items: center;
-    filter: grayscale(1);
-    opacity: 0.5;
+    /* opacity: 0.5; */
     transition: all 0.3s ease;
 }
 
 .marquee-item:hover {
-    filter: grayscale(0);
+    /* filter: grayscale(0); */
     opacity: 1;
     transform: scale(1.1);
 }
@@ -334,7 +333,8 @@
 /* Responsive */
 @media (max-width: 1024px) {
     .hero-carousel {
-        height: 70vh;
+        height: 50vh;
+        min-height: auto;
         margin: 15px;
         border-radius: 30px;
     }
@@ -376,8 +376,7 @@
     }
 
     .hero-carousel {
-        height: 80vh;
-        min-height: 550px;
+        height: 220px;
     }
 }
 

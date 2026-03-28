@@ -177,10 +177,39 @@
     transform: translateY(-2px);
 }
 
+/* Mobile Hamburger Button */
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--color-text-main);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
 @media (max-width: 768px) {
     .header {
         height: 70px;
         top: 36px;
+    }
+
+    .header-content {
+        padding: 0 10px;
+    }
+
+    .search-container {
+        display: none; /* optional for cleaner mobile */
+    }
+
+    .hamburger-btn {
+        display: flex !important;
     }
 
     .nav {
@@ -197,7 +226,9 @@
     }
 
     .header-actions {
-        gap: 5px;
+        gap: 8px;
+        flex: 1;
+        justify-content: flex-end;
     }
 }
 

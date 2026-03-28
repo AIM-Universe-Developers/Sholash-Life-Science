@@ -146,26 +146,18 @@
 
 /* Responsive */
 
-@media(max-width:992px) {
-
+/* @media (max-width: 768px) {
     .protection-container {
-        grid-template-columns: 1fr;
-        text-align: center;
+        gap: 30px;
+    }
+
+    .protection-content h2 {
+        font-size: 1.6rem;
     }
 
     .protection-description {
-        margin: 0 auto 30px;
+        font-size: 0.9rem;
     }
-
-    .protection-icon {
-        margin: auto;
-    }
-
-    .protection-image-wrapper {
-        height: 420px;
-        margin-bottom: 40px;
-    }
-
 }
 
 @media(max-width:600px) {
@@ -174,4 +166,68 @@
         grid-template-columns: 1fr;
     }
 
+} */
+
+@media (max-width: 768px) {
+
+    /* Section spacing */
+    .protection-section {
+        padding: 50px 12px;
+    }
+
+    /* Stack layout (keep same design style) */
+    .protection-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    /* Reduce image height only */
+    .protection-image-wrapper {
+        height: 300px;   /* was 650px ❌ */
+    }
+
+    .protection-image {
+        border-radius: 18px;
+        object-fit: cover;
+    }
+
+    /* Text scaling only */
+    .protection-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .protection-description {
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    /* Grid adjustment */
+    .protection-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Keep card design SAME, only reduce spacing */
+    .protection-item {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .protection-image-wrapper {
+        height: 240px;
+    }
+
+    .protection-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .protection-description {
+        font-size: 0.85rem;
+    }
+
+    .protection-item {
+        padding: 16px;
+    }
 }
