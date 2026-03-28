@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import './Header.css';
+import { Menu, X } from 'lucide-react';
 import logo from '../assets/logo/logo.png';
 
 const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
@@ -9,6 +10,7 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     const location = useLocation();
     const { user, logout } = useContext(UserContext);
     const [scrolled, setScrolled] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -51,16 +53,23 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     return (
         <header className={`header glass fade-in ${scrolled ? 'scrolled' : ''}`}>
             <div className="container header-content">
+                <button 
+                    className="menu-toggle" 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label="Toggle Menu"
+                >
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
                 <div className="logo">
-                    <Link to="/">
+                    <Link to="/" onClick={() => setIsMenuOpen(false)}>
                         <img src={logo} alt="Sholash Life Sciences" className="logo-img" />
                     </Link>
                 </div>
-                <nav className="nav">
-                    <Link to="/">Home</Link>
-                    <a href="/#products">Collection</a>
-                    <Link to="/about">Our Story</Link>
-                    <Link to="/contact">Contact</Link>
+                <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
+                    <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+                    <a href="/#products" onClick={() => setIsMenuOpen(false)}>Collection</a>
+                    <Link to="/about" onClick={() => setIsMenuOpen(false)}>Our Story</Link>
+                    <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
                 </nav>
                 <div className="header-actions">
                     <form className="search-container" onSubmit={handleSearchSubmit}>
