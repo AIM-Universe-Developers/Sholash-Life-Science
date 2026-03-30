@@ -55,21 +55,33 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
             <div className="container header-content">
                 <button 
                     className="menu-toggle" 
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    aria-label="Toggle Menu"
+                    onClick={() => setIsMenuOpen(true)}
+                    aria-label="Open Menu"
                 >
-                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    <Menu size={24} />
                 </button>
                 <div className="logo">
                     <Link to="/" onClick={() => setIsMenuOpen(false)}>
                         <img src={logo} alt="Sholash Life Sciences" className="logo-img" />
                     </Link>
                 </div>
+                <div className={`nav-overlay ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}></div>
                 <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
-                    <Link to="/" onClick={() => setIsMenuOpen(false)}>HOME</Link>
-                    <a href="/#products" onClick={() => setIsMenuOpen(false)}>COLLECTION</a>
-                    <Link to="/about" onClick={() => setIsMenuOpen(false)}>OUR STORY</Link>
-                    <Link to="/contact" onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
+                    <div className="nav-mobile-header">
+                        <img src={logo} alt="Sholash Life Sciences" className="nav-mobile-logo" />
+                        <button className="close-nav-btn" onClick={() => setIsMenuOpen(false)} aria-label="Close Menu">
+                            <X size={24} />
+                        </button>
+                    </div>
+                    <div className="nav-links">
+                        <Link to="/" onClick={() => setIsMenuOpen(false)}>HOME</Link>
+                        <a href="/#products" onClick={() => setIsMenuOpen(false)}>COLLECTION</a>
+                        <Link to="/about" onClick={() => setIsMenuOpen(false)}>OUR STORY</Link>
+                        <Link to="/contact" onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
+                    </div>
+                    <div className="nav-mobile-footer">
+                        <p>Customer Support:<br/><strong>9800322201</strong></p>
+                    </div>
                 </nav>
                 <div className="header-actions">
                     <form className="search-container" onSubmit={handleSearchSubmit}>
