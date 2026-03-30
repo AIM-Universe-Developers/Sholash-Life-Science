@@ -21,6 +21,28 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const [currentImage, setCurrentImage] = useState('');
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+    const [showStickyBuy, setShowStickyBuy] = useState(false);
+    const purchaseRef = React.useRef(null);
+
+    useEffect(() => {
+        if (!purchaseRef.current) return;
+        
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                // Show sticky buy if the main purchase controls scroll out of the top of the viewport
+                if (window.innerWidth <= 768) {
+                    setShowStickyBuy(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+                } else {
+                    setShowStickyBuy(false);
+                }
+            },
+            { threshold: 0 }
+        );
+
+        observer.observe(purchaseRef.current);
+        return () => observer.disconnect();
+    }, [product]);
+
     const getImageUrl = (img) => {
         if (!img) return '';
         if (img.startsWith('http')) return img;
@@ -161,36 +183,57 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                     {/* Image */}
                     <div className="detail-visual fade-in">
-                    <div className="detail-gallery">
-                        <div className="thumbnail-column">
-                            {galleryImages.map((img, idx) => (
-                                <button
-                                    key={`${product.id}-thumb-${idx}`}
-                                    className={`thumbnail-btn ${currentImageIndex === idx ? 'active' : ''}`}
-                                    onClick={() => handleThumbnailClick(idx)}
-                                >
-                                    <img src={img} alt={`${product.name} thumbnail ${idx + 1}`} />
-                                    
-                                </button>
-                            ))}
+                        <div className="detail-gallery">
+                            <div className="thumbnail-column">
+                                {galleryImages.map((img, idx) => (
+                                    <button
+                                        key={`${product.id}-thumb-${idx}`}
+                                        className={`thumbnail-btn ${currentImageIndex === idx ? 'active' : ''}`}
+                                        onClick={() => handleThumbnailClick(idx)}
+                                    >
+                                        <img src={img} alt={`${product.name} thumbnail ${idx + 1}`} />
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="detail-image-wrapper glass">
+                                <img
+                                    src={selectedImage}
+                                    alt={product.name}
+                                    className="detail-hero-image zoom-hover"
+                                />
+
+                                {galleryImages.length > 1 && (
+                                    <>
+                                        <button className="nav-arrow left" onClick={showPrevImage}>
+                                            <ChevronLeft size={20} />
+                                        </button>
+                                        <button className="nav-arrow right" onClick={showNextImage}>
+                                            <ChevronRight size={20} />
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
 
-                        <div className="detail-image-wrapper glass">
-                            <img
-                                src={selectedImage}
-                                alt={product.name}
-                                className="detail-image"
-                            />
-
-                            <button className="nav-arrow left" onClick={showPrevImage}>
-                                <ChevronLeft size={20} />
-                            </button>
-                            <button className="nav-arrow right" onClick={showNextImage}>
-                                <ChevronRight size={20} />
-                            </button>
+                        {/* Mobile Swipe Gallery */}
+                        <div className="mobile-swipe-gallery">
+                            <div className="swipe-track">
+                                {galleryImages.map((img, idx) => (
+                                    <div className="swipe-slide" key={idx}>
+                                        <img src={img} alt={`${product.name} ${idx + 1}`} />
+                                    </div>
+                                ))}
+                            </div>
+                            {galleryImages.length > 1 && (
+                                <div className="swipe-dots">
+                                    {galleryImages.map((_, idx) => (
+                                        <div key={idx} className={`swipe-dot ${idx === 0 ? 'active' : ''}`}></div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
-                </div>
 
                     {/* Info */}
                     <div className="detail-info fade-in">
@@ -231,7 +274,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         </div>
 
                         {/* Quantity + Buttons */}
-                        <div className="purchase-controls">
+                        <div className="purchase-controls" ref={purchaseRef}>
                             <div className="quantity-selector">
                                 <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
                                 <span>{quantity}</span>
@@ -253,6 +296,17 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
             {/* Extra Sections */}
             <ProductAccordion product={product} />
             <ProductReviews />
+
+            {/* Mobile Sticky Buy Bar */}
+            <div className={`mobile-sticky-buy ${showStickyBuy ? 'visible' : ''}`}>
+                <div className="sticky-price-info">
+                    <span className="sc-name">{product.name}</span>
+                    <span className="sc-price">₹{product.price}</span>
+                </div>
+                <button className="btn-add-large" onClick={handleAddToCart}>
+                    Add to Cart
+                </button>
+            </div>
         </div>
     );
 };
