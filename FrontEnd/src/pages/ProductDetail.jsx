@@ -4,6 +4,7 @@ import axios from 'axios';
 import { products as staticProducts } from '../data/products'; // ✅ adjust path if needed
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './ProductDetail.css';
 
 const ProductDetail = ({ onAddToCart, onBuyClick }) => {
@@ -18,6 +19,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const [dynamicRating, setDynamicRating] = useState(0);
     const [dynamicReviewsCount, setDynamicReviewsCount] = useState(0);
     const [currentImage, setCurrentImage] = useState('');
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const getImageUrl = (img) => {
         if (!img) return '';
@@ -33,8 +35,11 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                 // First, check static data
                 const staticProd = staticProducts.find(p => String(p.id) === String(id));
                 if (staticProd) {
+                    const baseImages = Array.isArray(staticProd.images) && staticProd.images.length ? staticProd.images : [staticProd.image];
+                    const normalized = baseImages.map(getImageUrl).filter(Boolean);
                     setProduct(staticProd);
-                    setCurrentImage(staticProd.image || '');
+                    setCurrentImage(normalized[0] || '');
+                    setCurrentImageIndex(0);
                     setLoading(false);
                     return;
                 }
@@ -42,9 +47,12 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                 // If not found statically, fetch from API
                 const res = await axios.get(`/api/products/${id}`);
                 if (res.data && res.data.success) {
-                    setProduct(res.data.data);
-                    // Use first image array element or fallback
-                    setCurrentImage(getImageUrl(res.data.data.images?.[0] || res.data.data.image));
+                    const apiProd = res.data.data;
+                    const baseImages = Array.isArray(apiProd.images) && apiProd.images.length ? apiProd.images : [apiProd.image];
+                    const normalized = baseImages.map(getImageUrl).filter(Boolean);
+                    setProduct(apiProd);
+                    setCurrentImage(normalized[0] || '');
+                    setCurrentImageIndex(0);
                 } else {
                     setProduct(null);
                 }
@@ -107,6 +115,33 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         ? product.category?.name
         : product.category;
 
+    const galleryImages = product
+        ? (Array.isArray(product.images) && product.images.length ? product.images : [product.image]).map(getImageUrl).filter(Boolean)
+        : [];
+
+    const selectedImage = galleryImages[currentImageIndex] || galleryImages[0] || currentImage;
+
+    const handleThumbnailClick = (index) => {
+        if (!galleryImages.length) return;
+        const nextImage = galleryImages[index] || galleryImages[0];
+        setCurrentImageIndex(index);
+        setCurrentImage(nextImage);
+    };
+
+    const showPrevImage = () => {
+        if (!galleryImages.length) return;
+        const prevIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        setCurrentImageIndex(prevIndex);
+        setCurrentImage(galleryImages[prevIndex]);
+    };
+
+    const showNextImage = () => {
+        if (!galleryImages.length) return;
+        const nextIndex = (currentImageIndex + 1) % galleryImages.length;
+        setCurrentImageIndex(nextIndex);
+        setCurrentImage(galleryImages[nextIndex]);
+    };
+
     const handleAddToCart = () => {
         onAddToCart(product, quantity);
     };
@@ -126,21 +161,47 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                     {/* Image */}
                     <div className="detail-visual fade-in">
+                    <div className="detail-gallery">
+                        <div className="thumbnail-column">
+                            {galleryImages.map((img, idx) => (
+                                <button
+                                    key={`${product.id}-thumb-${idx}`}
+                                    className={`thumbnail-btn ${currentImageIndex === idx ? 'active' : ''}`}
+                                    onClick={() => handleThumbnailClick(idx)}
+                                >
+                                    <img src={img} alt={`${product.name} thumbnail ${idx + 1}`} />
+                                    
+                                </button>
+                            ))}
+                        </div>
+
                         <div className="detail-image-wrapper glass">
                             <img
-                                src={currentImage}
+                                src={selectedImage}
                                 alt={product.name}
                                 className="detail-image"
-                                onMouseLeave={() => setCurrentImage(getImageUrl(product.images?.[0] || product.image))}
                             />
+
+                            <button className="nav-arrow left" onClick={showPrevImage}>
+                                <ChevronLeft size={20} />
+                            </button>
+                            <button className="nav-arrow right" onClick={showNextImage}>
+                                <ChevronRight size={20} />
+                            </button>
                         </div>
                     </div>
+                </div>
 
                     {/* Info */}
                     <div className="detail-info fade-in">
                         <span className="detail-category">{categoryName}</span>
                         <h1 className="product-title">{product.name}</h1>
                         <h2 className='tag'>{product.tagline}</h2>
+
+                        <div className="promo-text">
+                            <h3>Fights Acne & Acne Marks</h3>
+                            <p>Clinically powered formula for brighter, smooth, and blemish-free skin.</p>
+                        </div>
 
                         <div className="detail-meta">
                             <div className="detail-price">MRP: ₹{product.price}</div>

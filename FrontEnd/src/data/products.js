@@ -1,4 +1,4 @@
-import calgroImg from '../assets/product image/tablet box.png';
+import calgroImg from '../assets/product image/tablets1.png';
 import ceramoisImg from '../assets/PRODUCT HOME IMAGE/lotion.png';
 import glazziumImg from '../assets/PRODUCT HOME IMAGE/glazzium face wash.png';
 import uvinorImg from '../assets/PRODUCT HOME IMAGE/Sunscreen2.png';
@@ -7,13 +7,55 @@ import acnevorCnImg from '../assets/PRODUCT HOME IMAGE/Acnevor CN.png';
 import acnevorImg from '../assets/PRODUCT HOME IMAGE/Acnevor Gel.png';
 
 // Secondary/Hover Images
-import calgroHover from '../assets/product image/tablet box-1.png';
+import calgroHover from '../assets/product image/tablets2.png';
 import ceramoisHover from '../assets/product image/skin care routine -1.png';
 import glazziumHover from '../assets/product image/skin care routine -2.png';
 import uvinorHover from '../assets/product image/Sunscreen.png';
 import sertafreeHover from '../assets/product image/Serta Free.png';
 import acnevorCnHover from '../assets/product image/Acnevor CN with Box.png';
 import acnevorHover from '../assets/product image/Acnevor with box.png';
+
+// Gallery Images - Calgro
+import calgroGal1 from '../assets/product image/tablets1.png';
+import calgroGal2 from '../assets/product image/tablets2.png';
+import calgroGal3 from '../assets/product image/tablets3.png';
+import calgroGal4 from '../assets/product image/tablets4.png';
+
+// Gallery Images - Ceramois
+import ceramoisGal1 from '../assets/PRODUCT HOME IMAGE/lotion.png';
+import ceramoisGal2 from '../assets/product image/lotion with model-1.png';
+import ceramoisGal3 from '../assets/product image/skin care routine -1.png';
+import ceramoisGal4 from '../assets/product image/skin care routine -3.png';
+
+// Gallery Images - Glazzium
+import glazziumGal1 from '../assets/PRODUCT HOME IMAGE/glazzium face wash.png';
+import glazziumGal2 from '../assets/product image/skin care routine -2.png';
+import glazziumGal3 from '../assets/product image/skin care routine -4.png';
+import glazziumGal4 from '../assets/product image/skin care routine -5.png';
+
+// Gallery Images - Uvinor
+import uvinorGal1 from '../assets/PRODUCT HOME IMAGE/Sunscreen2.png';
+import uvinorGal2 from '../assets/product image/Sunscreen.png';
+import uvinorGal3 from '../assets/product image/sunscreen with model-1.png';
+import uvinorGal4 from '../assets/product image/skin care routine -6.png';
+
+// Gallery Images - Sertafree
+import sertafreeGal1 from '../assets/PRODUCT HOME IMAGE/Serta Free.png';
+import sertafreeGal2 from '../assets/product image/Serta Free.png';
+import sertafreeGal3 from '../assets/product image/skin care routine -1.png';
+import sertafreeGal4 from '../assets/product image/skin care routine -3.png';
+
+// Gallery Images - Acnevor CN
+import acnevorCnGal1 from '../assets/PRODUCT HOME IMAGE/Acnevor CN.png';
+import acnevorCnGal2 from '../assets/product image/Acnevor CN.png';
+import acnevorCnGal3 from '../assets/product image/Acnevor CN with Box.png';
+import acnevorCnGal4 from '../assets/product image/Acnevor CN -1.png';
+
+// Gallery Images - Acnevor
+import acnevorGal1 from '../assets/PRODUCT HOME IMAGE/Acnevor Gel.png';
+import acnevorGal2 from '../assets/product image/Acnevor Gel.png';
+import acnevorGal3 from '../assets/product image/Acnevor tube.png';
+import acnevorGal4 from '../assets/product image/Acnevor with box.png';
 
 
 export const products = [
@@ -23,7 +65,7 @@ export const products = [
         tagline: " Complete Nutritional Support for Stronger Bones, Better Energy, and Overall Wellness.",
         image: calgroImg,
         hoverImage: calgroHover,
-
+        images: [calgroGal1, calgroGal2, calgroGal3, calgroGal4],
         description: "Calgro™ is a nutraceutical supplement formulated with vitamins, minerals, amino acids,and botanical extracts to support overall health and nutrition.",
         tar:"Vitamins, Minerals, Amino Acids With Isoflavones and Grape Seed Extract Tablets",
         category: "Protection",
@@ -38,10 +80,17 @@ export const products = [
                 { id: 'hair-growth', title: 'Hair Growth', content: 'Calgro™ – Nutraceutical Tablets:\n• Vitamins\n\t◦ Boosts immunity and helps in antioxidant protection.\n\t◦ Support metabolism and energy production.\n\n• Minerals\n\t◦ Supports hair growth and strength\n\t◦ Improves scalp nourishment\n\t◦ Provides essential minerals for overall hair health\n\n• Amino Acid With Isoflavones and Grape Seed Extract Tablets\n\t◦ Grape seed extract helps protect hair with antioxidants\n\t◦ Improves hair thickness and volume.' },
                 
             ],
+            // ingredients: [
+            //     { id: 'actives', title: 'Ingredients', content:'• Vitamins (C, B3, B5, B6, B2, Folic Acid)\n • Minerals (Calcium, Magnesium, Iron, Zinc, Copper, Manganese)\n\t• Amino acids\n\t•Soy Isoflavones\n\t•Grape Seed Extract\n\t•Green Tea Extract' },
+            //     // { id: 'other', title: 'Other Ingredients', content:'• Binder (INS 1420 and 460(i))\n• Diluent (INS 341(ii))\n• Stabilizer (INS 1202)\n• Anti-caking Agent (INS 553(iii) and INS 470(iii))\n• Solvent for coating (MDC and IPA)\n• Class II Preservative (INS 219 and INS 216)\n• Contains Permitted Synthetic Food Colours.(INS 17).'},
+            // ],
             ingredients: [
-                { id: 'actives', title: 'Ingredients', content:'\t• Vitamins (C, B3, B5, B6, B2, Folic Acid)\n\t• Minerals (Calcium, Magnesium, Iron, Zinc, Copper, Manganese)\n\t• Amino acids\n\t•Soy Isoflavones\n\t•Grape Seed Extract\n\t•Green Tea Extract' },
-                { id: 'other', title: 'Other Ingredients', content:'• Binder (INS 1420 and 460(i))\n• Diluent (INS 341(ii))\n• Stabilizer (INS 1202)\n• Anti-caking Agent (INS 553(iii) and INS 470(iii))\n• Solvent for coating (MDC and IPA)\n• Class II Preservative (INS 219 and INS 216)\n• Contains Permitted Synthetic Food Colours.(INS 17).'},
-            ],
+  {
+    id: 'actives',
+    title: 'Ingredients',
+    content: `• Vitamins: Vitamin C – Boosts immunity, improves skin glow, strong antioxidant\n• Minerals: Muscle relaxation, better sleep, reduces stress\n• Amino Acids: Improve skin, hair, and nail strength\n• Soy Isoflavones: Supports hormonal balance (especially in women)\n• Grape Seed Extract: Improves skin glow & anti-aging\n• Green Tea Extract: Improves skin health and reduces acne`
+  }
+],
             'before-after': [
                 { id: 'Before ', title: 'Before Use', content: '• Excessive hair fall and breakage\n• Weak hair follicles and poor scalp nutrition\n• Thin, lifeless hair with low volume\n• Slow or uneven hair growth\n• Dull, unhealthy-looking hair' },
                 {id: 'After', title:'After Use', content:'•Noticeable reduction in hair fall\n• Stronger, healthier hair follicles\n• Thicker, fuller hair with improved volume\n• Enhanced hair growth cycle\n•Healthier, shinier, and more resilient hair'},
@@ -54,7 +103,7 @@ export const products = [
             ],
             other: [
                 { id: 'other information', title: 'Dosage', content: 'One tablet daily or directed bu the Health Practitioner.\n\n•KEEP OUT F REACH OF CHILDREN' },
-                { id: 'storage', title:'Storage', content: '• Store below 25°C,\n• A cool & dry place\n• Protect from direct light\n• heart & moisture'},
+                // { id: 'storage', title:'Storage', content: '• Store below 25°C,\n• A cool & dry place\n• Protect from direct light\n• heart & moisture'},
                 
             ],
             legal: [
@@ -68,6 +117,7 @@ export const products = [
         tagline: "Deep Hydration. Stronger Skin Barrier. All-Day Moisture.",
         image: ceramoisImg,
         hoverImage: ceramoisHover,
+        images: [ceramoisGal1, ceramoisGal2, ceramoisGal3, ceramoisGal4],
         description: "Ceramois lotion this moisturizing lotion helps improve the health of dry skin. It helps prevent & protect dry skin for full 24 hours.",
         tar:"Ultra Nourishing Moisturizing Lotion Strengthens the skin barrier \n\t Ceramides + Hyaluronic Acid + Sheabutter",
         futch:"Invisible Hydration" +"\n\t" + "Normal to dry sensitive skin" +"\n\n"+"Formulated With"+"\n\t"+"Dermatologically Tested Actives",
@@ -84,8 +134,9 @@ export const products = [
                 
             ],
             ingredients: [
-                { id: 'ceramides', title: 'Ingredients', content: '\t•Aqua\n\t•White petroleum\n\t•Jelly\n\t•Olive oil\n\t•Glycerin\n\t•Isopropyl myristate\n\t•Shea Butter\n\t•Sunflower Oil\n\t•Cetomacrogol 1000\n\t•Emulsifying Wax' },
-                { id: 'ceramides', title: 'Other Ingredients', content:'\n\t•Almond Oil\n\t•Bees Wax\n\t•Ceto Stearyl Alcohol\n\t•YUZU Ceramind B (Butylene Glycol (and) Water (and)\n\t•Citrus Junos Fruit Extract)\n\t•Dimethicone\n\t•Phenoxyethanol and Ethylhexylglycerin\n\t•Cerbomer\n\t•Triethanolamine\n\t•GMS SE\n\t•Niacinamide\n\t•Betaine\n\t•Hyaluronic Acid\n\t•Aloe vera Juice\n\t•Jojoba Oil\n\t•Vit\n\t•E Acerate\n\t•ESTA\n\t•Fragrance'}
+                { id: 'ceramides', title: 'Ingredients', content: '• Aqua: Acts as a base solvent for all ingredients\n• Jelly: Forms a protective barrier on skin\n• Glycerin: Powerful humectant (pulls moisture into skin)\n• Shea Butter: Rich in vitamins A & E\n• Emulsifying Wax: Improves product consistency and absorption' },
+            //     { id: 'ceramides', title: 'Other Ingredients', content:'\n\t•Almond Oil\n\t•Bees Wax\n\t•Ceto Stearyl Alcohol\n\t•YUZU Ceramind B (Butylene Glycol (and) Water (and)\n\t•Citrus Junos Fruit Extract)\n\t•Dimethicone\n\t•Phenoxyethanol and Ethylhexylglycerin\n\t•Cerbomer\n\t•Triethanolamine\n\t•GMS SE\n\t•Niacinamide\n\t•Betaine\n\t•Hyaluronic Acid\n\t•Aloe vera Juice\n\t•Jojoba Oil\n\t•Vit\n\t•E Acerate\n\t•ESTA\n\t•Fragrance'}
+            // 
             ],
             'before-after': [
                 { id: 'dryness', title: 'Before Use', content: '\t•Dry and rough skin texture\n\t•Lack of moisture and dull appearance\n\t•Weak skin barrier\n\t•Tight and uncomfortable skin\n\t•Visible dryness and flakiness ' },
@@ -111,6 +162,7 @@ export const products = [
         tagline: " Deep Clean. Oil Control. Clear & Healthy Skin.",
         image: glazziumImg,
         hoverImage: glazziumHover,
+        images: [glazziumGal1, glazziumGal2, glazziumGal3, glazziumGal4],
         description: "Glazzium face wash is a gently exfoliating and enriched with natural extracs that reach deep into your skins blocked pores to remove trapped oil, toxins, dead skin and acne. Moisture is locked in, Make your skin cleansed, nourished and toned. ",
         tar:"Removes excess oil,  Relieves impurities, Imparts a healthy glow , Gentle for everday use",
         futch:"Paraben Free , Light & Non Greasy, Non Comedogenic",
@@ -127,7 +179,7 @@ export const products = [
                 // { id: 'acne-prevention', title: 'Prevents Breakouts', content: 'Salicylic acid helps clear pores and reduce acne-causing bacteria.' }
             ],
             ingredients: [
-                { id: 'salicylic', title: 'Ingredients', content: '\t•Aqua\n\t•Sodium lauryl ether sulfate\n\t•Cocamidopropyl Betaine\n\t•Glycerin\n\t•Acrylate copolymer\n\t•Lauryl Glucosides\n\t•Cocoglucosides\n\t•Polyquaternium 7\n\t•Aloe vera\n\t•Salicylic acid\n\t•PEG-40 Hydrogenated Castor Oil\n\t•Phenoxyethanol and ethylhexylglycerin\n\t•Triethanolamine D-panthanol\n\t•Pentavitin\n\t•Natural Betaine\n\t•Tea tree oil\n\t•Neem Extract\n\t•Allantoin\n\t•Calendula Extract\n\t•EDTA. ' }
+                { id: 'salicylic', title: 'Ingredients', content: '• Sodium lauryl ether sulfate: Creates rich foam for deep cleaning\n• Acrylate copolymer: Improves spreadability on skin\n• Salicylic acid: Unclogs pores and removes dead skin cells\n• Triethanolamine D-panthanol: Helps balance pH level of the product' }
             ],
             'before-after': [
                 { id: 'oil', title: 'Before Use', content: '•Excess oil buildup with greasy, shiny skin\n•Frequent acne breakouts and clogged pores\n•Dull, uneven skin tone with rough texture\n•Redness, irritation, and sensitive skin feel' },
@@ -153,6 +205,7 @@ export const products = [
         tagline: "Powerful Sun Protection with Hydration and Skin Brightening.",
         image: uvinorImg,
         hoverImage: uvinorHover,
+        images: [uvinorGal1, uvinorGal2, uvinorGal3, uvinorGal4],
         description: "Uvinor SPF 50+ helps protect sensitive skin from UV induced damage and also acts as a mositrurizer.  This sunblock offers broad spectrum protection against the sun's damaging rays. Safe on young delicate skin of children. ",
         tar:"Fortified with Niacinamide, Chamomile and Hyaclear 7,  Formulated with Dermatologically Tested Actives.",
         category: "Treatment",
@@ -167,7 +220,7 @@ export const products = [
                 // { id: 'pores', title: 'Pore Refinement', content: 'Reduces the appearance of enlarged pores over time.' }
             ],
             ingredients: [
-                { id: 'formulas', title: 'Ingredients', content: '• Aqua\n•Sun care Zen Kt(Water (Aqua) and Ethylhexyl Methoxycinnamate and Butyl Mathoxydibenzoylmethane and Benzophenone-3 and 1,3-Butylene Glycol and Phenoxyethanol)\n• shea Butter\n• Hydorxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer and Isohexadecane and Polysorbate 60\n•Dimethicone \n• Polyarcrylate-13 and Polyisobutene and Polysorbate 20\n• Benzyl Alcohol\n•Triethylene Glycol\n•Niacinamide\n•Sodium Hyaluronate and 1,2- Heanediol\n•Almond oil\n•Triethanolamine\n• Carbomer\n• Cocont oil\n• Vanilla extract\n• Green tea extract\n• Kaempferia galanga extract\n• Zinc Oxide\n• Titanium Oxide\n• Chamomile extract\n• Allantion\n• Diethylamino Hydroxybenzoyl Hexyl Benzoate\n• Vitamin E.' }
+                { id: 'formulas', title: 'Ingredients', content: '• Carbomer: Improves product consistency & thickness\n• Cocont oil: Deeply nourishes and moisturizes skin\n• Vanilla extract: Supports skin rejuvenation\n• Green tea extract: Rich in antioxidants' }
             ],
             'before-after': [
                 { id: 'acne-reduction', title: 'Before Use', content: '• Skin exposed to harmful UV rays and sun damage\n• Dull, tanned, and uneven skin tone\n• Risk of dark spots and pigmentation\n• Dry, unprotected skin prone to premature aging' },
@@ -193,6 +246,7 @@ export const products = [
         tagline: " Effective Relief from Fungal Skin Infections",
         image: sertafreeImg,
         hoverImage: sertafreeHover,
+        images: [sertafreeGal1, sertafreeGal2, sertafreeGal3, sertafreeGal4],
         description: "Broad-spectrum antifungal cream with Sertaconazole Nitrate,Effectively treats fungal infections like ringworm, athlete’s foot & jock itch,Provides quick relief from itching, redness, and irritation,Smooth, non-greasy formula suitable for daily application.",
         tar:"Avoid contact with eyes, mouth and open wounds. If contact occurs, wash thoroughy with water. Keep the medicine out of reach of children.",
         category: "Treatment",
@@ -208,7 +262,7 @@ export const products = [
             //
              ],
             ingredients: [
-                { id: 'cn-actives', title: 'Before Use', content: '• Sertaconazole Nitrate – Powerful antifungal agent\n• Cream Base – Ensures smooth and even application\n• Moisturizing Agents – Prevent dryness and irritation\n• Stabilizers & Preservatives – Maintain product safety and effectiveness' },
+                { id: 'cn-actives', title: 'Ingredients', content: '• Sertaconazole Nitrate: Powerful antifungal agent\n• Cream Base: Ensures smooth and even application\n• Moisturizing Agents: Prevent dryness and irritation\n• Stabilizers & Preservatives: Maintain product safety and effectiveness' },
            ],
             'before-after': [
                 { id: 'redness', title: 'Before Use', content: '• Fungal infection with itching and discomfort\n• Red, inflamed, or scaly skin patches \n• Burning sensation and skin irritation \n• Spreading or recurring infection areas ' },
@@ -235,6 +289,7 @@ export const products = [
         tagline: " Targeted Treatment for Acne & Skin Inflammation.",
         image: acnevorCnImg,
         hoverImage: acnevorCnHover,
+        images: [acnevorCnGal1, acnevorCnGal2, acnevorCnGal3, acnevorCnGal4],
         description: "Advanced anti-acne gel with Clindamycin & Nicotinamide,Targets acne-causing bacteria and reduces inflammationLightweight, non-greasy formula for quick absorption,Ideal for oily and acne-prone skin.",
         precautions:"Product from direct sunlight,  Avoid contact with eyes.",
         category: "Special Care",
@@ -249,7 +304,7 @@ export const products = [
                 // { id: 'relief', title: 'Itching Relief', content: 'Provides rapid relief from itching, burning, and irritation.' }
             ],
             ingredients: [
-                { id: 'serta', title: 'Key Ingredients', content: '• Clindamycin – Fights acne-causing bacteria\n• Nicotinamide (Vitamin B3) – Reduces inflammation & brightens skin\n• Gel Base – Lightweight and fast-absorbing\n• Stabilizing Agents – Maintain product effectiveness' }
+                { id: 'serta', title: 'Key Ingredients', content: '• Clindamycin: Fights acne-causing bacteria\n• Nicotinamide (Vitamin B3): Reduces inflammation & brightens skin\n• Gel Base: Lightweight and fast-absorbing\n• Stabilizing Agents: Maintain product effectiveness' }
             ],
             'before-after': [
                 { id: 'infection-clear', title: 'Before Use', content: '• Active acne, pimples, and breakouts\n• Oily skin with clogged pores\n• Redness, irritation, and inflammation\n• Uneven and rough skin texture' },
@@ -277,6 +332,7 @@ export const products = [
         tagline: "Advanced Dual Action Acne Therapy",
         image: acnevorImg,
         hoverImage: acnevorHover,
+        images: [acnevorGal1, acnevorGal2, acnevorGal3, acnevorGal4],
         description: "Advanced acne treatment gel combining Adapalene (retinoid) & Clindamycin (antibiotic). Targets acne at the root by unclogging pores and fighting acne-causing bacteria. Lightweight, fast-absorbing formula for effective daily treatment. Suitable for oily, acne-prone, and combination skin",
         precautions:"Product from direct sunlight,  Avoid contact with eyes. ",
 
@@ -292,7 +348,7 @@ export const products = [
                 // { id: 'skin-health', title: 'Skin Radiance', content: 'Antioxidants protect skin from internal stress and improve glow.' }
             ],
             ingredients: [
-                { id: 'vits', title: 'Vitamins', content: '• Adapalene – Promotes skin renewal & prevents clogged pores\n• Clindamycin Phosphate – Fights acne-causing bacteria \n• Gel Base – Lightweight, non-greasy formulation \n• Stabilizing Agents – Ensure effectiveness & safety' }
+                { id: 'vits', title: 'Ingredients', content: '• Adapalene: Promotes skin renewal & prevents clogged pores\n• Clindamycin Phosphate: Fights acne-causing bacteria \n• Gel Base: Lightweight, non-greasy formulation \n• Stabilizing Agents: Ensure effectiveness & safety' }
             ],
             'before-after': [
                 { id: 'hair-fall', title: 'Before Use', content: '• Active acne, pimples, and inflamed skin\n• Clogged pores with blackheads/whiteheads\n• Oily skin with frequent breakouts\n• Uneven, rough skin texture' },
