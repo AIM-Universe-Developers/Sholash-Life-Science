@@ -150,6 +150,14 @@
 
 @media(max-width:576px) {
 
+    .footer {
+        padding: 30px 10px;
+    }
+
+    .footer-brand p {
+        font-size: 0.85rem;
+    }
+
     .footer-links {
         grid-template-columns: 1fr;
     }

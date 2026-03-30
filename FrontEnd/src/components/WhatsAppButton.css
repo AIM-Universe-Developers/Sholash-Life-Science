@@ -56,3 +56,10 @@
         height: 28px;
     }
 }
+
+@media (max-width: 480px) {
+    .whatsapp-float {
+        bottom: 15px;
+        right: 15px;
+    }
+}

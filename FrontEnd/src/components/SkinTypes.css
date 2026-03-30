@@ -89,4 +89,12 @@
     .skin-types-section {
         padding: 70px 0;
     }
+
+    .skin-type-card {
+        padding: 20px;
+    }
+
+    .skin-type-card h3 {
+        font-size: 1.1rem;
+    }
 }
