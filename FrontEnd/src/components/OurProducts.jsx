@@ -92,13 +92,24 @@ const OurProducts = ({ searchQuery = '' }) => {
     const getImageUrl = (product, hover = false) => {
         // API product: uses images[]
         if (product.images && product.images.length > 0) {
+            if (hover && product.hoverImage) {
+                let img = product.hoverImage;
+                img = img.replace(/\\/g, '/');
+                if (img.startsWith('http')) return img;
+                return img.startsWith('/') ? img : `/${img}`;
+            }
             let img = hover && product.images[1] ? product.images[1] : product.images[0];
             img = img.replace(/\\/g, '/');
             if (img.startsWith('http')) return img;
             return img.startsWith('/') ? img : `/${img}`;
         }
         // Static product: uses image / hoverImage
-        if (hover && product.hoverImage) return product.hoverImage;
+        if (hover && product.hoverImage) {
+            let img = product.hoverImage;
+            img = img.replace(/\\/g, '/');
+            if (img.startsWith('http')) return img;
+            return img.startsWith('/') ? img : `/${img}`;
+        }
         return product.image || '';
     };
 
