@@ -66,10 +66,10 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
                     </Link>
                 </div>
                 <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
-                    <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
-                    <a href="/#products" onClick={() => setIsMenuOpen(false)}>Collection</a>
-                    <Link to="/about" onClick={() => setIsMenuOpen(false)}>Our Story</Link>
-                    <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
+                    <Link to="/" onClick={() => setIsMenuOpen(false)}>HOME</Link>
+                    <a href="/#products" onClick={() => setIsMenuOpen(false)}>COLLECTION</a>
+                    <Link to="/about" onClick={() => setIsMenuOpen(false)}>OUR STORY</Link>
+                    <Link to="/contact" onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
                 </nav>
                 <div className="header-actions">
                     <form className="search-container" onSubmit={handleSearchSubmit}>
