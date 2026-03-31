@@ -37,7 +37,7 @@ const ProductCard = ({ id, name, description, category, color, image, hoverImage
     };
 
     return (
-        <div className="product-card" ref={cardRef} onClick={() => navigate(`/product/${id}`)}>
+        <div className="product-card" ref={cardRef}>
             <div 
                 className="product-image-container" 
                 style={{ '--product-accent': color }}
@@ -53,7 +53,7 @@ const ProductCard = ({ id, name, description, category, color, image, hoverImage
                 <img src={image} alt={name} className="product-image" />
                 <div className="product-badge">{category}</div>
             </div>
-            <div className="product-info">
+            <div className="product-info" onClick={() => navigate(`/product/${id}`)}>
                 <div className="product-meta">
                     <div className="product-price">₹{price}</div>
                     <div className="product-rating">
