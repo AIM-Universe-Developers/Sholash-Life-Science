@@ -25,12 +25,14 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
         fetchProducts();
     }, [searchQuery]);
 
-    const getImageUrl = (product) => {
+    const getImageUrl = (product, hover = false) => {
         if (product.images && product.images.length > 0) {
-            const img = product.images[0].replace(/\\/g, '/');
+            let imgStr = hover && product.images[1] ? product.images[1] : product.images[0];
+            const img = imgStr.replace(/\\/g, '/');
             if (img.startsWith('http')) return img;
             return img.startsWith('/') ? img : `/${img}`;
         }
+        if (hover && product.hoverImage) return product.hoverImage;
         return product.image || '';
     };
 
@@ -69,6 +71,7 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
                                 category={product.category?.name || product.category}
                                 color={product.color}
                                 image={getImageUrl(product)}
+                                hoverImage={getImageUrl(product, true)}
                                 price={product.price}
                                 rating={product.rating}
                                 reviewsCount={product.numReviews}

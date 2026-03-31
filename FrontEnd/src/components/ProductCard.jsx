@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductCard.css';
 
-const ProductCard = ({ id, name, description, category, color, image, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
+const ProductCard = ({ id, name, description, category, color, image, hoverImage, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
     const navigate = useNavigate();
     const cardRef = useRef(null);
 
@@ -38,7 +38,18 @@ const ProductCard = ({ id, name, description, category, color, image, price, rat
 
     return (
         <div className="product-card" ref={cardRef} onClick={() => navigate(`/product/${id}`)}>
-            <div className="product-image-container" style={{ '--product-accent': color }}>
+            <div 
+                className="product-image-container" 
+                style={{ '--product-accent': color }}
+                onMouseEnter={e => {
+                    const img = e.currentTarget.querySelector('.product-image');
+                    if (img && hoverImage) img.src = hoverImage;
+                }}
+                onMouseLeave={e => {
+                    const img = e.currentTarget.querySelector('.product-image');
+                    if (img) img.src = image;
+                }}
+            >
                 <img src={image} alt={name} className="product-image" />
                 <div className="product-badge">{category}</div>
             </div>

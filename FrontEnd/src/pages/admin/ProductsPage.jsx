@@ -192,9 +192,16 @@ const ProductsPage = () => {
                                                     src={getImageUrl(product.images[0])}
                                                     alt={product.name}
                                                     className={styles.productThumb}
+                                                    onMouseEnter={(e) => {
+                                                        if (product.images[1]) e.target.src = getImageUrl(product.images[1]);
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.target.src = getImageUrl(product.images[0]);
+                                                    }}
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        setPreviewImage(getImageUrl(product.images[0]));
+                                                        // Preview currently displayed image (could be [1] if hovered)
+                                                        setPreviewImage(e.target.src);
                                                     }}
                                                 />
                                             ) : (
@@ -406,11 +413,8 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         fd.append('features', JSON.stringify(form.features.filter(Boolean)));
         fd.append('details', JSON.stringify(form.details));
 
-        // For editing, pass existing images that weren't removed
-        if (product) {
-            // We'll keep the existing images array in the backend update
-            // by not passing images field if no new files and same existing images
-        }
+        // pass existing images that weren't removed
+        fd.append('existingImages', JSON.stringify(existingImages));
 
         newFiles.forEach(file => {
             fd.append('images', file);
@@ -561,7 +565,9 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                                 type="button"
                                                 className={styles.imageRemoveBtn}
                                                 onClick={() => removeExistingImage(idx)}
-                                            >×</button>
+                                            >
+                                                <Trash2 size={12} />
+                                            </button>
                                         </div>
                                     ))}
                                     {/* New file previews */}
@@ -572,7 +578,9 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                                 type="button"
                                                 className={styles.imageRemoveBtn}
                                                 onClick={() => removeNewFile(idx)}
-                                            >×</button>
+                                            >
+                                                <Trash2 size={12} />
+                                            </button>
                                         </div>
                                     ))}
                                 </div>

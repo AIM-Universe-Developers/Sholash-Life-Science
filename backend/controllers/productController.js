@@ -215,17 +215,27 @@ const updateProduct = async (req, res, next) => {
             if (req.body.target && typeof req.body.target === 'string') req.body.target = JSON.parse(req.body.target);
             if (req.body.features && typeof req.body.features === 'string') req.body.features = JSON.parse(req.body.features);
             if (req.body.details && typeof req.body.details === 'string') req.body.details = JSON.parse(req.body.details);
+            if (req.body.existingImages && typeof req.body.existingImages === 'string') {
+                req.body.existingImages = JSON.parse(req.body.existingImages);
+            }
         } catch (err) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid JSON format for target, features, or details",
+                message: "Invalid JSON format for target, features, details, or existingImages",
             });
         }
 
-        // Handle new image uploads
+        // Handle new image uploads and existing images retention
+        let currentImages = product.images;
+        if (req.body.existingImages !== undefined) {
+            currentImages = req.body.existingImages;
+        }
+
         if (req.files && req.files.length > 0) {
             const newImages = req.files.map((f) => `uploads/${f.filename}`);
-            req.body.images = [...product.images, ...newImages];
+            req.body.images = [...currentImages, ...newImages];
+        } else {
+            req.body.images = currentImages;
         }
 
         const updated = await Product.findByIdAndUpdate(
