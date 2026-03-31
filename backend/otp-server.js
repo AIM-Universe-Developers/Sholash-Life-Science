@@ -7,6 +7,9 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.OTP_PORT || 4000;
 
+console.log("EMAIL:", process.env.GMAIL_USER);
+console.log("PASS:", process.env.GMAIL_APP_PASSWORD);
+
 app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:3000'] }));
 app.use(express.json());
 
@@ -84,7 +87,7 @@ app.post('/api/send-otp/email', async (req, res) => {
                 <p style="color:#9ca3af;font-size:12px;text-align:center;">© 2025 Sholash Life Science</p>
             </div>`
         });
-        console.log(`[OTP] Email sent to ${email}: ${otp}`);
+        console.log(`[OTP] Email sent to ${email}`);
         res.json({ success: true, message: 'OTP sent to your email.' });
 
     } catch (err) {
