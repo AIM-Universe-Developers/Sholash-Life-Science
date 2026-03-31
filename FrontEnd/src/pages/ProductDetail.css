@@ -61,6 +61,7 @@
     height: 100%;
     padding: 4px 0;
     scrollbar-width: none; /* Firefox */
+    margin-top:110px;
 }
 
 .thumbnail-column::-webkit-scrollbar {
