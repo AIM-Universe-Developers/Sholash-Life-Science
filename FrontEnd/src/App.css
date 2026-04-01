@@ -10,6 +10,23 @@ main {
   /* 36px TopBar + 100px Header */
 }
 
+@media (max-width: 768px) {
+  main {
+    padding-top: 106px;
+    /* 36px TopBar + 70px Header */
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding-top: 100px;
+    /* 30px TopBar + 70px Header */
+  }
+
+  .top-bar {
+    height: 30px;
+  }
+}
 .admin-app-container main {
   padding-top: 0;
 }

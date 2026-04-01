@@ -36,3 +36,20 @@ p {
 /* Desktop */
 @media (min-width: 1024px) {
 }
+
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;   /* 🔥 prevents side scroll */
+}
+
+/* ROOT APP */
+#root {
+    width: 100%;
+}

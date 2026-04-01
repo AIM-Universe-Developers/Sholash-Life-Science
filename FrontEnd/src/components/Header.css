@@ -197,7 +197,13 @@
         top: 36px;
         padding: 0 15px;
     }
+}
 
+@media (max-width: 480px) {
+    .header {
+        top: 30px;
+    }
+}
     .header.scrolled {
         height: 70px;
     }
