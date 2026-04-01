@@ -3,7 +3,7 @@ import { UserContext } from '../context/UserContext';
 import logo from '../assets/logo/logo.png';
 import './AuthModal.css';
 
-const API_URL = 'http://localhost:5000/api/users';
+const API_URL = import.meta.env.VITE_API_URL || '/api/users';
 
 const AuthModal = ({ isOpen, onClose, product }) => {
     // ─── View Views ───────────────────────────────────────────────────────────
