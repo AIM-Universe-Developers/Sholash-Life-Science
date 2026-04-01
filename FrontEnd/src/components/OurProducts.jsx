@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { products as staticProducts } from '../data/products';
 import './OurProducts.css';
 
 const OurProducts = ({ searchQuery = '' }) => {
@@ -12,52 +11,21 @@ const OurProducts = ({ searchQuery = '' }) => {
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setLoading(true);
             try {
                 const params = {};
                 if (searchQuery.trim()) params.search = searchQuery;
-                
-                let combinedProducts = [];
-                
-                // 1. Get API products
-                try {
-                    const res = await axios.get('/api/products', { params });
-                    if (res.data.success) {
-                        combinedProducts = [...res.data.data];
-                    }
-                } catch (apiErr) {
-                    console.error('API Error:', apiErr);
+
+                const res = await axios.get('/api/products', { params });
+                if (res.data.success) {
+                    const filtered = res.data.data.filter(p => p.name !== 'Sample Skincare Bottle');
+                    setProducts(filtered);
+                } else {
+                    setProducts([]);
                 }
-
-                // 2. Filter static products based on search query
-                const filteredStatic = searchQuery.trim()
-                    ? staticProducts.filter(p =>
-                        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        p.category.toLowerCase().includes(searchQuery.toLowerCase())
-                    )
-                    : staticProducts;
-
-                // 3. Merge both (API first, then static)
-                // Filter out static products that might already be in API (by name)
-                const apiNames = new Set(combinedProducts.map(p => p.name.toLowerCase().split('–')[0].trim()));
-                const uniqueStatic = filteredStatic.filter(p => !apiNames.has(p.name.toLowerCase().split('–')[0].trim()));
-                
-                const allProducts = [...combinedProducts, ...uniqueStatic];
-
-                // 4. Filter out 'Sample Skincare Bottle' if requested
-                const finalProducts = allProducts.filter(p => p.name !== 'Sample Skincare Bottle');
-                
-                setProducts(finalProducts);
-
             } catch (err) {
-                console.error('General Error in fetchProducts:', err);
-                // Last resort fallback
-                const filtered = searchQuery.trim()
-                    ? staticProducts.filter(p =>
-                        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        p.category.toLowerCase().includes(searchQuery.toLowerCase())
-                    )
-                    : staticProducts;
-                setProducts(filtered);
+                console.error('Failed to fetch products from API:', err);
+                setProducts([]);
             } finally {
                 setLoading(false);
             }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { products as staticProducts } from '../data/products'; // ✅ adjust path if needed
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -54,23 +53,10 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         const fetchProduct = async () => {
             setLoading(true);
             try {
-                // First, check static data
-                const staticProd = staticProducts.find(p => String(p.id) === String(id));
-                if (staticProd) {
-                    const baseImages = Array.isArray(staticProd.images) && staticProd.images.length ? staticProd.images : [staticProd.image];
-                    const normalized = baseImages.map(getImageUrl).filter(Boolean);
-                    setProduct(staticProd);
-                    setCurrentImage(normalized[0] || '');
-                    setCurrentImageIndex(0);
-                    setLoading(false);
-                    return;
-                }
-
-                // If not found statically, fetch from API
                 const res = await axios.get(`/api/products/${id}`);
                 if (res.data && res.data.success) {
                     const apiProd = res.data.data;
-                    const baseImages = Array.isArray(apiProd.images) && apiProd.images.length ? apiProd.images : [apiProd.image];
+                    const baseImages = Array.isArray(apiProd.images) && apiProd.images.length ? apiProd.images : (apiProd.image ? [apiProd.image] : []);
                     const normalized = baseImages.map(getImageUrl).filter(Boolean);
                     setProduct(apiProd);
                     setCurrentImage(normalized[0] || '');
