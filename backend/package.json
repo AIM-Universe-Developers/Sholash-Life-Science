@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "concurrently \"node server.js\" \"node otp-server.js\"",
+    "start:api": "node server.js",
+    "start:otp": "node otp-server.js",
     "dev": "concurrently \"nodemon server.js\" \"nodemon otp-server.js\""
   },
   "keywords": [],
@@ -22,7 +24,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.0",
     "multer": "^2.1.1",
-    "nodemailer": "^8.0.1"
+    "nodemailer": "^8.0.4"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

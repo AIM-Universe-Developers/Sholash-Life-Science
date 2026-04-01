@@ -135,8 +135,17 @@
      /* text-align: center;  
      justify-content: center;    */
      font-family: serif;
-     display: flex;
-    font-style: bold;
+     display: block;
+     font-weight: 400;
+}
+
+.sub-accordion-content p {
+    margin: 0 0 0.45rem;
+    font-weight: 400;
+}
+
+.sub-accordion-content p:last-child {
+    margin-bottom: 0;
 }
 
 .accordion-generic-content {
