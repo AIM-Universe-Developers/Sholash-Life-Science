@@ -2,13 +2,28 @@ import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductCard.css';
 
-const ProductCard = ({ id, name, description, category, color, image, hoverImage, price, rating, reviewsCount, onAddToCart, onBuyClick }) => {
+const ProductCard = ({
+    id,
+    name,
+    description,
+    category,
+    color,
+    image,
+    hoverImage,
+    price,
+    rating,
+    reviewsCount,
+    onAddToCart,
+    onBuyClick
+}) => {
     const navigate = useNavigate();
     const cardRef = useRef(null);
 
+    /* Scroll animation */
     useEffect(() => {
         const el = cardRef.current;
         if (!el) return;
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -18,55 +33,97 @@ const ProductCard = ({ id, name, description, category, color, image, hoverImage
             },
             { threshold: 0.1 }
         );
+
         observer.observe(el);
         return () => observer.disconnect();
     }, []);
 
+    /* Add to cart */
     const handleAddToCartClick = (e) => {
-        e.stopPropagation(); // Prevent navigating to product detail page
-        if (onAddToCart) {
-            onAddToCart({ id, name, price, rating, reviewsCount, category, color, description, image });
-        }
+        e.stopPropagation();
+        onAddToCart?.({
+            id,
+            name,
+            price,
+            rating,
+            reviewsCount,
+            category,
+            color,
+            description,
+            image
+        });
     };
 
+    /* Buy */
     const handleBuyClick = (e) => {
         e.stopPropagation();
-        if (onBuyClick) {
-            onBuyClick({ id, name, price, rating, reviewsCount, category, color, description, image });
-        }
+        onBuyClick?.({
+            id,
+            name,
+            price,
+            rating,
+            reviewsCount,
+            category,
+            color,
+            description,
+            image
+        });
     };
 
     return (
         <div className="product-card" ref={cardRef}>
-            <div 
-                className="product-image-container" 
-                style={{ '--product-accent': color }}
-                onMouseEnter={e => {
-                    const img = e.currentTarget.querySelector('.product-image');
-                    if (img && hoverImage) img.src = hoverImage;
-                }}
-                onMouseLeave={e => {
-                    const img = e.currentTarget.querySelector('.product-image');
-                    if (img) img.src = image;
-                }}
-            >
-                <img src={image} alt={name} className="product-image" />
+
+            {/* IMAGE SECTION */}
+            <div className="product-image-container">
+
+                {/* Main Image */}
+                <img
+                    src={image}
+                    alt={name}
+                    className={`product-image ${hoverImage ? 'main-img' : ''}`}
+                />
+
+                {/* Hover Image (only if exists) */}
+                {hoverImage && (
+                    <img
+                        src={hoverImage}
+                        alt={name}
+                        className="product-image hover-img"
+                    />
+                )}
+
+                {/* Badge */}
                 <div className="product-badge">{category}</div>
             </div>
-            <div className="product-info" onClick={() => navigate(`/product/${id}`)}>
+
+            {/* INFO */}
+            <div
+                className="product-info"
+                onClick={() => navigate(`/product/${id}`)}
+            >
                 <div className="product-meta">
                     <div className="product-price">₹{price}</div>
+
                     <div className="product-rating">
-                        <span className="star">★</span>
-                        <span className="rating-value">{rating}</span>
-                        <span className="reviews-count">({reviewsCount})</span>
+                        ★ {rating}
+                        <span className="reviews-count">
+                            ({reviewsCount})
+                        </span>
                     </div>
                 </div>
-                <h3 className="product-name serif">{name}</h3>
+
+                <h3 className="product-name">{name}</h3>
+
                 <p className="product-description">{description}</p>
+
                 <div className="product-footer">
-                    <button className="btn-cart" onClick={handleBuyClick}>BUY</button>
-                    <button className="btn-cart" onClick={handleAddToCartClick}>ADD CART</button>
+                    <button className="btn-cart" onClick={handleBuyClick}>
+                        BUY
+                    </button>
+
+                    <button className="btn-cart" onClick={handleAddToCartClick}>
+                        ADD CART
+                    </button>
                 </div>
             </div>
         </div>
