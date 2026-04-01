@@ -173,6 +173,7 @@
 .account-text {
     font-size: 0.85rem;
     font-weight: 600;
+    font-family: 'luxury';
     color: var(--color-text-main);
     text-transform: uppercase;
     letter-spacing: 0.5px;

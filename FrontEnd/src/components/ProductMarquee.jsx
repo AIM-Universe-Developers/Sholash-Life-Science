@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { products as staticProducts } from '../data/products';
 import './ProductMarquee.css';
 
 const ProductMarquee = () => {
@@ -10,20 +9,18 @@ const ProductMarquee = () => {
 
     useEffect(() => {
         const fetchAllProducts = async () => {
-            let combined = [];
             try {
                 const res = await axios.get('/api/products');
                 if (res.data.success) {
-                    combined = res.data.data;
+                    const filtered = res.data.data.filter(p => p.name !== 'Sample Skincare Bottle');
+                    setProducts(filtered);
+                } else {
+                    setProducts([]);
                 }
             } catch (err) {
                 console.error('API Error in Marquee:', err);
+                setProducts([]);
             }
-
-            // Merge with static
-            const apiNames = new Set(combined.map(p => p.name.toLowerCase().split('–')[0].trim()));
-            const uniqueStatic = staticProducts.filter(p => !apiNames.has(p.name.toLowerCase().split('–')[0].trim()));
-            setProducts([...combined, ...uniqueStatic]);
         };
         fetchAllProducts();
     }, []);
