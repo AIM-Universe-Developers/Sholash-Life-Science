@@ -70,7 +70,8 @@
 
 .nav-links a {
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
+    font-family: 'luxury';
     color: #111111;
     letter-spacing: 0.8px;
     text-transform: uppercase;
@@ -138,7 +139,7 @@
     padding: var(--spacing-xs);
     color: var(--color-text-main);
     background: none;
-    border: none;
+    border-radius:50px;
     cursor: pointer;
     display: flex;
     align-items: center;
