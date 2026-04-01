@@ -20,12 +20,14 @@ const ProductsPage = () => {
 
     const statusTabs = ['All', 'Active', 'Inactive'];
 
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
     // ─── Fetch Data ──────────────────────────────────────────────────────
     const fetchProducts = async () => {
         try {
             setLoading(true);
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const res = await axios.get('/api/products/admin/all', { headers });
+            const res = await axios.get(`${API_BASE}/products/admin/all`, { headers });
             if (res.data.success) {
                 setProducts(res.data.data || []);
             }
@@ -38,7 +40,7 @@ const ProductsPage = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get('/api/categories');
+            const res = await axios.get(`${API_BASE}/categories`);
             if (res.data.success) {
                 setCategories(res.data.data || []);
             }
@@ -76,9 +78,9 @@ const ProductsPage = () => {
             };
 
             if (editingProduct) {
-                await axios.put(`/api/products/${editingProduct._id}`, formData, { headers });
+                await axios.put(`${API_BASE}/products/${editingProduct._id}`, formData, { headers });
             } else {
-                await axios.post('/api/products', formData, { headers });
+                await axios.post(`${API_BASE}/products`, formData, { headers });
             }
 
             setShowForm(false);
@@ -96,7 +98,7 @@ const ProductsPage = () => {
         if (!deleteTarget) return;
         try {
             const headers = { Authorization: `Bearer ${token}` };
-            await axios.delete(`/api/products/${deleteTarget._id}`, { headers });
+            await axios.delete(`${API_BASE}/products/${deleteTarget._id}`, { headers });
             setDeleteTarget(null);
             fetchProducts();
         } catch (err) {
