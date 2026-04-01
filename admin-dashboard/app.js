@@ -2,7 +2,7 @@
    SHOLASH ADMIN — app.js  |  Real Data + API Integration
    ===================================================== */
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://sholash-life-science.onrender.com/api';
 const TOKEN = localStorage.getItem('sholash_admin_token');
 
 async function fetchWithAuth(endpoint, options = {}) {
@@ -478,7 +478,7 @@ function renderImages() {
     if (file instanceof File) {
       src = URL.createObjectURL(file);
     } else {
-      src = `http://localhost:5000/${file}`; 
+      src = `https://sholash-life-science.onrender.com/${file}`; 
     }
     return `
       <div class="img-preview-wrap">
