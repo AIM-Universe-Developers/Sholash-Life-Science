@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "concurrently \"node server.js\" \"node otp-server.js\"",
+    "start:api": "node server.js",
+    "start:otp": "node otp-server.js",
     "dev": "concurrently \"nodemon server.js\" \"nodemon otp-server.js\""
   },
   "keywords": [],

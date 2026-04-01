@@ -30,6 +30,31 @@ const ProductAccordion = ({ product }) => {
         // { id: 'legal', title: 'Legal Metrology' },
     ];
 
+    const renderContent = (content, sectionId) => {
+        const lines = String(content || '').split('\n').filter(line => line.trim());
+
+        return lines.map((line, index) => {
+            const trimmed = line.trim();
+
+            if (sectionId === 'ingredients') {
+                const match = trimmed.match(/^([•◦▪\-]?\s*)([^:]+:)(.*)$/);
+
+                if (match) {
+                    const [, bullet, label, description] = match;
+                    return (
+                        <p key={index}>
+                            {bullet}
+                            <strong>{label}</strong>
+                            {description}
+                        </p>
+                    );
+                }
+            }
+
+            return <p key={index}>{trimmed}</p>;
+        });
+    };
+
     return (
         <div className="product-accordion-wrapper">
             <div className="container">
@@ -71,7 +96,7 @@ const ProductAccordion = ({ product }) => {
                                                         </button>
                                                         {openSubSection === item.id && (
                                                             <div className="sub-accordion-content fade-in">
-                                                                <p>{item.content}</p>
+                                                                {renderContent(item.content, section.id)}
                                                             </div>
                                                         )}
                                                     </div>
