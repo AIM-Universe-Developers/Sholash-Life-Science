@@ -24,16 +24,36 @@ connectDB();
 // ─── App Init ─────────────────────────────────────────────────────────────────
 const app = express();
 
+// ─── Trust Render's reverse proxy (required for rate-limit & IP detection) ────
+app.set('trust proxy', 1);
+
 // ─── Security Middleware ──────────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors());
 
-// Global rate limiter: 100 requests per 15 minutes per IP
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://sholash-life-science-1.onrender.com',
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS policy: origin '${origin}' not allowed`));
+        }
+    },
+    credentials: true,
+}));
+
+// Global rate limiter: 200 requests per 15 minutes per real IP
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 200,
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => req.ip,
     message: { success: false, message: "Too many requests, please try again later." },
 });
 app.use(limiter);
