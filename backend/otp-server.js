@@ -93,12 +93,11 @@ app.post('/api/send-otp/email', async (req, res) => {
     } catch (err) {
         console.error('[Email Error]', err.message);
 
-        // Detect specific Gmail errors and give helpful messages
-        let hint = 'Check .env: GMAIL_USER and GMAIL_APP_PASSWORD.';
+        let hint = err.message; // Use real error message as the hint
         if (err.message.includes('535') || err.message.includes('Username and Password')) {
-            hint = 'Gmail rejected the password. Use an App Password (not your normal Gmail password). See instructions below.';
-        } else if (err.message.includes('ECONNREFUSED') || err.message.includes('ETIMEDOUT')) {
-            hint = 'Cannot connect to Gmail SMTP. Check your internet connection.';
+            hint = 'Gmail rejected the password. Use an App Password (not your normal Gmail password).';
+        } else if (err.message.includes('ECONNREFUSED')) {
+            hint = 'Cannot connect to Gmail SMTP.';
         }
 
         res.status(500).json({
