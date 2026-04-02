@@ -46,6 +46,7 @@ export const AdminAuthProvider = ({ children }) => {
                 localStorage.setItem('sholash_admin_user', JSON.stringify(userData));
                 return { success: true };
             }
+            return { success: false, message: res.data.message || 'Invalid admin credentials' };
         } catch (error) {
             return { 
                 success: false, 
