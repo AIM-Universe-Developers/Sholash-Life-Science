@@ -267,11 +267,11 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 <button onClick={() => setQuantity(q => q + 1)}>+</button>
                             </div>
 
-                            <button className="btn-add-large" onClick={handleAddToCart}>
+                            <button className="btn-add-large btn-add-cart" onClick={handleAddToCart}>
                                 Add to Cart
                             </button>
 
-                            <button className="btn-add-large" onClick={() => onBuyClick && onBuyClick(product)}>
+                            <button className="btn-add-large btn-buy" onClick={() => onBuyClick && onBuyClick(product)}>
                                 BUY
                             </button>
                         </div>

@@ -87,6 +87,7 @@
 /* META (Price & Rating) */
 .product-meta {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
@@ -105,6 +106,11 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
+}
+
+.star {
+    color: #f1c40f;
 }
 
 .reviews-count {
@@ -213,16 +219,105 @@
     }
 }
 
+@media (min-width: 481px) {
+    .product-meta {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        overflow: hidden;
+        min-width: 0;
+    }
+
+    .product-meta > * {
+        min-width: 0;
+    }
+
+    .product-price,
+    .product-rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+        flex-shrink: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .reviews-count {
+        white-space: nowrap;
+    }
+}
+
 @media (max-width: 480px) {
     .product-image-container {
         aspect-ratio: 1 / 1;
     }
 
+    .product-meta {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        overflow: hidden;
+        min-width: 0;
+    }
+
+    .product-meta > * {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .product-price {
-        font-size: 1.1rem;
+        font-size: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-rating {
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    .reviews-count {
+        font-size: 0.7rem;
+        white-space: nowrap;
     }
 
     .product-name {
         font-size: 0.9rem;
     }
+
+    .product-footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+
+    .btn-cart {
+        flex: 1;
+        padding: 10px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
+

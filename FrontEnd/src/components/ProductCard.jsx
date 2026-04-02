@@ -102,12 +102,12 @@ const ProductCard = ({
                 onClick={() => navigate(`/product/${id}`)}
             >
                 <div className="product-meta">
-                    <div className="product-price">₹{price}</div>
+                    <div className="product-price">MRP: ₹{price}</div>
 
                     <div className="product-rating">
-                        ★ {rating}
+                        <span className="star">★</span> {rating}
                         <span className="reviews-count">
-                            ({reviewsCount})
+                            ({reviewsCount} reviews)
                         </span>
                     </div>
                 </div>

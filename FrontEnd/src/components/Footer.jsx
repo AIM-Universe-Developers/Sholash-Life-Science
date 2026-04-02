@@ -54,7 +54,7 @@ const Footer = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
-                                <button type="submit">Join</button>
+                                <button className="button" type="submit">Join</button>
                             </form>
                         )}
                     </div>

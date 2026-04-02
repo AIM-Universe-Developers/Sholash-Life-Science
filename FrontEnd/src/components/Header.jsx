@@ -97,11 +97,11 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
                         </button>
                     </form>
                     {user ? (
-                        <Link to="/profile" className="account-user" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'inherit' }}>
+                        <Link to="/profile" className="account-user" title={user.name || 'Profile'} style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'inherit' }}>
                             <div className="icon-btn account-btn" aria-label="My Profile" style={{ background: '#f5f5f5', color: '#000' }}>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             </div>
-                            <span className="account-text" style={{ fontWeight: 'bold' }}>{user.name?.split(' ')[0] || 'Profile'}</span>
+                            <span className="account-text">{user.name?.split(' ')[0] || 'Profile'}</span>
                         </Link>
                     ) : (
                         <button className="icon-btn account-btn" onClick={onAuthClick} aria-label="Account">
@@ -111,8 +111,8 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
                     )}
                     <Link to="/cart" className="icon-btn cart-btn" aria-label="Cart">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                        <span className="cart-text">Cart</span>
                         {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                        <span className='account-text'>Cart</span>
                     </Link>
                 </div>
             </div>
