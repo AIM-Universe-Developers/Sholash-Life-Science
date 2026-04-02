@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import './ProductMarquee.css';
 
 const ProductMarquee = () => {
@@ -10,7 +10,7 @@ const ProductMarquee = () => {
     useEffect(() => {
         const fetchAllProducts = async () => {
             try {
-                const res = await axios.get('/api/products');
+                const res = await api.get('/api/products');
                 if (res.data.success) {
                     const filtered = res.data.data.filter(p => p.name !== 'Sample Skincare Bottle');
                     setProducts(filtered);
@@ -26,12 +26,15 @@ const ProductMarquee = () => {
     }, []);
 
     const getImageUrl = (product) => {
+        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
         if (product.images && product.images.length > 0) {
             let img = product.images[0].replace(/\\/g, '/');
             if (img.startsWith('http')) return img;
-            return img.startsWith('/') ? img : `/${img}`;
+            return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
         }
-        return product.image || '';
+        if (!product.image) return '';
+        if (product.image.startsWith('http')) return product.image;
+        return product.image.startsWith('/') ? `${BASE}${product.image}` : `${BASE}/${product.image}`;
     };
 
     if (products.length === 0) return null;

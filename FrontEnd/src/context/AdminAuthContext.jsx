@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 export const AdminAuthContext = createContext();
 
@@ -18,8 +18,8 @@ export const AdminAuthProvider = ({ children }) => {
         }
         setIsAdminRehydrated(true);
 
-        // Axios interceptor for 401/403
-        const interceptor = axios.interceptors.response.use(
+        // API interceptor for 401/403
+        const interceptor = api.interceptors.response.use(
             (response) => response,
             (error) => {
                 if (error.response?.status === 401) {
@@ -31,13 +31,13 @@ export const AdminAuthProvider = ({ children }) => {
         );
 
         return () => {
-            axios.interceptors.response.eject(interceptor);
+            api.interceptors.response.eject(interceptor);
         };
     }, []);
 
     const loginAdmin = async (email, password) => {
         try {
-            const res = await axios.post('/api/admin/login', { email, password });
+            const res = await api.post('/api/admin/login', { email, password });
             if (res.data.success) {
                 const { token, ...userData } = res.data.data;
                 setToken(token);
@@ -46,7 +46,9 @@ export const AdminAuthProvider = ({ children }) => {
                 localStorage.setItem('sholash_admin_user', JSON.stringify(userData));
                 return { success: true };
             }
+            return { success: false, message: res.data.message || 'Invalid admin credentials' };
         } catch (error) {
+            console.error('Admin login call failed:', error);
             return { 
                 success: false, 
                 message: error.response?.data?.message || 'Login failed' 

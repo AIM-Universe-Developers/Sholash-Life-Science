@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -45,15 +45,15 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const getImageUrl = (img) => {
         if (!img) return '';
         if (img.startsWith('http')) return img;
-        if (img.startsWith('/')) return img;
-        return `/${img}`;
+        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
     };
 
     useEffect(() => {
         const fetchProduct = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`/api/products/${id}`);
+                const res = await api.get(`/api/products/${id}`);
                 if (res.data && res.data.success) {
                     const apiProd = res.data.data;
                     const baseImages = Array.isArray(apiProd.images) && apiProd.images.length ? apiProd.images : (apiProd.image ? [apiProd.image] : []);

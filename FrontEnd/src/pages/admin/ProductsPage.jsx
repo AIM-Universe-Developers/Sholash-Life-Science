@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Plus, Search, Edit2, Trash2, X, Upload, Package, Image as ImageIcon } from 'lucide-react';
 import ConfirmModal from '../../components/Admin/common/ConfirmModal';
@@ -20,14 +20,20 @@ const ProductsPage = () => {
 
     const statusTabs = ['All', 'Active', 'Inactive'];
 
-    const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+    const getImageUrl = (img) => {
+        if (!img) return null;
+        img = img.replace(/\\/g, '/');
+        if (img.startsWith('http')) return img;
+        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
+    };
 
     // ─── Fetch Data ──────────────────────────────────────────────────────
     const fetchProducts = async () => {
         try {
             setLoading(true);
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const res = await axios.get(`${API_BASE}/products/admin/all`, { headers });
+            const res = await api.get('/api/products/admin/all', { headers });
             if (res.data.success) {
                 setProducts(res.data.data || []);
             }
@@ -40,7 +46,7 @@ const ProductsPage = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get(`${API_BASE}/categories`);
+            const res = await api.get('/api/categories');
             if (res.data.success) {
                 setCategories(res.data.data || []);
             }
@@ -78,9 +84,9 @@ const ProductsPage = () => {
             };
 
             if (editingProduct) {
-                await axios.put(`${API_BASE}/products/${editingProduct._id}`, formData, { headers });
+                await api.put(`/api/products/${editingProduct._id}`, formData, { headers });
             } else {
-                await axios.post(`${API_BASE}/products`, formData, { headers });
+                await api.post('/api/products', formData, { headers });
             }
 
             setShowForm(false);
@@ -98,7 +104,7 @@ const ProductsPage = () => {
         if (!deleteTarget) return;
         try {
             const headers = { Authorization: `Bearer ${token}` };
-            await axios.delete(`${API_BASE}/products/${deleteTarget._id}`, { headers });
+            await api.delete(`/api/products/${deleteTarget._id}`, { headers });
             setDeleteTarget(null);
             fetchProducts();
         } catch (err) {
@@ -114,14 +120,6 @@ const ProductsPage = () => {
     const openAdd = () => {
         setEditingProduct(null);
         setShowForm(true);
-    };
-
-    // ─── Image URL helper ────────────────────────────────────────────────
-    const getImageUrl = (img) => {
-        if (!img) return null;
-        img = img.replace(/\\/g, '/');
-        if (img.startsWith('http')) return img;
-        return img.startsWith('/') ? img : `/${img}`;
     };
 
     // ─── Render ──────────────────────────────────────────────────────────

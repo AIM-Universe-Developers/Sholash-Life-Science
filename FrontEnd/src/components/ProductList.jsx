@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import ProductCard from './ProductCard';
 import './ProductList.css';
 
@@ -12,7 +12,7 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
             try {
                 const params = {};
                 if (searchQuery.trim()) params.search = searchQuery;
-                const res = await axios.get('/api/products', { params });
+                const res = await api.get('/api/products', { params });
                 if (res.data.success) {
                     setProducts(res.data.data || []);
                 }
@@ -26,14 +26,21 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
     }, [searchQuery]);
 
     const getImageUrl = (product, hover = false) => {
+        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
         if (product.images && product.images.length > 0) {
             let imgStr = hover && product.images[1] ? product.images[1] : product.images[0];
             const img = imgStr.replace(/\\/g, '/');
             if (img.startsWith('http')) return img;
-            return img.startsWith('/') ? img : `/${img}`;
+            return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
         }
-        if (hover && product.hoverImage) return product.hoverImage;
-        return product.image || '';
+        if (hover && product.hoverImage) {
+            if (product.hoverImage.startsWith('http')) return product.hoverImage;
+            return product.hoverImage.startsWith('/') ? `${BASE}${product.hoverImage}` : `${BASE}/${product.hoverImage}`;
+        }
+        if (!product.image) return '';
+        if (product.image.startsWith('http')) return product.image;
+        const img = product.image.startsWith('/') ? `${BASE}${product.image}` : `${BASE}/${product.image}`;
+        return img;
     };
 
     if (loading) {

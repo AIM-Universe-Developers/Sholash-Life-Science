@@ -6,7 +6,6 @@ import App from './App.jsx'
 import { UserProvider } from './context/UserContext.jsx'
 import { AdminAuthProvider } from './context/AdminAuthContext.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <UserProvider>

@@ -3,6 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
+const dns = require('dns');
+
+// Force IPv4 as the default for all network calls
+if (dns.setDefaultResultOrder) {
+    dns.setDefaultResultOrder('ipv4first');
+}
 
 const app = express();
 const PORT = process.env.OTP_PORT || 4000;
@@ -33,14 +39,22 @@ const isFast2SMSConfigured = () =>
 
 // ─── Nodemailer transporter (Gmail SMTP) ──────────────────
 const createTransporter = () => nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+    service: 'gmail', // This automatically sets host/port/secure
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD
     },
-    tls: { rejectUnauthorized: false }
+    tls: { 
+        rejectUnauthorized: false,
+        family: 4 // Ensure TLS tries IPv4
+    },
+    family: 4, // Force IPv4 globally for this transporter
+    connectionTimeout: 10000, 
+    greetingTimeout: 10000,
+    pool: true,
+    maxConnections: 3,
+    debug: true,
+    logger: true
 });
 
 // ─── Email OTP ────────────────────────────────────────────
@@ -93,12 +107,11 @@ app.post('/api/send-otp/email', async (req, res) => {
     } catch (err) {
         console.error('[Email Error]', err.message);
 
-        // Detect specific Gmail errors and give helpful messages
-        let hint = 'Check .env: GMAIL_USER and GMAIL_APP_PASSWORD.';
+        let hint = err.message; // Use real error message as the hint
         if (err.message.includes('535') || err.message.includes('Username and Password')) {
-            hint = 'Gmail rejected the password. Use an App Password (not your normal Gmail password). See instructions below.';
-        } else if (err.message.includes('ECONNREFUSED') || err.message.includes('ETIMEDOUT')) {
-            hint = 'Cannot connect to Gmail SMTP. Check your internet connection.';
+            hint = 'Gmail rejected the password. Use an App Password (not your normal Gmail password).';
+        } else if (err.message.includes('ECONNREFUSED')) {
+            hint = 'Cannot connect to Gmail SMTP.';
         }
 
         res.status(500).json({
