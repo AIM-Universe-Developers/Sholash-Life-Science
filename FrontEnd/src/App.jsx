@@ -24,14 +24,14 @@ import './App.css';
 
 // Admin Components
 import AdminLayout from './components/Admin/Layout/AdminLayout';
-import AdminLogin from './pages/Admin/Login';
-import DashboardPage from './pages/Admin/DashboardPage';
-import UsersPage from './pages/Admin/UsersPage';
-import OrdersPage from './pages/Admin/OrdersPage';
-import AnalyticsPage from './pages/Admin/AnalyticsPage';
-import SettingsPage from './pages/Admin/SettingsPage';
-import ProductsPage from './pages/Admin/ProductsPage';
-import RolesPage from './pages/Admin/RolesPage';
+import AdminLogin from './pages/admin/Login';
+import DashboardPage from './pages/admin/DashboardPage';
+import UsersPage from './pages/admin/UsersPage';
+import OrdersPage from './pages/admin/OrdersPage';
+import AnalyticsPage from './pages/admin/AnalyticsPage';
+import SettingsPage from './pages/admin/SettingsPage';
+import ProductsPage from './pages/admin/ProductsPage';
+import RolesPage from './pages/admin/RolesPage';
 
 function App() {
   const [cart, setCart] = useState([]);

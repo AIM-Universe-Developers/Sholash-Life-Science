@@ -4,6 +4,8 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000'
 });
 
+console.log('API Service initialized with baseURL:', api.defaults.baseURL);
+
 // Optional: Add request interceptor for tokens
 api.interceptors.request.use(config => {
     const adminToken = localStorage.getItem('sholash_admin_token');

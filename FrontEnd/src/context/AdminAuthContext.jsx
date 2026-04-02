@@ -48,6 +48,7 @@ export const AdminAuthProvider = ({ children }) => {
             }
             return { success: false, message: res.data.message || 'Invalid admin credentials' };
         } catch (error) {
+            console.error('Admin login call failed:', error);
             return { 
                 success: false, 
                 message: error.response?.data?.message || 'Login failed' 
