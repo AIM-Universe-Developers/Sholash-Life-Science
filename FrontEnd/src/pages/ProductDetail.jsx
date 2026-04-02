@@ -45,8 +45,8 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const getImageUrl = (img) => {
         if (!img) return '';
         if (img.startsWith('http')) return img;
-        if (img.startsWith('/')) return img;
-        return `/${img}`;
+        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
     };
 
     useEffect(() => {

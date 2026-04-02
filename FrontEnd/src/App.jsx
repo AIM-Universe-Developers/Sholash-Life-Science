@@ -19,7 +19,12 @@ import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
 import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
+import axios from 'axios';
 import './App.css';
+
+// Configure Axios for production
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+
 
 // Admin Components
 import AdminLayout from './components/Admin/Layout/AdminLayout';
