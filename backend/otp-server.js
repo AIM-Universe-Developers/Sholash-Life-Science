@@ -3,6 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
+const dns = require('dns');
+
+// Force IPv4 as the default for all network calls
+if (dns.setDefaultResultOrder) {
+    dns.setDefaultResultOrder('ipv4first');
+}
 
 const app = express();
 const PORT = process.env.OTP_PORT || 4000;
@@ -33,15 +39,22 @@ const isFast2SMSConfigured = () =>
 
 // ─── Nodemailer transporter (Gmail SMTP) ──────────────────
 const createTransporter = () => nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    service: 'gmail', // This automatically sets host/port/secure
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD
     },
-    tls: { rejectUnauthorized: false },
-    family: 4 // Force IPv4
+    tls: { 
+        rejectUnauthorized: false,
+        family: 4 // Ensure TLS tries IPv4
+    },
+    family: 4, // Force IPv4 globally for this transporter
+    connectionTimeout: 10000, 
+    greetingTimeout: 10000,
+    pool: true,
+    maxConnections: 3,
+    debug: true,
+    logger: true
 });
 
 // ─── Email OTP ────────────────────────────────────────────
