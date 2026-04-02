@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import './OurProducts.css';
 
 const OurProducts = ({ searchQuery = '' }) => {
@@ -16,7 +16,7 @@ const OurProducts = ({ searchQuery = '' }) => {
                 const params = {};
                 if (searchQuery.trim()) params.search = searchQuery;
 
-                const res = await axios.get('/api/products', { params });
+                const res = await api.get('/api/products', { params });
                 if (res.data.success) {
                     const filtered = res.data.data.filter(p => p.name !== 'Sample Skincare Bottle');
                     setProducts(filtered);

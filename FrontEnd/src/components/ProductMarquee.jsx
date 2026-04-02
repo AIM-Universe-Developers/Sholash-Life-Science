@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import './ProductMarquee.css';
 
 const ProductMarquee = () => {
@@ -10,7 +10,7 @@ const ProductMarquee = () => {
     useEffect(() => {
         const fetchAllProducts = async () => {
             try {
-                const res = await axios.get('/api/products');
+                const res = await api.get('/api/products');
                 if (res.data.success) {
                     const filtered = res.data.data.filter(p => p.name !== 'Sample Skincare Bottle');
                     setProducts(filtered);

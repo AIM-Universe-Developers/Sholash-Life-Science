@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import ProductCard from './ProductCard';
 import './ProductList.css';
 
@@ -12,7 +12,7 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
             try {
                 const params = {};
                 if (searchQuery.trim()) params.search = searchQuery;
-                const res = await axios.get('/api/products', { params });
+                const res = await api.get('/api/products', { params });
                 if (res.data.success) {
                     setProducts(res.data.data || []);
                 }
