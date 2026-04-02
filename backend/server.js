@@ -48,12 +48,12 @@ app.use(cors({
 }));
 
 // Global rate limiter: 200 requests per 15 minutes per real IP
+// trust proxy (set above) ensures req.ip is the real client IP on Render
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 200,
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req) => req.ip,
     message: { success: false, message: "Too many requests, please try again later." },
 });
 app.use(limiter);
