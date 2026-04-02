@@ -19,13 +19,14 @@ const AdminLogin = () => {
 
         try {
             const res = await loginAdmin(email, password);
-            if (res.success) {
+            if (res && res.success) {
                 navigate('/admin/dashboard', { replace: true });
             } else {
-                setError(res.message || 'Invalid admin credentials');
+                setError(res?.message || 'Invalid admin credentials');
             }
         } catch (err) {
-            setError('An error occurred during login. Please try again.');
+            console.error('Login page crash:', err);
+            setError(`Login call failed: ${err.message || 'Unknown error'}`);
         } finally {
             setLoading(false);
         }
