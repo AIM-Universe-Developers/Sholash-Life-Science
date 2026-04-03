@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { BASE_URL } from '../services/api';
 import './ProductMarquee.css';
 
 const ProductMarquee = () => {
@@ -26,7 +26,7 @@ const ProductMarquee = () => {
     }, []);
 
     const getImageUrl = (product) => {
-        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        const BASE = BASE_URL;
         if (product.images && product.images.length > 0) {
             let img = product.images[0].replace(/\\/g, '/');
             if (img.startsWith('http')) return img;

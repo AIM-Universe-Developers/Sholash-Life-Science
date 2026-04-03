@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Filter, Plus, Search } from 'lucide-react';
-import OrderTable from '../../components/Admin/Orders/OrderTable';
+import OrderTable from '../../components/admin/Orders/OrderTable';
 import styles from './OrdersPage.module.css';
 
 const OrdersPage = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { BASE_URL } from '../services/api';
 import './OurProducts.css';
 
 const OurProducts = ({ searchQuery = '' }) => {
@@ -58,7 +58,7 @@ const OurProducts = ({ searchQuery = '' }) => {
     }, [products]);
 
     const getImageUrl = (product, hover = false) => {
-        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        const BASE = BASE_URL;
         // API product: uses images[]
         if (product.images && product.images.length > 0) {
             if (hover && product.hoverImage) {

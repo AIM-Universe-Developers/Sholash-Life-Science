@@ -3,11 +3,11 @@ import styles from './AnalyticsPage.module.css';
 import { Eye, MousePointer2, RefreshCw, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 // Components
-import KPICard from '../../components/Admin/Dashboard/KPICard';
-import ChartCard from '../../components/Admin/Dashboard/ChartCard';
-import TrafficTrendChart from '../../components/Admin/Dashboard/TrafficTrendChart';
-import RegionRevenueChart from '../../components/Admin/Dashboard/RegionRevenueChart';
-import DeviceDonutChart from '../../components/Admin/Dashboard/DeviceDonutChart';
+import KPICard from '../../components/admin/Dashboard/KPICard';
+import ChartCard from '../../components/admin/Dashboard/ChartCard';
+import TrafficTrendChart from '../../components/admin/Dashboard/TrafficTrendChart';
+import RegionRevenueChart from '../../components/admin/Dashboard/RegionRevenueChart';
+import DeviceDonutChart from '../../components/admin/Dashboard/DeviceDonutChart';
 
 const AnalyticsPage = () => {
     const [timeframe, setTimeframe] = useState('Month');

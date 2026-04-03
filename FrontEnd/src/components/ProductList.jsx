@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api';
+import api, { BASE_URL } from '../services/api';
 import ProductCard from './ProductCard';
 import './ProductList.css';
 
@@ -26,7 +26,7 @@ const ProductList = ({ searchQuery = '', onAddToCart, onBuyClick }) => {
     }, [searchQuery]);
 
     const getImageUrl = (product, hover = false) => {
-        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        const BASE = BASE_URL;
         if (product.images && product.images.length > 0) {
             let imgStr = hover && product.images[1] ? product.images[1] : product.images[0];
             const img = imgStr.replace(/\\/g, '/');
