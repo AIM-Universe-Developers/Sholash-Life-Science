@@ -14,11 +14,13 @@
     grid-template-columns: 1.2fr 2fr;
     gap: var(--spacing-xl);
     padding-bottom: var(--spacing-xl);
+   
 }
 
 /* Brand section */
 
 .footer-brand .logo-img {
+    margin-top: 32px;
     height: 120px;
     width: auto;
     filter: brightness(0) invert(1);
@@ -82,11 +84,13 @@
     background: transparent;
     outline: none;
     color: white;
+    /* margin-bottom: 25px; */
 }
 
 .newsletter-form:focus-within {
     border-color: #38BDF8;
     box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+    
 }
 
 /* Newsletter input */
@@ -103,6 +107,7 @@
 
 .newsletter-form input::placeholder {
     color: #94a3b8;
+    margin-bottom: 25px;
 }
 
 /* Newsletter button */
@@ -116,6 +121,7 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    
 }
 
 .newsletter-form button:hover {
@@ -188,6 +194,7 @@
         padding: 0.6rem;
         margin: 0 auto;
         width: 100%;
+        margin-bottom: -100px;
     }
 
     .newsletter-form input {
@@ -226,3 +233,4 @@
     }
 
 }
+

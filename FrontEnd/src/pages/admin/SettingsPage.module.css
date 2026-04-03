@@ -141,13 +141,14 @@
 }
 
 .toggle {
-  width: 44px;
-  height: 24px;
-  border-radius: 12px;
+  width: 60px;
+  height: 30px;
+  border-radius: 30px;
   background-color: var(--admin-border);
   position: relative;
   transition: background-color 0.3s ease;
   padding: 2px;
+  cursor: pointer;
 }
 
 .toggle.active {
@@ -155,8 +156,8 @@
 }
 
 .thumb {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background-color: white;
   transition: transform 0.3s ease;
@@ -164,7 +165,7 @@
 }
 
 .toggle.active .thumb {
-  transform: translateX(20px);
+  transform: translateX(30px);
 }
 
 .alert {
