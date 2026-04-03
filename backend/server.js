@@ -71,8 +71,19 @@ app.use(express.urlencoded({ extended: true }));
 // ─── Static Files ─────────────────────────────────────────────────────────────
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// ─── MIME Types Configuration ─────────────────────────────────────────────────
+const express_static_options = {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.js')) {
+            res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+        } else if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+        }
+    }
+};
+
 // ─── Health Check ─────────────────────────────────────────────────────────────
-app.get("/api/health", (req, res) => {
+app.get("/", (req, res) => {
     res.json({ success: true, message: "Sholash Life Science API is running 🚀" });
 });
 
@@ -86,7 +97,35 @@ app.use("/api/users", userRoutes);
 
 // ─── Serve Frontend ───────────────────────────────────────────────────────────
 const frontendPath = path.join(__dirname, "../FrontEnd/dist");
-app.use(express.static(frontendPath));
+const { execSync } = require('child_process');
+
+console.log(`Frontend path: ${frontendPath}`);
+console.log(`Frontend directory exists: ${require('fs').existsSync(frontendPath)}`);
+
+// Check if frontend is built, if not, build it
+if (!require('fs').existsSync(frontendPath) || !require('fs').existsSync(path.join(frontendPath, 'assets'))) {
+    console.log('Frontend not built, building now...');
+    try {
+        execSync('cd ../FrontEnd && npm install && npm run build', { 
+            stdio: 'inherit', 
+            cwd: __dirname 
+        });
+        console.log('Frontend build completed successfully');
+    } catch (error) {
+        console.error('Frontend build failed:', error.message);
+    }
+}
+
+if (require('fs').existsSync(frontendPath)) {
+    const assetsPath = path.join(frontendPath, 'assets');
+    console.log(`Assets directory exists: ${require('fs').existsSync(assetsPath)}`);
+    if (require('fs').existsSync(assetsPath)) {
+        const files = require('fs').readdirSync(assetsPath);
+        console.log(`Assets files: ${files.join(', ')}`);
+    }
+}
+
+app.use(express.static(frontendPath, express_static_options));
 
 // Catch-all to serve index.html for any frontend routes (SPA)
 app.get(/.*/, (req, res, next) => {
