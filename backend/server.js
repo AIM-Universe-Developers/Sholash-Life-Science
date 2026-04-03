@@ -30,16 +30,7 @@ app.set('trust proxy', 1);
 // ─── Security Middleware ──────────────────────────────────────────────────────
 app.use(helmet());
 
-// ─── MIME Types Configuration ─────────────────────────────────────────────────
-const express_static_options = {
-    setHeaders: (res, path) => {
-        if (path.endsWith('.js')) {
-            res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-        } else if (path.endsWith('.css')) {
-            res.setHeader('Content-Type', 'text/css; charset=UTF-8');
-        }
-    }
-};
+
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -91,7 +82,7 @@ app.use("/api/users", userRoutes);
 
 // ─── Serve Frontend ───────────────────────────────────────────────────────────
 const frontendPath = path.join(__dirname, "../FrontEnd/dist");
-app.use(express.static(frontendPath, express_static_options));
+app.use(express.static(frontendPath));
 
 // Catch-all to serve index.html for any frontend routes
 app.get(/.*/, (req, res, next) => {
