@@ -35,7 +35,10 @@ const createProduct = async (req, res, next) => {
         // If files were uploaded, save their paths to DB
         let images = [];
         if (req.files && req.files.length > 0) {
-            images = req.files.map((f) => `uploads/${f.filename}`);
+            images = req.files.map((f) => {
+                if (f.path && f.path.startsWith('http')) return f.path;
+                return `uploads/${f.filename}`;
+            });
         }
 
         const product = await Product.create({
@@ -234,7 +237,10 @@ const updateProduct = async (req, res, next) => {
         }
 
         if (req.files && req.files.length > 0) {
-            const newImages = req.files.map((f) => `uploads/${f.filename}`);
+            const newImages = req.files.map((f) => {
+                if (f.path && f.path.startsWith('http')) return f.path;
+                return `uploads/${f.filename}`;
+            });
             req.body.images = [...currentImages, ...newImages];
         } else {
             req.body.images = currentImages;

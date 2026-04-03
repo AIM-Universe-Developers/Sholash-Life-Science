@@ -24,7 +24,7 @@ const ProductAccordion = ({ product }) => {
     const sections = [
         { id: 'ingredients', title: 'Ingredients' },
         { id: 'benefits', title: 'Benefits' },
-        { id: 'before-after', title: 'Before/After' },
+        { id: 'beforeAfter', title: 'Before/After' },
         { id: 'usage', title: 'Usage' },
         { id: 'other', title: 'Other Information' },
         // { id: 'legal', title: 'Legal Metrology' },
