@@ -4,11 +4,11 @@ import { useAdminAuth } from '../../context/AdminAuthContext';
 import styles from './DashboardPage.module.css';
 
 // Components
-import KPICard from '../../components/Admin/Dashboard/KPICard';
-import ChartCard from '../../components/Admin/Dashboard/ChartCard';
-import RevenueChart from '../../components/Admin/Dashboard/RevenueChart';
-import OrdersChart from '../../components/Admin/Dashboard/OrdersChart';
-import SalesPieChart from '../../components/Admin/Dashboard/SalesPieChart';
+import KPICard from '../../components/admin/Dashboard/KPICard';
+import ChartCard from '../../components/admin/Dashboard/ChartCard';
+import RevenueChart from '../../components/admin/Dashboard/RevenueChart';
+import OrdersChart from '../../components/admin/Dashboard/OrdersChart';
+import SalesPieChart from '../../components/admin/Dashboard/SalesPieChart';
 
 // Icons
 import { IndianRupee, ShoppingCart, Package, Users, Calendar, Download, Eye, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';

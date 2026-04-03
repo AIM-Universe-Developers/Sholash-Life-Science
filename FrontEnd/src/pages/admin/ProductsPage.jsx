@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import api, { BASE_URL } from '../../services/api';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Plus, Search, Edit2, Trash2, X, Upload, Package, Image as ImageIcon } from 'lucide-react';
-import ConfirmModal from '../../components/Admin/common/ConfirmModal';
+import ConfirmModal from '../../components/admin/common/ConfirmModal';
 import styles from './ProductsPage.module.css';
 
 const ProductsPage = () => {

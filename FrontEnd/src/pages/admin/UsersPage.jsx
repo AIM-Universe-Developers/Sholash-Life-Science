@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAdminAuth } from '../../context/AdminAuthContext';
-import UserTable from '../../components/Admin/Users/UserTable';
-import ConfirmModal from '../../components/Admin/common/ConfirmModal';
+import UserTable from '../../components/admin/Users/UserTable';
+import ConfirmModal from '../../components/admin/common/ConfirmModal';
 import { Search } from 'lucide-react';
 import styles from './UsersPage.module.css';
 
