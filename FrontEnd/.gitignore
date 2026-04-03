@@ -9,6 +9,8 @@ lerna-debug.log*
 
 node_modules
 
+# Lock file - regenerated per platform (Windows vs Linux)
+package-lock.json
 
 *.local
 
