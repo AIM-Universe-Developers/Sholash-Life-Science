@@ -78,6 +78,19 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 
+// ─── Serve Frontend ───────────────────────────────────────────────────────────
+const frontendPath = path.join(__dirname, "../FrontEnd/dist");
+app.use(express.static(frontendPath));
+
+// Catch-all to serve index.html for any frontend routes
+app.get("*", (req, res, next) => {
+    // Only serve index.html if it looks like a browser request and not an API call
+    if (req.url.startsWith('/api')) {
+        return next();
+    }
+    res.sendFile(path.join(frontendPath, "index.html"));
+});
+
 // ─── Error Handling ───────────────────────────────────────────────────────────
 app.use(notFound);
 app.use(errorHandler);
