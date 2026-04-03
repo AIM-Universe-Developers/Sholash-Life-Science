@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+dist
 
 # Lock file - regenerated per platform (Windows vs Linux)
 package-lock.json
