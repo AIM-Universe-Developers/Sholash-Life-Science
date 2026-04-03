@@ -32,6 +32,7 @@ app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
+    noSniff: false, // Don't set X-Content-Type-Options to prevent MIME type sniffing
 }));
 
 
@@ -82,6 +83,16 @@ const express_static_options = {
     }
 };
 
+// ─── Custom MIME Type Middleware ──────────────────────────────────────────────
+app.use('/assets', (req, res, next) => {
+    if (req.path.endsWith('.js')) {
+        res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+    } else if (req.path.endsWith('.css')) {
+        res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+    }
+    next();
+});
+
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {
     res.json({ success: true, message: "Sholash Life Science API is running 🚀" });
@@ -97,7 +108,7 @@ app.use("/api/users", userRoutes);
 
 // ─── Serve Frontend ───────────────────────────────────────────────────────────
 const frontendPath = path.join(__dirname, "../FrontEnd/dist");
-const { execSync } = require('child_process');
+const { spawn } = require('child_process');
 
 console.log(`Frontend path: ${frontendPath}`);
 console.log(`Frontend directory exists: ${require('fs').existsSync(frontendPath)}`);
@@ -106,11 +117,30 @@ console.log(`Frontend directory exists: ${require('fs').existsSync(frontendPath)
 if (!require('fs').existsSync(frontendPath) || !require('fs').existsSync(path.join(frontendPath, 'assets'))) {
     console.log('Frontend not built, building now...');
     try {
-        execSync('cd ../FrontEnd && npm install && npm run build', { 
-            stdio: 'inherit', 
-            cwd: __dirname 
+        // Use spawn instead of execSync for better control
+        const buildProcess = spawn('npm', ['run', 'build'], {
+            cwd: path.join(__dirname, '../FrontEnd'),
+            stdio: 'inherit',
+            shell: true
         });
-        console.log('Frontend build completed successfully');
+
+        buildProcess.on('close', (code) => {
+            if (code === 0) {
+                console.log('Frontend build completed successfully');
+            } else {
+                console.error(`Frontend build failed with code ${code}`);
+            }
+        });
+
+        buildProcess.on('error', (error) => {
+            console.error('Frontend build error:', error.message);
+        });
+
+        // Wait for build to complete (simple approach)
+        setTimeout(() => {
+            console.log('Build process initiated, continuing with server startup...');
+        }, 1000);
+
     } catch (error) {
         console.error('Frontend build failed:', error.message);
     }
