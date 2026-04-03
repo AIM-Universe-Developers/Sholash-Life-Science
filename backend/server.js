@@ -28,7 +28,11 @@ const app = express();
 app.set('trust proxy', 1);
 
 // ─── Security Middleware ──────────────────────────────────────────────────────
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
+}));
 
 
 
@@ -84,10 +88,10 @@ app.use("/api/users", userRoutes);
 const frontendPath = path.join(__dirname, "../FrontEnd/dist");
 app.use(express.static(frontendPath));
 
-// Catch-all to serve index.html for any frontend routes
+// Catch-all to serve index.html for any frontend routes (SPA)
 app.get(/.*/, (req, res, next) => {
-    // Only serve index.html if it looks like a browser request and not an API call
-    if (req.url.startsWith('/api')) {
+    // Skip API calls and static asset requests
+    if (req.url.startsWith('/api') || req.url.match(/\.(js|css|png|jpg|jpeg|svg|ico|webp|woff|woff2|ttf|eot|map)$/)) {
         return next();
     }
     res.sendFile(path.join(frontendPath, "index.html"));
