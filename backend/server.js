@@ -83,7 +83,7 @@ const frontendPath = path.join(__dirname, "../FrontEnd/dist");
 app.use(express.static(frontendPath));
 
 // Catch-all to serve index.html for any frontend routes
-app.get("*", (req, res, next) => {
+app.get(/.*/, (req, res, next) => {
     // Only serve index.html if it looks like a browser request and not an API call
     if (req.url.startsWith('/api')) {
         return next();
