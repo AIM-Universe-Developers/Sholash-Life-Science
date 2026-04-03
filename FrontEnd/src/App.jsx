@@ -23,7 +23,7 @@ import './App.css';
 
 
 // Admin Components
-import AdminLayout from './components/Admin/Layout/AdminLayout';
+import AdminLayout from './components/admin/Layout/AdminLayout';
 import AdminLogin from './pages/admin/Login';
 import DashboardPage from './pages/admin/DashboardPage';
 import UsersPage from './pages/admin/UsersPage';

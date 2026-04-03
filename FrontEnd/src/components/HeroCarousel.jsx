@@ -10,7 +10,7 @@ import img5 from '../assets/IMG CART/p5.jpeg';
 import img6 from '../assets/IMG CART/p6.png';
 import img7 from '../assets/IMG CART/p7.jpeg';
 import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
-import Glazzium from '../assets/products/glazzium banner/Glazzium-h1.png'
+import Glazzium from '../assets/Products/glazzium banner/Glazzium-h1.png'
 
 const marqueeImages = [img1, img2, img3, img4, img5, img6, img7];
 

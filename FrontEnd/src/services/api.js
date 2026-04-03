@@ -1,10 +1,19 @@
 import axios from 'axios';
 
-const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000'
-});
+const getBaseURL = () => {
+    if (import.meta.env.VITE_API_BASE_URL) {
+        return import.meta.env.VITE_API_BASE_URL.replace('/api', '');
+    }
+    return window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000' 
+        : 'https://sholash-life-science.onrender.com';
+};
 
-console.log('API Service initialized with baseURL:', api.defaults.baseURL);
+export const BASE_URL = getBaseURL();
+
+const api = axios.create({
+    baseURL: BASE_URL
+});
 
 // Optional: Add request interceptor for tokens
 api.interceptors.request.use(config => {

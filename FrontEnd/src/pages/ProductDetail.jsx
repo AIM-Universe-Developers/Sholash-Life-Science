@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { BASE_URL } from '../services/api';
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -45,7 +45,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const getImageUrl = (img) => {
         if (!img) return '';
         if (img.startsWith('http')) return img;
-        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        const BASE = BASE_URL;
         return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
     };
 

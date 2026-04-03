@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { UserContext } from '../context/UserContext';
+import { BASE_URL } from '../services/api';
 import logo from '../assets/logo/logo.png';
 import './AuthModal.css';
 
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/users`;
+const API_URL = `${BASE_URL}/api/users`;
 
 const AuthModal = ({ isOpen, onClose, product }) => {
     // ─── View Views ───────────────────────────────────────────────────────────
