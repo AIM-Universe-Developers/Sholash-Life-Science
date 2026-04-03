@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'Starting frontend build...' && cd ../FrontEnd && echo 'Installing dependencies...' && npm install --verbose && echo 'Running build...' && npm run build && echo 'Build completed successfully'",
+    "build": "echo 'Starting frontend build...' && cd ../FrontEnd && echo 'Installing dependencies...' && NODE_OPTIONS=--max-old-space-size=4096 npm install --verbose && echo 'Running build...' && npm run build && echo 'Build completed successfully'",
     "postinstall": "echo 'Running postinstall build...' && npm run build",
     "start": "echo 'Starting application...' && npm run build && echo 'Build completed, starting server...' && concurrently \"node server.js\" \"node otp-server.js\"",
     "start:api": "echo 'Starting API server...' && npm run build && node server.js",
