@@ -1,25 +1,43 @@
 const multer = require("multer");
 const path = require("path");
-
 const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+if (process.env.CLOUDINARY_CLOUD_NAME) {
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+}
 
 const uploadDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// ─── Storage: Disk ───────────────────────────────────────────────────────────
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename(req, file, cb) {
-        cb(
-            null,
-            `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-        );
-    },
-});
+// ─── Storage Configuration ───────────────────────────────────────────────────
+let storage;
+
+if (process.env.CLOUDINARY_CLOUD_NAME) {
+    storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: "sholash-products",
+            allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+        },
+    });
+} else {
+    storage = multer.diskStorage({
+        destination(req, file, cb) {
+            cb(null, uploadDir);
+        },
+        filename(req, file, cb) {
+            cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+        },
+    });
+}
 
 // ─── File Filter: Images Only ─────────────────────────────────────────────────
 const fileFilter = (req, file, cb) => {
