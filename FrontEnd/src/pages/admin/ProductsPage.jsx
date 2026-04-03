@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import api from '../../services/api';
+import api, { BASE_URL } from '../../services/api';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Plus, Search, Edit2, Trash2, X, Upload, Package, Image as ImageIcon } from 'lucide-react';
 import ConfirmModal from '../../components/Admin/common/ConfirmModal';
@@ -24,7 +24,7 @@ const ProductsPage = () => {
         if (!img) return null;
         img = img.replace(/\\/g, '/');
         if (img.startsWith('http')) return img;
-        const BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+        const BASE = BASE_URL;
         return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
     };
 
