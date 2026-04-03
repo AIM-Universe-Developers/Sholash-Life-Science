@@ -79,6 +79,16 @@ const productSchema = new mongoose.Schema(
                 type: String,
             },
         ],
+        beforeText: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+        afterText: {
+            type: String,
+            trim: true,
+            default: "",
+        },
         details: {
             benefits: [
                 {

@@ -244,6 +244,12 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         <p className="detail-desc">{product.description}</p>
 
+                        {product.beforeText && (
+                            <div className="before-text" style={{ marginBottom: '1rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
+                                {product.beforeText}
+                            </div>
+                        )}
+
                         {product.target && product.target.length > 0 && (
                             <h3 className='target'>{product.target.join(', ')}</h3>
                         )}
@@ -258,6 +264,12 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 ))}
                             </ul>
                         </div>
+
+                        {product.afterText && (
+                            <div className="after-text" style={{ marginTop: '1rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
+                                {product.afterText}
+                            </div>
+                        )}
 
                         {/* Quantity + Buttons */}
                         <div className="purchase-controls" ref={purchaseRef}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../services/api';
 import './Cart.css';
 
 const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
@@ -7,11 +8,29 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-    const getImageUrl = (img) => {
+    const getImageUrl = (input) => {
+        if (!input) return '';
+
+        let img = '';
+
+        if (typeof input === 'string') {
+            img = input;
+        } else if (Array.isArray(input) && input.length) {
+            img = input[0];
+        } else if (input.image) {
+            img = input.image;
+        } else if (input.images && Array.isArray(input.images) && input.images.length) {
+            img = input.images[0];
+        } else {
+            return '';
+        }
+
         if (!img) return '';
         if (img.startsWith('http')) return img;
-        if (img.startsWith('/')) return img;
-        return `/${img}`;
+        // normalize leading slash
+        const normalized = img.startsWith('/') ? img : `/${img}`;
+        // Use backend host for relative upload paths so cart images are served from API server
+        return `${BASE_URL}${normalized}`;
     };
 
     return (
@@ -37,7 +56,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart }) => {
                             {cart.map((item) => (
                                 <div key={item.id || item._id} className="cart-item glass fade-in">
                                     <div className="item-image-container">
-                                        <img src={getImageUrl(item.image)} alt={item.name} className="item-img" />
+                                        <img src={getImageUrl(item)} alt={item.name} className="item-img" />
                                     </div>
                                     <div className="item-details">
                                         <span className="item-category">

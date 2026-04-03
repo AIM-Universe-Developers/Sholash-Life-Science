@@ -44,9 +44,30 @@ function App() {
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
+  const resolveCartImage = (product) => {
+    if (!product) return '';
+    if (product.image) return product.image;
+    if (product.images && Array.isArray(product.images) && product.images.length) return product.images[0];
+    return '';
+  };
+
+  const buildCartItem = (product, quantity = 1) => {
+    const productId = product._id || product.id;
+    const categoryName = typeof product.category === 'object' ? product.category.name : product.category;
+    const imageUrl = resolveCartImage(product);
+    return {
+      ...product,
+      id: productId,
+      category: categoryName,
+      image: imageUrl,
+      quantity,
+    };
+  };
+
   const handleBuyClick = (product) => {
     if (user) {
-      handleAddToCart(product, 1);
+      const item = buildCartItem(product, 1);
+      setCart([item]);
       navigate('/cart');
     } else {
       setAuthProduct(product);
@@ -57,6 +78,7 @@ function App() {
   const handleAddToCart = (product, quantity = 1) => {
     const productId = product._id || product.id;
     const categoryName = typeof product.category === 'object' ? product.category.name : product.category;
+    const imageUrl = resolveCartImage(product);
 
     setCart(prevCart => {
       const existingItem = prevCart.find(item => (item._id || item.id) === productId);
@@ -67,7 +89,7 @@ function App() {
             : item
         );
       }
-      return [...prevCart, { ...product, id: productId, category: categoryName, quantity }];
+      return [...prevCart, { ...product, id: productId, category: categoryName, image: imageUrl, quantity }];
     });
     console.log(`Added ${quantity} of ${product.name} to cart.`);
   };

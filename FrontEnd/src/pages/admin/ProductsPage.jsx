@@ -313,6 +313,8 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         color: product?.color || '#f0f0f0',
         target: product?.target || [],
         features: product?.features || [],
+        beforeText: product?.beforeText || '',
+        afterText: product?.afterText || '',
         details: {
             benefits: product?.details?.benefits || [],
             ingredients: product?.details?.ingredients || [],
@@ -411,6 +413,8 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         fd.append('color', form.color);
         fd.append('target', JSON.stringify(form.target.filter(Boolean)));
         fd.append('features', JSON.stringify(form.features.filter(Boolean)));
+        fd.append('beforeText', form.beforeText);
+        fd.append('afterText', form.afterText);
         fd.append('details', JSON.stringify(form.details));
 
         // pass existing images that weren't removed
@@ -636,6 +640,28 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                         <Plus size={14} /> Add Target
                                     </button>
                                 </div>
+                            </div>
+
+                            {/* Before Text */}
+                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
+                                <label>Before Text</label>
+                                <textarea
+                                    value={form.beforeText}
+                                    onChange={e => handleChange('beforeText', e.target.value)}
+                                    placeholder="Text to display before product details..."
+                                    rows={2}
+                                />
+                            </div>
+
+                            {/* After Text */}
+                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
+                                <label>After Text</label>
+                                <textarea
+                                    value={form.afterText}
+                                    onChange={e => handleChange('afterText', e.target.value)}
+                                    placeholder="Text to display after product details..."
+                                    rows={2}
+                                />
                             </div>
 
                             {/* ─── Complex Details Section ─── */}
