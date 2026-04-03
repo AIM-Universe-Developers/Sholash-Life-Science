@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd ../FrontEnd && npm install && npm run build",
+    "postinstall": "npm run build",
     "start": "concurrently \"node server.js\" \"node otp-server.js\"",
     "start:api": "node server.js",
     "start:otp": "node otp-server.js",
