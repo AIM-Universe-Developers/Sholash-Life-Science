@@ -155,6 +155,9 @@ if (require('fs').existsSync(frontendPath)) {
     }
 }
 
+// Support both root and admin-prefixed static paths used by Render access patterns
+app.use('/admin/dist', express.static(frontendPath, express_static_options));
+app.use('/admin', express.static(frontendPath, express_static_options));
 app.use(express.static(frontendPath, express_static_options));
 
 // Catch-all to serve index.html for any frontend routes (SPA)
