@@ -384,3 +384,21 @@
         height: 45px;
     }
 }
+
+
+/* TAP VIEW */
+
+@media (max-width: 1366px) {
+    .header {
+        top: 30px;
+        height: 60px;
+    }
+    
+    .nav-mobile-logo {
+        height: 35px;
+    }
+
+    .logo-img {
+        height: 45px;
+    }
+}

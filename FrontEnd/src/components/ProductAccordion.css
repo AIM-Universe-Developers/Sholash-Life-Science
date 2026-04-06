@@ -55,7 +55,8 @@
 .accordion-content {
     padding: 1rem 0 2rem;
     color: #000;
-    
+    font-size: large; /*change the size*/
+    font-family: serif;
 }
 
 .benefits-grid {
