@@ -678,10 +678,10 @@
     .purchase-controls {
         display: flex;
         flex-direction: row;
-        align-items: center;
-        justify-content: start;
-        flex-wrap: nowrap;
-        gap: 0.5rem;
+        justify-content: space-between;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0.75rem;
         margin-bottom: 1.5rem;
         width: 100%;
     }
@@ -690,43 +690,53 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0.4rem;
-        gap: 0.6rem;
-        min-width: 110px;
+        justify-content: space-between;
+        padding: 0.5rem 0.6rem;
+        gap: 0.75rem;
+        width: 40%;
+        height: 45px;
+        max-width: 320px;
         order: 0;
     }
 
     .quantity-selector button {
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
         font-size: 1rem;
     }
 
     .quantity-selector span {
-        font-size: 0.9rem;
-        min-width: 16px;
+        font-size: 0.95rem;
+        min-width: 24px;
     }
 
-    .btn-add-cart {
-        order: 2;
-        flex: 1 1 auto;
-        min-width: 110px;
-        max-width: calc(100% - 160px);
-    }
-
+    .btn-add-cart,
     .btn-buy {
-        order: 3;
+        order: 0;
         flex: 1 1 auto;
-        min-width: 110px;
-        max-width: calc(100% - 160px);
+        width: 100%;
+        min-width: auto;
+        max-width: 100%;
     }
 
-    .btn-add-large {
-        padding: 12px 10px;
+    .large {
+        display: flex;
+        justify-content: center;
+        border-radius: 20px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #000;
+        border-width: 0.5px;
+        font-family: serif;
+        margin-left: 30px;
+        padding: 12px 0;
+        width:225px;
+        background-color: white;
+        color:#000;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         letter-spacing: 1px;
     }
 }
@@ -1046,14 +1056,14 @@
     left: 0;
     width: 100%;
     background: #ffffff;
-    padding: 15px 20px;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    padding: 12px 16px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12);
     justify-content: space-between;
     align-items: center;
     z-index: 1001;
     transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    border-top: 1px solid #f0f0f0;
+    border-top: 2px solid #f0f0f0;
 }
 
 .mobile-sticky-buy.visible {
@@ -1069,6 +1079,8 @@
 .sticky-price-info {
     display: flex;
     flex-direction: column;
+    gap: 4px;
+    flex: 1;
 }
 
 .sticky-price-info .sc-name {
@@ -1080,19 +1092,84 @@
     line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-width: 160px;
+    max-width: 140px;
 }
 
 .sticky-price-info .sc-price {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--color-text-main);
 }
 
-.mobile-sticky-buy .btn-add-large {
-    flex: 0 0 auto;
-    padding: 12px 24px;
-    margin: 0;
+.sticky-price-info .sc-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.sticky-price-info .sc-rating .star {
+    color: #f59e0b;
+    font-size: 0.95rem;
+}
+
+.sticky-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-sticky-cart {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-sticky-cart:hover {
+    background: #e8e8e8;
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-sticky-cart:active {
+    transform: scale(0.95);
+}
+
+.btn-sticky-buy {
+    flex: 1;
+    padding: 10px 16px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-sticky-buy:hover {
+    background: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-sticky-buy:active {
+    transform: translateY(0);
 }
 
 .tag {
@@ -1159,4 +1236,95 @@
 
 .precautions-row .info-value {
     color: #991b1b;
+}
+
+/* 🔥 Amazon-Style Scroll Animations */
+.detail-visual {
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.detail-info {
+    animation: slideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Smooth scroll animations for sections */
+@media (min-width: 993px) {
+    .detail-info {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
+    
+    .detail-info::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .detail-info::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+    }
+
+    .detail-info::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    .detail-info::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Fade-in animation class */
+.fade-in {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Purchase controls animation on scroll */
+.purchase-controls {
+    animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
