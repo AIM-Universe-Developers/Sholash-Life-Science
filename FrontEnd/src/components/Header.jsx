@@ -76,7 +76,7 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
                     <div className="nav-links">
                         <Link to="/" onClick={() => setIsMenuOpen(false)}>HOME</Link>
                         <a href="/#products" onClick={() => setIsMenuOpen(false)}>COLLECTION</a>
-                        <Link to="/about" onClick={() => setIsMenuOpen(false)}>OUR STORY</Link>
+                        <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
                         <Link to="/contact" onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
                     </div>
                     <div className="nav-mobile-footer">
