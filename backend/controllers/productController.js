@@ -8,7 +8,7 @@ const User = require("../models/User");
 // ─── @access Private (Admin)
 const createProduct = async (req, res, next) => {
     try {
-        const { name, description, price, category, stock, brand, tagline, color, target, features, beforeText, afterText, details } = req.body;
+        const { name, description, price, category, stock, brand, tagline, promoTitle, promoContent, color, target, features, beforeText, afterText, details } = req.body;
 
         if (!name || !description || !price || !category) {
             return res.status(400).json({
@@ -49,6 +49,8 @@ const createProduct = async (req, res, next) => {
             stock,
             brand,
             tagline,
+            promoTitle,
+            promoContent,
             color,
             target: parsedTarget,
             features: parsedFeatures,
