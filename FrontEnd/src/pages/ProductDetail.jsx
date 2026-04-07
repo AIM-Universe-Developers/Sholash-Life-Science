@@ -22,8 +22,11 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const [showStickyBuy, setShowStickyBuy] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
     const purchaseRef = React.useRef(null);
+    const detailInfoRef = React.useRef(null);
 
+    // 🔥 Amazon-style scroll logic with IntersectionObserver
     useEffect(() => {
         if (!purchaseRef.current) return;
 
@@ -36,12 +39,31 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     setShowStickyBuy(false);
                 }
             },
-            { threshold: 0 }
+            { threshold: 0.1 }
         );
 
         observer.observe(purchaseRef.current);
         return () => observer.disconnect();
     }, [product]);
+
+    // 🔥 Scroll progress tracker for smooth animations
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!detailInfoRef.current) return;
+
+            const element = detailInfoRef.current;
+            const elementTop = element.getBoundingClientRect().top;
+            const elementHeight = element.offsetHeight;
+            const windowHeight = window.innerHeight;
+
+            // Calculate scroll progress (0 to 1)
+            const progress = Math.max(0, Math.min(1, 1 - (elementTop / windowHeight)));
+            setScrollProgress(progress);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const getImageUrl = (img) => {
         if (!img) return '';
@@ -223,7 +245,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     </div>
 
                     {/* Info */}
-                    <div className="detail-info fade-in">
+                    <div className="detail-info fade-in" ref={detailInfoRef}>
                         <span className="detail-category">{categoryName}</span>
                         <h1 className="product-title">{product.name}</h1>
                         <h2 className='tag'>{product.tagline}</h2>
@@ -289,7 +311,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 <button onClick={() => setQuantity(q => q + 1)}>+</button>
                             </div>
 
-                            <button className="btn-add-large btn-add-cart" onClick={handleAddToCart}>
+                            <button className=" btn-add-large large btn-add-cart" onClick={handleAddToCart}>
                                 Add to Cart
                             </button>
 
@@ -306,14 +328,26 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
             <ProductReviews />
 
             {/* Mobile Sticky Buy Bar */}
-            <div className={`mobile-sticky-buy ${showStickyBuy ? 'visible' : ''}`}>
+            <div className={`mobile-sticky-buy ${showStickyBuy ? 'visible' : ''}`} style={{
+                opacity: Math.min(1, scrollProgress * 1.5),
+                backdropFilter: `blur(${Math.min(10, scrollProgress * 20)}px)`
+            }}>
                 <div className="sticky-price-info">
                     <span className="sc-name">{product.name}</span>
+                    <span className="sc-rating">
+                        <span className="star" style={{ fontSize: '0.9rem' }}>★</span>
+                        <span>{dynamicRating}</span>
+                    </span>
                     <span className="sc-price">₹{product.price}</span>
                 </div>
-                <button className="btn-add-large" onClick={handleAddToCart}>
-                    Add to Cart
-                </button>
+                <div className="sticky-actions">
+                    <button className="btn-sticky-cart" onClick={handleAddToCart} title="Add to Cart">
+                        🛒
+                    </button>
+                    <button className="btn-sticky-buy" onClick={() => onBuyClick && onBuyClick(product)}>
+                        BUY NOW
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -98,9 +98,6 @@ const OurProducts = ({ searchQuery = '' }) => {
     return (
         <section id="products" className="products-section our-products-section" ref={sectionRef}>
             <div className="container">
-                <marquee>
-                    {products.map(p => p.name.split('–')[0].trim()).join(' || ')}
-                </marquee>
                 <h2 className="our-products-title serif">
                     {searchQuery.trim() === '' ? 'Our Product' : 'Search Results'}
                 </h2>
