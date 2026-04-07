@@ -2,17 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HeroCarousel.css';
 
-import img1 from '../assets/IMG CART/p1.jpeg';
-import img2 from '../assets/IMG CART/p2.jpeg';
-import img3 from '../assets/IMG CART/p3.png';
-import img4 from '../assets/IMG CART/p4.png';
-import img5 from '../assets/IMG CART/p5.jpeg';
-import img6 from '../assets/IMG CART/p6.png';
-import img7 from '../assets/IMG CART/p7.jpeg';
-import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
+ import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
 import Glazzium from '../assets/Products/glazzium banner/Glazzium-h1.png'
 
-const marqueeImages = [img1, img2, img3, img4, img5, img6, img7];
 
 const offers = [
     {
@@ -169,15 +161,6 @@ const HeroCarousel = () => {
                 </div>
             </section>
 
-            <div className="image-marquee-container">
-                <div className="image-marquee">
-                    {[...marqueeImages, ...marqueeImages].map((img, index) => (
-                        <div key={index} className="marquee-item">
-                            <img src={img} alt={`Product ${index + 1}`} />
-                        </div>
-                    ))}
-                </div>
-            </div>
         </>
     );
 };

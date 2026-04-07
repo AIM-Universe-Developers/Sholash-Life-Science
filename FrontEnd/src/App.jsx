@@ -15,6 +15,7 @@ import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import PaymentProcess from './pages/PaymentProcess';
 import OurProducts from './components/OurProducts';
+import BrandSection from './components/BrandSection';
 import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
 import Profile from './pages/Profile';
@@ -131,6 +132,7 @@ function App() {
                 <div id="home">
                   <HeroCarousel />
                 </div>
+                <BrandSection />
                 <OurProducts searchQuery={searchQuery} />
                 <div id="skin-types">
                   <SkinTypes />
