@@ -1,74 +1,59 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api, { BASE_URL } from '../services/api';
 import './HeroCarousel.css';
-
- import heroBanner from '../assets/PRODUCT HOME IMAGE/herocard 2.png';
-import Glazzium from '../assets/Products/glazzium banner/Glazzium-h1.png'
-
-
-const offers = [
-    {
-        id: 0,
-        image: heroBanner,
-        btn: "Discover Now",
-        color: "#f8f9fa",
-        isFullImage: true,
-        link: "/product/2"
-    },
-    {
-        id: 1,
-        image: Glazzium,
-        btn: "Discover Now",
-        color: "#f8f9fa",
-        isFullImage: true,
-        link: "/product/3"
-    },
-    {
-        id: 2,
-        title: "Brightening Serum for Indian Skin",
-        desc: "Flat 20% OFF",
-        image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=1200",
-        btn: "Shop Now",
-        color: "#dcbceaff"
-    },
-    {
-        id: 3,
-        title: "Goat Milk Shampoo",
-        desc: "Use code HURRY20",
-        image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&q=80&w=1200",
-        btn: "Try Now",
-        color: "#93a9baff"
-    },
-    {
-        id: 4,
-        title: "Natural Face Wash",
-        desc: "Buy 1 Get 1 Free",
-        image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d538?auto=format&fit=crop&q=80&w=1200",
-        btn: "Explore",
-        color: "#a79484ff"
-    }
-];
 
 const HeroCarousel = () => {
     const navigate = useNavigate();
+    const [offers, setOffers] = useState([]);
     const [current, setCurrent] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const getImageUrl = (img) => {
+        if (!img) return '';
+        img = img.replace(/\\/g, '/');
+        if (img.startsWith('http')) return img;
+        const BASE = BASE_URL;
+        return img.startsWith('/') ? `${BASE}${img}` : `${BASE}/${img}`;
+    };
+
+    const fetchBanners = async () => {
+        try {
+            setLoading(true);
+            const res = await api.get('/api/banners');
+            if (res.data.success && res.data.data.length > 0) {
+                setOffers(res.data.data);
+            }
+        } catch (err) {
+            console.error('Failed to fetch banners', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBanners();
+    }, []);
+
     const length = offers.length;
 
     const nextSlide = useCallback(() => {
+        if (length === 0) return;
         setCurrent(current === length - 1 ? 0 : current + 1);
     }, [current, length]);
 
     const prevSlide = () => {
+        if (length === 0) return;
         setCurrent(current === 0 ? length - 1 : current - 1);
     };
 
     useEffect(() => {
-        if (!isPaused) {
+        if (!isPaused && length > 0) {
             const timer = setInterval(nextSlide, 2500);
             return () => clearInterval(timer);
         }
-    }, [nextSlide, isPaused]);
+    }, [nextSlide, isPaused, length]);
 
     const scrollToProducts = (e) => {
         if (e) e.stopPropagation();
@@ -78,7 +63,7 @@ const HeroCarousel = () => {
         }
     };
 
-    if (!Array.isArray(offers) || offers.length <= 0) {
+    if (loading || offers.length === 0) {
         return null;
     }
 
@@ -99,44 +84,28 @@ const HeroCarousel = () => {
                 {offers.map((slide, index) => (
                     <div
                         className={`${index === current ? 'slide active' : 'slide'}`}
-                        key={slide.id}
+                        key={slide._id || index}
                         onClick={() => slide.link ? navigate(slide.link) : scrollToProducts()}
+                        style={{ cursor: 'pointer' }}
                     >
                         {/* Background Layer */}
                         <div
                             className="slide-background"
                             style={{
-                                backgroundColor: slide.color,
-                                backgroundImage: slide.isFullImage ? `url(${slide.image})` : 'none'
+                                backgroundImage: `url(${getImageUrl(slide.image)})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center'
                             }}
                         >
-                            {slide.isFullImage && <div className="overlay" />}
+                            <div className="overlay" />
                         </div>
 
                         {/* Content Layer */}
-                        {index === current && !slide.isFullImage && (
-                            <div className="container carousel-content">
-                                <div className="carousel-text fade-in">
-                                    <div className="badge">Featured Product</div>
-                                    <h1 className="serif">{slide.title}</h1>
-                                    <p className="offer-desc">{slide.desc}</p>
-                                    <div className="carousel-actions">
-                                        <div className="price-tag">Starting from ₹499</div>
-                                    </div>
-                                </div>
-                                <div className="carousel-image fade-in">
-                                    <div className="image-wrapper glass">
-                                        <img src={slide.image} alt={slide.title} />
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {index === current && slide.isFullImage && (
+                        {index === current && (
                             <div className="container carousel-content full-banner-content">
                                 <div className="carousel-text fade-in">
-                                    <h1 className="serif">{slide.title}</h1>
-                                    <p className="offer-desc">{slide.desc}</p>
+                                    {slide.title && <h1 className="serif">{slide.title}</h1>}
+                                    {slide.description && <p className="offer-desc">{slide.description}</p>}
                                 </div>
                             </div>
                         )}

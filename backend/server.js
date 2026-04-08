@@ -17,6 +17,7 @@ const productRoutes = require("./routes/productRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const userRoutes = require("./routes/userRoutes");
+const bannerRoutes = require("./routes/bannerRoutes");
 
 // ─── Database ─────────────────────────────────────────────────────────────────
 connectDB();
@@ -105,6 +106,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/banners", bannerRoutes);
 
 // ─── Serve Frontend ───────────────────────────────────────────────────────────
 const frontendPath = path.join(__dirname, "../FrontEnd/dist");

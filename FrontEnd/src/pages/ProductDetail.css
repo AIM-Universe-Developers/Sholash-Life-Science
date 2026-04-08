@@ -600,7 +600,8 @@
     padding: 15px 20px;
     margin-bottom: 1.15rem;
     box-shadow: 0 10px 26px rgba(103, 85, 215, 0.08);
-    /* font-family: serif; */
+    font-family: sans-serif; 
+   font-size: 1.1rem
 }
 
 .promo-text h3 {
@@ -613,8 +614,9 @@
 
 .promo-text p {
     margin: 6px 0 0;
-    color: #4f4c66;
+    color: black;
     font-size: 0.96rem;
+    font-size: large;
 }
 
 /* Target Audience Styles */
@@ -1451,8 +1453,8 @@
 
 .tag {
     font-size: 1.25rem;
-    font-family: serif;
-    color: var(--color-text-muted, #4b5563);
+    font-family: sans-serif;
+    color: black;
     line-height: 1.6;
     margin-bottom: 2.5rem;
     font-weight: 400;
