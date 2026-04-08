@@ -20,11 +20,17 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const [dynamicReviewsCount, setDynamicReviewsCount] = useState(0);
     const [currentImage, setCurrentImage] = useState('');
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [allProducts, setAllProducts] = useState([]);
+    const [mobileScrollIndex, setMobileScrollIndex] = useState(0);
 
     const [showStickyBuy, setShowStickyBuy] = useState(false);
+    const [showDesktopSticky, setShowDesktopSticky] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
     const purchaseRef = React.useRef(null);
     const detailInfoRef = React.useRef(null);
+    const headerTriggerRef = React.useRef(null); // Reference to trigger desktop sticky bar
+    const swipeTrackRef = React.useRef(null);
+    const thumbColumnRef = React.useRef(null);
 
     // 🔥 Amazon-style scroll logic with IntersectionObserver
     useEffect(() => {
@@ -32,10 +38,13 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                // Show sticky buy if the main purchase controls scroll out of the top of the viewport
+                // Show mobile sticky buy if buttons scroll out
                 if (window.innerWidth <= 768) {
                     setShowStickyBuy(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+                    setShowDesktopSticky(false);
                 } else {
+                    // Show desktop sticky buy if buttons scroll out
+                    setShowDesktopSticky(!entry.isIntersecting && entry.boundingClientRect.top < 0);
                     setShowStickyBuy(false);
                 }
             },
@@ -97,6 +106,20 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         fetchProduct();
     }, [id]);
 
+    useEffect(() => {
+        const fetchAllProducts = async () => {
+            try {
+                const res = await api.get('/api/products');
+                if (res.data && res.data.success) {
+                    setAllProducts(res.data.data);
+                }
+            } catch (err) {
+                console.error('Failed to fetch all products', err);
+            }
+        };
+        fetchAllProducts();
+    }, []);
+
     // ✅ Load reviews from localStorage whenever product is set
     useEffect(() => {
         if (id && product) {
@@ -122,6 +145,20 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
             }
         }
     }, [id, product]);
+
+    // ✅ Scroll active thumbnail into view
+    useEffect(() => {
+        if (thumbColumnRef.current && currentImageIndex !== -1) {
+            const activeThumb = thumbColumnRef.current.children[currentImageIndex];
+            if (activeThumb) {
+                activeThumb.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+    }, [currentImageIndex]);
 
     if (loading) {
         return (
@@ -177,6 +214,15 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         onAddToCart(product, quantity);
     };
 
+    const handleMobileScroll = (e) => {
+        const scrollLeft = e.target.scrollLeft;
+        const width = e.target.clientWidth;
+        if (width > 0) {
+            const index = Math.round(scrollLeft / width);
+            setMobileScrollIndex(index);
+        }
+    };
+
     return (
         <div className="product-detail-page">
             <div className="container">
@@ -193,7 +239,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     {/* Image */}
                     <div className="detail-visual fade-in">
                         <div className="detail-gallery">
-                            <div className="thumbnail-column">
+                            <div className="thumbnail-column" ref={thumbColumnRef}>
                                 {galleryImages.map((img, idx) => (
                                     <button
                                         key={`${product.id}-thumb-${idx}`}
@@ -227,7 +273,11 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
                         {/* Mobile Swipe Gallery */}
                         <div className="mobile-swipe-gallery">
-                            <div className="swipe-track">
+                            <div 
+                                className="swipe-track" 
+                                ref={swipeTrackRef}
+                                onScroll={handleMobileScroll}
+                            >
                                 {galleryImages.map((img, idx) => (
                                     <div className="swipe-slide" key={idx}>
                                         <img src={img} alt={`${product.name} ${idx + 1}`} />
@@ -235,11 +285,27 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 ))}
                             </div>
                             {galleryImages.length > 1 && (
-                                <div className="swipe-dots">
-                                    {galleryImages.map((_, idx) => (
-                                        <div key={idx} className={`swipe-dot ${idx === 0 ? 'active' : ''}`}></div>
-                                    ))}
-                                </div>
+                                <>
+                                    <div className="swipe-dots">
+                                        {galleryImages.map((_, idx) => (
+                                            <div 
+                                                key={idx} 
+                                                className={`swipe-dot ${mobileScrollIndex === idx ? 'active' : ''}`}
+                                                onClick={() => {
+                                                    if (swipeTrackRef.current) {
+                                                        swipeTrackRef.current.scrollTo({
+                                                            left: idx * swipeTrackRef.current.clientWidth,
+                                                            behavior: 'smooth'
+                                                        });
+                                                    }
+                                                }}
+                                            ></div>
+                                        ))}
+                                    </div>
+                                    <div className="mobile-image-counter">
+                                        {mobileScrollIndex + 1} / {galleryImages.length}
+                                    </div>
+                                </>
                             )}
                         </div>
                     </div>
@@ -325,7 +391,49 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
 
             {/* Extra Sections */}
             <ProductAccordion product={product} />
+
+            {/* Related Products Carousel (Amazon Style) */}
+            <div className="related-products-section">
+                <div className="container">
+                    <h2 className="related-title serif">Customers also viewed</h2>
+                    <div className="related-carousel">
+                        {allProducts.filter(p => (p._id || p.id) !== id).slice(0, 6).map(item => (
+                            <div 
+                                key={item._id || item.id} 
+                                className="related-card"
+                                onClick={() => {
+                                    navigate(`/product/${item._id || item.id}`);
+                                    window.scrollTo(0, 0);
+                                }}
+                            >
+                                <img src={getImageUrl(item.image || (item.images && item.images[0]))} alt={item.name} />
+                                <h3>{item.name.split('–')[0]}</h3>
+                                <p>₹{item.price}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
             <ProductReviews />
+
+            {/* Desktop Sticky Header (Amazon style) */}
+            <div className={`desktop-sticky-header ${showDesktopSticky ? 'visible' : ''}`}>
+                <div className="container sticky-flex">
+                    <div className="sticky-left">
+                        <img src={selectedImage} alt={product.name} />
+                        <div className="sticky-name-group">
+                            <span className="sticky-n">{product.name}</span>
+                            <span className="sticky-r">★ {dynamicRating}</span>
+                        </div>
+                    </div>
+                    <div className="sticky-right">
+                        <span className="sticky-p">₹{product.price}</span>
+                        <button className="sticky-btn-cart" onClick={handleAddToCart}>Add to Cart</button>
+                        <button className="sticky-btn-buy" onClick={() => onBuyClick && onBuyClick(product)}>Buy Now</button>
+                    </div>
+                </div>
+            </div>
 
             {/* Mobile Sticky Buy Bar */}
             <div className={`mobile-sticky-buy ${showStickyBuy ? 'visible' : ''}`} style={{
