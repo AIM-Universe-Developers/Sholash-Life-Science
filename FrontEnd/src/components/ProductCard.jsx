@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { slugify } from '../utils/slugify';
 import './ProductCard.css';
 
 const ProductCard = ({
@@ -99,7 +100,7 @@ const ProductCard = ({
             {/* INFO */}
             <div
                 className="product-info"
-                onClick={() => navigate(`/product/${id}`)}
+                onClick={() => navigate(`/product/${slugify(name)}/${id}`)}
             >
                 <div className="product-meta">
                     <div className="product-price">MRP: ₹{price}</div>

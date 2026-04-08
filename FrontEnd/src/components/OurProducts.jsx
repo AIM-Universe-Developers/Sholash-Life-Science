@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api, { BASE_URL } from '../services/api';
+import { slugify } from '../utils/slugify';
 import './OurProducts.css';
 
 const OurProducts = ({ searchQuery = '' }) => {
@@ -110,7 +111,7 @@ const OurProducts = ({ searchQuery = '' }) => {
                                 <div
                                     key={productId}
                                     className="our-product-card"
-                                    onClick={() => navigate(`/product/${productId}`)}
+                                    onClick={() => navigate(`/product/${slugify(product.name)}/${productId}`)}
                                     onMouseEnter={e => {
                                         const img = e.currentTarget.querySelector('.our-product-image');
                                         if (img) img.src = getImageUrl(product, true);

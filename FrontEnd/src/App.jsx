@@ -160,6 +160,7 @@ function App() {
             } />
             <Route path="/profile" element={<Profile />} />
             <Route path="/payment" element={<PaymentProcess cart={cart} />} />
+            <Route path="/product/:name/:id" element={<ProductDetail onAddToCart={handleAddToCart} onBuyClick={handleBuyClick} />} />
             <Route path="/product/:id" element={<ProductDetail onAddToCart={handleAddToCart} onBuyClick={handleBuyClick} />} />
 
             {/* Admin Routes */}
