@@ -381,12 +381,13 @@
 }
 
 .promo-text {
-    background: #f9f6ff;
+    background: #ffffff;
     border: 1px solid #e8e3ff;
     border-radius: 16px;
     padding: 15px 20px;
     margin-bottom: 1.15rem;
     box-shadow: 0 10px 26px rgba(103, 85, 215, 0.08);
+    /* font-family: serif; */
 }
 
 .promo-text h3 {
