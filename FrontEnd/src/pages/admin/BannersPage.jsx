@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api, { BASE_URL } from '../../services/api';
 import { useAdminAuth } from '../../context/AdminAuthContext';
-import { Plus, Trash2, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { Plus, Trash2, Edit, X, Upload, Image as ImageIcon } from 'lucide-react';
 import ConfirmModal from '../../components/admin/common/ConfirmModal';
 import styles from './BannersPage.module.css';
 
@@ -13,6 +13,7 @@ const BannersPage = () => {
     const [showForm, setShowForm] = useState(false);
     const [saving, setSaving] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
+    const [editTarget, setEditTarget] = useState(null);
 
     const getImageUrl = (img) => {
         if (!img) return null;
@@ -63,8 +64,14 @@ const BannersPage = () => {
                 'Content-Type': 'multipart/form-data',
             };
 
-            await api.post('/api/banners', formData, { headers });
+            if (editTarget) {
+                await api.put(`/api/banners/${editTarget._id}`, formData, { headers });
+            } else {
+                await api.post('/api/banners', formData, { headers });
+            }
+
             setShowForm(false);
+            setEditTarget(null);
             fetchBanners();
         } catch (err) {
             console.error('Failed to save banner', err);
@@ -94,6 +101,11 @@ const BannersPage = () => {
         } catch (err) {
             console.error('Failed to toggle status', err);
         }
+    };
+
+    const handleEdit = (banner) => {
+        setEditTarget(banner);
+        setShowForm(true);
     };
 
     return (
@@ -164,6 +176,13 @@ const BannersPage = () => {
                                     <td>
                                         <div className={styles.actionBtns}>
                                             <button
+                                                className={styles.actionBtn}
+                                                onClick={() => handleEdit(banner)}
+                                                title="Edit"
+                                            >
+                                                <Edit size={14} />
+                                            </button>
+                                            <button
                                                 className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
                                                 onClick={() => setDeleteTarget(banner)}
                                                 title="Delete"
@@ -182,10 +201,12 @@ const BannersPage = () => {
             {/* Banner Form Modal */}
             {showForm && (
                 <BannerFormModal
+                    editTarget={editTarget}
                     products={products}
                     saving={saving}
                     onSave={handleSave}
-                    onClose={() => setShowForm(false)}
+                    onClose={() => { setShowForm(false); setEditTarget(null); }}
+                    getImageUrl={getImageUrl}
                 />
             )}
 
@@ -204,16 +225,18 @@ const BannersPage = () => {
 };
 
 // Banner Form Modal Component
-const BannerFormModal = ({ products, saving, onSave, onClose }) => {
+const BannerFormModal = ({ editTarget, products, saving, onSave, onClose, getImageUrl }) => {
     const fileInputRef = useRef(null);
     const [form, setForm] = useState({
-        title: '',
-        description: '',
-        link: '',
+        title: editTarget?.title || '',
+        description: editTarget?.description || '',
+        link: editTarget?.link || '',
     });
     const [selectedFile, setSelectedFile] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState(null);
-    const [isCustomLink, setIsCustomLink] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState(editTarget ? getImageUrl(editTarget.image) : null);
+    const [isCustomLink, setIsCustomLink] = useState(
+        editTarget && !['/', '/about', '/contact'].includes(editTarget.link) && !editTarget.link.startsWith('/product/')
+    );
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -235,7 +258,7 @@ const BannerFormModal = ({ products, saving, onSave, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!selectedFile) {
+        if (!selectedFile && !editTarget) {
             alert('Please select an image');
             return;
         }
@@ -244,7 +267,9 @@ const BannerFormModal = ({ products, saving, onSave, onClose }) => {
         fd.append('title', form.title);
         fd.append('description', form.description);
         fd.append('link', form.link);
-        fd.append('image', selectedFile);
+        if (selectedFile) {
+            fd.append('image', selectedFile);
+        }
 
         onSave(fd);
     };
@@ -253,7 +278,7 @@ const BannerFormModal = ({ products, saving, onSave, onClose }) => {
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
-                    <h2>Add New Hero Banner</h2>
+                    <h2>{editTarget ? 'Edit Hero Banner' : 'Add New Hero Banner'}</h2>
                     <button className={styles.modalCloseBtn} onClick={onClose}>
                         <X size={22} />
                     </button>
@@ -351,8 +376,8 @@ const BannerFormModal = ({ products, saving, onSave, onClose }) => {
                         <button type="button" className={styles.btnCancel} onClick={onClose}>
                             Cancel
                         </button>
-                        <button type="submit" className={styles.btnSave} disabled={saving || !selectedFile}>
-                            {saving ? 'Creating...' : 'Create Banner'}
+                        <button type="submit" className={styles.btnSave} disabled={saving || (!selectedFile && !editTarget)}>
+                            {saving ? (editTarget ? 'Updating...' : 'Creating...') : (editTarget ? 'Update Banner' : 'Create Banner')}
                         </button>
                     </div>
                 </form>
