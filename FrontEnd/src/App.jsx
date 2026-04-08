@@ -20,6 +20,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
 import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
+import SplashScreen from './components/SplashScreen';
 import './App.css';
 
 
@@ -32,6 +33,7 @@ import OrdersPage from './pages/admin/OrdersPage';
 import AnalyticsPage from './pages/admin/AnalyticsPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import ProductsPage from './pages/admin/ProductsPage';
+import BannersPage from './pages/admin/BannersPage';
 import RolesPage from './pages/admin/RolesPage';
 
 function App() {
@@ -42,6 +44,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useContext(UserContext);
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
@@ -113,6 +116,7 @@ function App() {
 
   return (
     <>
+      {isSplashVisible && <SplashScreen onComplete={() => setIsSplashVisible(false)} />}
       <ScrollToTop />
       <div className={isAdminRoute ? 'admin-app-container' : 'app'}>
         {!isAdminRoute && <TopBar />}
@@ -168,6 +172,7 @@ function App() {
                 <Route path="orders" element={<OrdersPage />} />
 
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="banners" element={<BannersPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="analytics" element={<AnalyticsPage />} />
                 <Route path="roles" element={<RolesPage />} />
