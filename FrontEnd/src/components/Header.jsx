@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import './Header.css';
@@ -11,6 +11,8 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     const { user, logout } = useContext(UserContext);
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+    const searchInputRef = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,25 +30,35 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     const handleSearchSubmit = (e) => {
         e.preventDefault();
 
-        // If query is empty, do nothing
-        if (!searchQuery.trim()) return;
-
-        // If not on home page, navigate to home and then hash
-        if (location.pathname !== '/') {
-            navigate('/#products');
-            // After navigation, we might need a slight delay or rely on the hash
+        // Mobile Expansion Logic
+        if (window.innerWidth <= 768 && !isSearchExpanded) {
+            setIsSearchExpanded(true);
             setTimeout(() => {
-                const element = document.getElementById('products');
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+                if (searchInputRef.current) {
+                    searchInputRef.current.focus();
                 }
             }, 100);
+            return;
+        }
+
+        // If query is empty, just scroll to products regardless
+        const element = document.getElementById('products');
+        
+        if (location.pathname !== '/') {
+            navigate('/#products');
+            setTimeout(() => {
+                const el = document.getElementById('products');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         } else {
-            // Already on home, just scroll to products
-            const element = document.getElementById('products');
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
             }
+        }
+        
+        // Collapse search on mobile after submission
+        if (window.innerWidth <= 768) {
+            setIsSearchExpanded(false);
         }
     };
 
@@ -84,8 +96,9 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
                     </div>
                 </nav>
                 <div className="header-actions">
-                    <form className="search-container" onSubmit={handleSearchSubmit}>
+                    <form className={`search-container ${isSearchExpanded ? 'expanded' : ''}`} onSubmit={handleSearchSubmit}>
                         <input
+                            ref={searchInputRef}
                             type="text"
                             className="search-input"
                             placeholder="Search products..."

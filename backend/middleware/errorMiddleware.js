@@ -39,6 +39,12 @@ const errorHandler = (err, req, res, next) => {
         message = "Token expired – please log in again";
     }
 
+    // Multer errors
+    if (err.code === "LIMIT_FILE_SIZE") {
+        statusCode = 400;
+        message = "File too large – maximum size allowed is 25MB";
+    }
+
     // Mongoose validation errors
     if (err.name === "ValidationError") {
         statusCode = 400;

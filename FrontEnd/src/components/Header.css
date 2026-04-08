@@ -350,10 +350,33 @@
         border: none;
         padding: 0;
         background: transparent;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-radius: 30px;
+        position: relative;
+    }
+
+    .search-container.expanded {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        padding: 4px 12px;
+        position: absolute;
+        right: 0;
+        width: 250px;
+        z-index: 50;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .search-input {
         display: none;
+        width: 0;
+    }
+
+    .search-container.expanded .search-input {
+        display: block;
+        width: 100%;
+        padding: 6px 5px;
     }
 
     .account-text {
