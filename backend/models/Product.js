@@ -63,6 +63,16 @@ const productSchema = new mongoose.Schema(
             maxlength: [200, "Tagline cannot exceed 200 characters"],
             default: "",
         },
+        promoTitle: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+        promoContent: {
+            type: String,
+            trim: true,
+            default: "",
+        },
         color: {
             type: String,
             trim: true,

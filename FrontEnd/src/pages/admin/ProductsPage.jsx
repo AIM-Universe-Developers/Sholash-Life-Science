@@ -5,6 +5,7 @@ import { Plus, Search, Edit2, Trash2, X, Upload, Package, Image as ImageIcon } f
 import ConfirmModal from '../../components/admin/common/ConfirmModal';
 import styles from './ProductsPage.module.css';
 
+
 const ProductsPage = () => {
     const { token } = useAdminAuth();
     const [products, setProducts] = useState([]);
@@ -65,7 +66,7 @@ const ProductsPage = () => {
         const matchesSearch = !searchQuery.trim() ||
             p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             p.brand?.toLowerCase().includes(searchQuery.toLowerCase());
-        
+
         const matchesTab =
             activeTab === 'All' ||
             (activeTab === 'Active' && p.isActive) ||
@@ -310,6 +311,8 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         stock: product?.stock || 0,
         brand: product?.brand || '',
         tagline: product?.tagline || '',
+        promoTitle: product?.promoTitle || '',
+        promoContent: product?.promoContent || '',
         color: product?.color || '#f0f0f0',
         target: product?.target || [],
         features: product?.features || [],
@@ -410,6 +413,8 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
         fd.append('stock', form.stock);
         fd.append('brand', form.brand);
         fd.append('tagline', form.tagline);
+        fd.append('promoTitle', form.promoTitle);
+        fd.append('promoContent', form.promoContent);
         fd.append('color', form.color);
         fd.append('target', JSON.stringify(form.target.filter(Boolean)));
         fd.append('features', JSON.stringify(form.features.filter(Boolean)));
@@ -522,6 +527,31 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                     placeholder="Short product tagline"
                                 />
                             </div>
+
+                            {/* Promotional Text */}
+                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
+                                <h3 style={{ margin: '1rem 0 0.5rem', fontSize: '1rem' }}>Promotional Feature Snippet</h3>
+                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                                    <div className={styles.formGroup} style={{ flex: 1 }}>
+                                        <label>Promo Title</label>
+                                        <input
+                                            type="text"
+                                            value={form.promoTitle}
+                                            onChange={e => handleChange('promoTitle', e.target.value)}
+                                            placeholder="e.g. Fights Acne & Acne Marks"
+                                        />
+                                    </div>
+                                    <div className={styles.formGroup} style={{ flex: 2 }}>
+                                        <label>Promo Content</label>
+                                        <input
+                                            type="text"
+                                            value={form.promoContent}
+                                            onChange={e => handleChange('promoContent', e.target.value)}
+                                            placeholder="e.g. Clinically powered formula..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div className={styles.formGroup}>
                                 <label>Card Color</label>
                                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
@@ -618,7 +648,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
 
                             {/* Target */}
                             <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
-                                <label>Target Audience</label>
+                                <label>Suitability & Care Guide</label>
                                 <div className={styles.listInput}>
                                     {form.target.map((t, idx) => (
                                         <div key={idx} className={styles.listInputRow}>

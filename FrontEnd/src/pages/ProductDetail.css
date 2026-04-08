@@ -403,6 +403,51 @@
     font-size: 0.96rem;
 }
 
+/* Target Audience Styles */
+.target-audience-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #fdfcf7; /* Very light cream/wellness feel */
+    border-radius: 12px;
+    /* border-left: 4px solid var(--color-primary-aqua, #0ea5e9); */
+}
+
+.target-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+}
+
+.target-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.target-badge {
+    background: white;
+    color: #334155;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+}
+
+.target-badge:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary-aqua, #0ea5e9);
+    color: var(--color-primary-aqua, #0ea5e9);
+    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.1);
+}
+
 .detail-category {
     display: inline-block;
     font-size: 0.75rem;

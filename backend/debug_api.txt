@@ -247,6 +247,22 @@ Request: {}
 Request: {}
 Request: {}
 Request: {}
+<<<<<<< HEAD
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+=======
 Request: {}
 Request: {}
 Request: {}
@@ -305,6 +321,7 @@ Stack: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-qeagwyv-shard-00-01.w
     at async AggregationCursor.cursorInit (E:\aim universee\sholash_project\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:620:27)
     at async AggregationCursor.fetchBatch (E:\aim universee\sholash_project\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:654:13)
     at async AggregationCursor.next (E:\aim universee\sholash_project\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:326:17)
+>>>>>>> 7746f33a6f58f20beeddd1d0b550eb331fef5133
 Request: {}
 Request: {}
 Request: {}

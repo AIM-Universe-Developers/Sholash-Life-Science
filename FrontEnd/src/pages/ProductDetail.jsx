@@ -6,6 +6,7 @@ import ProductReviews from '../components/ProductReviews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './ProductDetail.css';
 
+
 const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -28,7 +29,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     // 🔥 Amazon-style scroll logic with IntersectionObserver
     useEffect(() => {
         if (!purchaseRef.current) return;
-        
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 // Show sticky buy if the main purchase controls scroll out of the top of the viewport
@@ -250,8 +251,8 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         <h2 className='tag'>{product.tagline}</h2>
 
                         <div className="promo-text">
-                            <h3>Fights Acne & Acne Marks</h3>
-                            <p>Clinically powered formula for brighter, smooth, and blemish-free skin.</p>
+                            <h3>{product.promoTitle}</h3>
+                            <p>{product.promoContent}</p>
                         </div>
 
                         <div className="detail-meta">
@@ -273,7 +274,16 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                         )}
 
                         {product.target && product.target.length > 0 && (
-                            <h3 className='target'>{product.target.join(', ')}</h3>
+                            <div className="target-audience-section">
+                                <span className="target-label">Suitability & Care Guide</span>
+                                <div className="target-badges-container">
+                                    {product.target.map((item, idx) => (
+                                        <span key={idx} className="target-badge">
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
                         )}
 
                         <div className="detail-features">

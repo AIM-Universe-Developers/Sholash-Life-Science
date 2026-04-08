@@ -1,4 +1,4 @@
-.product-marquee-section {
+/* .product-marquee-section {
     padding: 6rem 0;
     background: #ffffff;
     overflow: hidden;
@@ -23,6 +23,7 @@
     gap: 3rem;
     width: fit-content;
     animation: marquee-scroll 60s linear infinite;
+   
 }
 
 .marquee-content:hover {
@@ -114,4 +115,4 @@
         min-width: 220px;
         scroll-snap-align: center;
     }
-}
+} */
