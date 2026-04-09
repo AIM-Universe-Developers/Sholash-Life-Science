@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import api, { BASE_URL } from '../../services/api';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Plus, Trash2, Edit, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { slugify } from '../../utils/slugify';
 import ConfirmModal from '../../components/admin/common/ConfirmModal';
 import styles from './BannersPage.module.css';
 
@@ -252,6 +253,16 @@ const BannerFormModal = ({ editTarget, products, saving, onSave, onClose, getIma
             setForm({ ...form, link: '' });
         } else {
             setIsCustomLink(false);
+            // If it's a product link selection (stored as /product/:id in the option value)
+            if (val.startsWith('/product/')) {
+                const productId = val.replace('/product/', '');
+                const product = products.find(p => p._id === productId);
+                if (product) {
+                    const seoLink = `/product/${slugify(product.name)}/${productId}`;
+                    setForm({ ...form, link: seoLink });
+                    return;
+                }
+            }
             setForm({ ...form, link: val });
         }
     };

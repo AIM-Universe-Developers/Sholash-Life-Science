@@ -4,11 +4,12 @@ import api, { BASE_URL } from '../services/api';
 import ProductAccordion from '../components/ProductAccordion';
 import ProductReviews from '../components/ProductReviews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { slugify } from '../utils/slugify';
 import './ProductDetail.css';
 
 
 const ProductDetail = ({ onAddToCart, onBuyClick }) => {
-    const { id } = useParams();
+    const { name, id } = useParams();
     const navigate = useNavigate();
 
     const [quantity, setQuantity] = useState(1);
@@ -402,7 +403,8 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 key={item._id || item.id} 
                                 className="related-card"
                                 onClick={() => {
-                                    navigate(`/product/${item._id || item.id}`);
+                                    const productId = item._id || item.id;
+                                    navigate(`/product/${slugify(item.name)}/${productId}`);
                                     window.scrollTo(0, 0);
                                 }}
                             >

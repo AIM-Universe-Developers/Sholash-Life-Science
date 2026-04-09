@@ -16,7 +16,25 @@ const PORT = process.env.OTP_PORT || 4000;
 console.log("EMAIL:", process.env.GMAIL_USER);
 console.log("PASS:", process.env.GMAIL_APP_PASSWORD);
 
-app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:3000'] }));
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://sholash-life-science-1.onrender.com',
+    'https://sholash-life-science.onrender.com',
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin) || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200
+}));
 app.use(express.json());
 
 // ─── In-memory OTP store (key → { otp, expiresAt }) ──────
