@@ -708,3 +708,60 @@ Request: {}
 Request: {}
 Request: {}
 Request: {}
+Request: {}
+Error: getaddrinfo ENOTFOUND ac-qeagwyv-shard-00-02.wrdq4oa.mongodb.net
+Stack: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-qeagwyv-shard-00-02.wrdq4oa.mongodb.net
+    at Topology.selectServer (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\sdam\topology.js:347:38)
+    at runNextTicks (node:internal/process/task_queues:64:5)
+    at listOnTimeout (node:internal/timers:547:9)
+    at process.processTimers (node:internal/timers:521:7)
+    at async tryOperation (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\operations\execute_operation.js:150:18)
+    at async executeOperation (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\operations\execute_operation.js:80:16)
+    at async AggregationCursor._initialize (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\aggregation_cursor.js:57:26)
+    at async AggregationCursor.cursorInit (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:620:27)
+    at async AggregationCursor.fetchBatch (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:654:13)
+    at async AggregationCursor.next (C:\Users\DELL\Music\Sholash Life Sciences\Sholash-Life-Science\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:326:17)
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}

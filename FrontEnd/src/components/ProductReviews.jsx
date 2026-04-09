@@ -136,7 +136,6 @@ const ProductReviews = () => {
         if (file) {
             const formData = new FormData();
             formData.append('photo', file);
-            if (productId) formData.append('productId', productId);
 
             try {
                 const { data } = await api.post('/api/upload/user-photo', formData, {
