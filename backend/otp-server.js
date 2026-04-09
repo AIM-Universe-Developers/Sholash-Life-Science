@@ -4,6 +4,7 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
 const dns = require('dns');
+const path = require('path');
 
 // Force IPv4 as the default for all network calls
 if (dns.setDefaultResultOrder) {
@@ -106,18 +107,27 @@ app.post('/api/send-otp/email', async (req, res) => {
             html: `
             <div style="font-family:'Segoe UI',sans-serif;max-width:480px;margin:auto;background:#f0fdfa;border-radius:16px;padding:32px;border:1px solid #a7f3d0;">
                 <div style="text-align:center;margin-bottom:24px;">
-                <span style="font-size:40px;">🌿</span>
+                <img src="cid:logo_symbol" alt="Sholash" style="width: 80px; height: auto; display: block; margin: 0 auto;" />
                 <h2 style="color:#065f46;margin:8px 0 0;">Sholash Life Science</h2>
                 </div>
                 <p style="color:#374151;">Hi <strong>${name || 'there'}</strong>,</p>
-                <p style="color:#374151;">Your One-Time Password (OTP) is:</p>
+                <p style="color:#374151;">Never share your login credentials with anyone. Your One-Time Password (OTP) is:</p>
+                <p style="color:#374151;">Welcome to Sholash life science join our family for better skin and health , adding a value for your skincare, We noticed a successful login to your account, and we’re glad to have you back! 🎉 </p>
+                <p style="color:#374151;">We’re always here to help you have the best shopping experience!</p>
                 <div style="text-align:center;margin:24px 0;">
                 <span style="font-size:42px;font-weight:800;letter-spacing:12px;color:#047857;background:#d1fae5;padding:16px 24px;border-radius:12px;display:inline-block;">${otp}</span>
                 </div>
                 <p style="color:#6b7280;font-size:13px;">Valid for <strong>5 minutes</strong>. Do not share with anyone.</p>
                 <hr style="border:none;border-top:1px solid #d1fae5;margin:24px 0;">
                 <p style="color:#9ca3af;font-size:12px;text-align:center;">© 2025 Sholash Life Science</p>
-            </div>`
+            </div>`,
+            attachments: [
+                {
+                    filename: 'logo_symbol.png',
+                    path: path.join(__dirname, '../FrontEnd/src/assets/logo/logo_symbol.png'),
+                    cid: 'logo_symbol'
+                }
+            ]
         });
         console.log(`[OTP] Email sent to ${email}`);
         res.json({ success: true, message: 'OTP sent to your email.' });
