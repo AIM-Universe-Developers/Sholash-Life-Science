@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import api, { BASE_URL } from '../services/api';
 
 import './ProductReviews.css';
 
@@ -130,21 +131,55 @@ const ProductReviews = () => {
         setReviewForm({ name: '', title: '', content: '' });
     };
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result;
-                setUserBeforeImage(base64String);
-                try {
-                    localStorage.setItem(imageStorageKey, base64String);
-                } catch (error) {
-                    console.error("Error saving image:", error);
-                    alert("Image is too large to save! Try a smaller image.");
+            const formData = new FormData();
+            formData.append('photo', file);
+            if (productId) formData.append('productId', productId);
+
+            try {
+                const { data } = await api.post('/api/upload/user-photo', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                if (data.success) {
+                    const fullUrl = data.url.startsWith('http') ? data.url : `${BASE_URL}${data.url}`;
+                    setUserBeforeImage(fullUrl);
+                    localStorage.setItem(imageStorageKey, fullUrl);
                 }
-            };
-            reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                alert("Failed to upload image. Please try again.");
+            }
+        }
+    };
+
+    const handleImageDelete = async () => {
+        if (!userBeforeImage) return;
+
+        try {
+            // Extract the relative path from the full URL if it's from our backend
+            let relativeUrl = userBeforeImage;
+            if (userBeforeImage.includes(BASE_URL)) {
+                relativeUrl = userBeforeImage.replace(BASE_URL, '');
+            }
+
+            const { data } = await api.delete('/api/upload/user-photo', {
+                data: { url: relativeUrl }
+            });
+
+            if (data.success) {
+                setUserBeforeImage(null);
+                localStorage.removeItem(imageStorageKey);
+            }
+        } catch (error) {
+            console.error("Error deleting image:", error);
+            // Even if backend delete fails, we might want to clear it from UI
+            setUserBeforeImage(null);
+            localStorage.removeItem(imageStorageKey);
         }
     };
 
@@ -262,9 +297,14 @@ const ProductReviews = () => {
                                 </div>
                             ))}
                             {userBeforeImage && (
-                                <div className="media-item user-upload-item" onClick={() => setSelectedImage(userBeforeImage)}>
-                                    <img src={userBeforeImage} alt="My Photo" />
-                                    <span className="upload-label">My Photo</span>
+                                <div className="media-item user-upload-item">
+                                    <div className="img-wrapper" onClick={() => setSelectedImage(userBeforeImage)}>
+                                        <img src={userBeforeImage} alt="My Photo" />
+                                        <span className="upload-label">My Photo</span>
+                                    </div>
+                                    <button className="remove-photo-btn" onClick={handleImageDelete} title="Remove Photo">
+                                        ✕
+                                    </button>
                                 </div>
                             )}
                             {user && (

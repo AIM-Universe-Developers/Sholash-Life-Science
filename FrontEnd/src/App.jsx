@@ -19,6 +19,7 @@ import BrandSection from './components/BrandSection';
 import WhatsAppButton from './components/WhatsAppButton';
 import AuthModal from './components/AuthModal';
 import Profile from './pages/Profile';
+import Gallery from './pages/Gallery';
 import ScrollToTop from './components/ScrollToTop';
 import SplashScreen from './components/SplashScreen';
 import './App.css';
@@ -150,6 +151,7 @@ function App() {
               </>
             } />
             <Route path="/about" element={<About />} />
+            <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={
               <Cart
