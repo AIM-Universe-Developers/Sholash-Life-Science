@@ -37,11 +37,11 @@ const ProductReviews = () => {
         'Most Helpful'
     ];
     const customerPhotos = [
-        'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
+        // 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
     ];
 
     const storageKey = `sholash_reviews_${productId}`;
@@ -258,7 +258,7 @@ const ProductReviews = () => {
                         <div className="media-grid">
                             {customerPhotos.map((url, i) => (
                                 <div key={i} className="media-item" onClick={() => setSelectedImage(url)}>
-                                    {/* <img src={url} alt={`Customer ${i}`} /> */}
+                                     <img src={url} alt={`Customer ${i}`} /> 
                                 </div>
                             ))}
                             {userBeforeImage && (
@@ -277,7 +277,7 @@ const ProductReviews = () => {
                     </div>
                     <div className="media-right">
                         <div className="transparency-badge">
-                            <div className="badge-ring">
+                            {/* <div className="badge-ring"> */}
                                 <div className="badge-inner">
                                     {/* <svg viewBox="0 0 100 100" className="badge-svg">
                                         <path id="curve" d="M 25, 50 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0" fill="transparent" />
@@ -288,7 +288,7 @@ const ProductReviews = () => {
                                     {/* <div className="badge-score">92.3</div>
                                     <div className="badge-check">✔</div> */}
                                 </div>
-                            </div>
+                            {/* </div> */}
                         </div>
                     </div>
                 </div>

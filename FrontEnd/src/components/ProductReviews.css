@@ -132,7 +132,9 @@
 .media-title {
     font-size: 1.1rem;
     margin-bottom: 1rem;
-    color: #666;
+    color: #070707;
+    font-family: sans-serif;
+    font-weight: bold;
 }
 
 .media-grid {
@@ -307,7 +309,7 @@
 
 /* The checkmark before the text in the button */
 .sort-trigger::before {
-    content: "✓";
+    /* content: "✓"; */
     font-size: 1.1rem;
     font-weight: 700;
     color: #aa6080;
@@ -568,7 +570,7 @@
 .star-item {
     font-size: 2rem;
     cursor: pointer;
-    color: #e5e7eb;
+    color: #343434;
     transition: all 0.2s ease;
 }
 
@@ -814,4 +816,5 @@
     text-align: center;
     padding: 2px 0;
     letter-spacing: 0.5px;
+    
 }
