@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { uploadUserPhoto, deleteUserPhoto } = require("../controllers/uploadController");
+const { uploadUserPhoto, deleteUserPhoto, getGalleryPhotos } = require("../controllers/uploadController");
 const { uploadSingle } = require("../middleware/uploadMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 
-// Route for uploading a single photo
-// 'photo' is the name of the field in the multipart form-data
-router.post("/user-photo", uploadSingle("photo"), uploadUserPhoto);
+// Route for uploads
+router.post("/user-photo", protect, uploadSingle("photo"), uploadUserPhoto);
+
+// Route for fetching all gallery photos
+router.get("/gallery", getGalleryPhotos);
 
 // Route for deleting a photo
 router.delete("/user-photo", deleteUserPhoto);
