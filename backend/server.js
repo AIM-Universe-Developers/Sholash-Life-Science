@@ -28,31 +28,34 @@ const app = express();
 // ─── Trust Render's reverse proxy (required for rate-limit & IP detection) ────
 app.set('trust proxy', 1);
 
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://sholash-life-science-1.onrender.com',
+    'https://sholash-life-science.onrender.com',
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin) || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200,
+}));
+
 // ─── Security Middleware ──────────────────────────────────────────────────────
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
     noSniff: false, // Don't set X-Content-Type-Options to prevent MIME type sniffing
-}));
-
-
-
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://sholash-life-science-1.onrender.com',
-];
-app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, Postman)
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error(`CORS policy: origin '${origin}' not allowed`));
-        }
-    },
-    credentials: true,
 }));
 
 // Global rate limiter: 200 requests per 15 minutes per real IP
