@@ -276,7 +276,7 @@ const ProductsPage = () => {
             <ConfirmModal
                 isOpen={!!deleteTarget}
                 title="Delete Product"
-                message={`Are you sure you want to delete "${deleteTarget?.name}"? This will deactivate the product.`}
+                message={`Are you sure you want to delete "${deleteTarget?.name}"? This will permanently remove the product and cannot be undone.`}
                 onConfirm={handleDelete}
                 onClose={() => setDeleteTarget(null)}
                 isDanger={true}
@@ -326,7 +326,8 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
             faq: product?.details?.faq || [],
             other: product?.details?.other || [],
             legal: product?.details?.legal || [],
-        }
+        },
+        isActive: product?.isActive !== undefined ? product.isActive : true,
     });
     const [newFiles, setNewFiles] = useState([]);
     const [existingImages, setExistingImages] = useState(product?.images || []);
@@ -424,6 +425,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
 
         // pass existing images that weren't removed
         fd.append('existingImages', JSON.stringify(existingImages));
+        fd.append('isActive', form.isActive);
 
         newFiles.forEach(file => {
             fd.append('images', file);
@@ -515,6 +517,19 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                     onChange={e => handleChange('brand', e.target.value)}
                                     placeholder="Sholash"
                                 />
+                            </div>
+
+                            {/* Status */}
+                            <div className={styles.formGroup}>
+                                <label>Product Status</label>
+                                <select
+                                    value={form.isActive}
+                                    onChange={e => handleChange('isActive', e.target.value === 'true')}
+                                    required
+                                >
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
                             </div>
 
                             {/* Tagline & Color */}

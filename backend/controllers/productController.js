@@ -278,13 +278,12 @@ const deleteProduct = async (req, res, next) => {
             });
         }
 
-        // Soft delete – keeps data for order history integrity
-        product.isActive = false;
-        await product.save();
+        // Permanent delete as requested
+        await Product.findByIdAndDelete(req.params.id);
 
         res.status(200).json({
             success: true,
-            message: "Product deleted",
+            message: "Product permanently deleted",
             data: {},
         });
     } catch (error) {
