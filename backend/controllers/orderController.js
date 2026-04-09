@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const { sendOrderEmail } = require("../utils/mailUtils");
 
 // ─── @desc   Get All Orders (Paginated)
 // ─── @route  GET /api/orders
@@ -62,7 +63,7 @@ const updateOrderStatus = async (req, res, next) => {
     try {
         const { orderStatus, paymentStatus } = req.body;
 
-        const order = await Order.findById(req.params.id);
+        const order = await Order.findById(req.params.id).populate("user", "name email");
         if (!order) {
             return res.status(404).json({
                 success: false,
@@ -70,11 +71,26 @@ const updateOrderStatus = async (req, res, next) => {
             });
         }
 
+        const oldStatus = order.orderStatus;
         if (orderStatus) order.orderStatus = orderStatus;
         if (paymentStatus) order.paymentStatus = paymentStatus;
         if (orderStatus === "delivered") order.deliveredAt = new Date();
 
         const updated = await order.save();
+
+        // Send Email Notification if status changed
+        if (orderStatus && orderStatus !== oldStatus) {
+            // Map status for mail template if needed, or pass directly
+            const validMailStatuses = ['processing', 'shipped', 'delivered'];
+            if (validMailStatuses.includes(orderStatus) && order.user?.email) {
+                // Tracking info would ideally come from req.body too if available
+                const extraData = {
+                    trackingNumber: req.body.trackingNumber,
+                    trackingUrl: req.body.trackingUrl
+                };
+                sendOrderEmail(order.user.email, order.user.name, order._id, orderStatus, extraData);
+            }
+        }
 
         res.status(200).json({
             success: true,
