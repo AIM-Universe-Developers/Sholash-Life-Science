@@ -4,6 +4,7 @@
     min-height: 100vh;
     width: 100%;
     margin-top: 0;
+   
 }
 
 /* Keep top spacing only from app main padding (same as landing page) */
@@ -1288,6 +1289,7 @@
     .detail-features ul {
         grid-template-columns: 1fr;
         gap: 1rem;
+      
     }
     
     .purchase-controls {

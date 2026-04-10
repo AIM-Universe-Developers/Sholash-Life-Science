@@ -23,14 +23,14 @@ router.post(
     "/",
     protect,
     checkPermission("create:products"),
-    uploadMultiple("images", 5),
+    uploadMultiple("images", 15),
     createProduct
 );
 router.put(
     "/:id",
     protect,
     checkPermission("update:products"),
-    uploadMultiple("images", 5),
+    uploadMultiple("images", 15),
     updateProduct
 );
 router.delete("/:id", protect, checkPermission("delete:products"), deleteProduct);
