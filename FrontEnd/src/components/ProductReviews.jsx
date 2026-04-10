@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import api, { BASE_URL } from '../services/api';
 
 import './ProductReviews.css';
 
@@ -37,11 +38,11 @@ const ProductReviews = () => {
         'Most Helpful'
     ];
     const customerPhotos = [
-        'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
+        // 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop',
+        // 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
     ];
 
     const storageKey = `sholash_reviews_${productId}`;
@@ -130,21 +131,54 @@ const ProductReviews = () => {
         setReviewForm({ name: '', title: '', content: '' });
     };
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result;
-                setUserBeforeImage(base64String);
-                try {
-                    localStorage.setItem(imageStorageKey, base64String);
-                } catch (error) {
-                    console.error("Error saving image:", error);
-                    alert("Image is too large to save! Try a smaller image.");
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            try {
+                const { data } = await api.post('/api/upload/user-photo', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                if (data.success) {
+                    const fullUrl = data.url.startsWith('http') ? data.url : `${BASE_URL}${data.url}`;
+                    setUserBeforeImage(fullUrl);
+                    localStorage.setItem(imageStorageKey, fullUrl);
                 }
-            };
-            reader.readAsDataURL(file);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                alert("Failed to upload image. Please try again.");
+            }
+        }
+    };
+
+    const handleImageDelete = async () => {
+        if (!userBeforeImage) return;
+
+        try {
+            // Extract the relative path from the full URL if it's from our backend
+            let relativeUrl = userBeforeImage;
+            if (userBeforeImage.includes(BASE_URL)) {
+                relativeUrl = userBeforeImage.replace(BASE_URL, '');
+            }
+
+            const { data } = await api.delete('/api/upload/user-photo', {
+                data: { url: relativeUrl }
+            });
+
+            if (data.success) {
+                setUserBeforeImage(null);
+                localStorage.removeItem(imageStorageKey);
+            }
+        } catch (error) {
+            console.error("Error deleting image:", error);
+            // Even if backend delete fails, we might want to clear it from UI
+            setUserBeforeImage(null);
+            localStorage.removeItem(imageStorageKey);
         }
     };
 
@@ -258,13 +292,18 @@ const ProductReviews = () => {
                         <div className="media-grid">
                             {customerPhotos.map((url, i) => (
                                 <div key={i} className="media-item" onClick={() => setSelectedImage(url)}>
-                                    {/* <img src={url} alt={`Customer ${i}`} /> */}
+                                     <img src={url} alt={`Customer ${i}`} /> 
                                 </div>
                             ))}
                             {userBeforeImage && (
-                                <div className="media-item user-upload-item" onClick={() => setSelectedImage(userBeforeImage)}>
-                                    <img src={userBeforeImage} alt="My Photo" />
-                                    <span className="upload-label">My Photo</span>
+                                <div className="media-item user-upload-item">
+                                    <div className="img-wrapper" onClick={() => setSelectedImage(userBeforeImage)}>
+                                        <img src={userBeforeImage} alt="My Photo" />
+                                        <span className="upload-label">My Photo</span>
+                                    </div>
+                                    <button className="remove-photo-btn" onClick={handleImageDelete} title="Remove Photo">
+                                        ✕
+                                    </button>
                                 </div>
                             )}
                             {user && (
@@ -277,7 +316,7 @@ const ProductReviews = () => {
                     </div>
                     <div className="media-right">
                         <div className="transparency-badge">
-                            <div className="badge-ring">
+                            {/* <div className="badge-ring"> */}
                                 <div className="badge-inner">
                                     {/* <svg viewBox="0 0 100 100" className="badge-svg">
                                         <path id="curve" d="M 25, 50 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0" fill="transparent" />
@@ -288,7 +327,7 @@ const ProductReviews = () => {
                                     {/* <div className="badge-score">92.3</div>
                                     <div className="badge-check">✔</div> */}
                                 </div>
-                            </div>
+                            {/* </div> */}
                         </div>
                     </div>
                 </div>
