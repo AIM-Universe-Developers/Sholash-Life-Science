@@ -18,33 +18,32 @@ const BrandSection = () => {
 
                 <div className="brand-content">
                     <span className="brand-badge accent-font">Our Legacy & Science</span>
-                    <h2 className="brand-title serif">The Pathway to <span className="text-gradient">Naturally Radiant</span> Skin</h2>
+                    <h2 className="brand-title serif">Science-Backed <span className="text-gradient">Skincare For</span>Real Results</h2>
                     <p className="brand-desc">
-                        At Sholash Life Sciences, our "Science of Glowing Skin" investigates the intricate biological processes 
-                        that contribute to a naturally radiant complexion. We explore the synergy between nature 
-                        and cutting-edge research for lasting beauty and confidence.
+                        At Sholash Life Sciences, we combine advanced dermatological research with carefully selected ingredients to create skincare that delivers visible, lasting results.
+                        Engineered to restore balance, enhance clarity, and support your skin’s  strength.
                     </p>
 
                     <div className="features-grid">
                         <div className="feature-item">
                             <div className="feature-icon science-icon"></div>
                             <div className="feature-text">
-                                <h4 className="serif">Science-Based</h4>
-                                <p>Biological research on moisture retention and skin elasticity.</p>
+                                <h4 className="serif">Science-Driven Care</h4>
+                                <p>Formulated with clinically studied ingredients to improve hydration, texture, and skin resilience.</p>
                             </div>
                         </div>
                         <div className="feature-item">
                             <div className="feature-icon purity-icon"></div>
                             <div className="feature-text">
-                                <h4 className="serif">Purity Ensured</h4>
-                                <p>Protecting your skin with dermatologically tested formulas.</p>
+                                <h4 className="serif">Dermatologist-Tested Safety</h4>
+                                <p>Protecting your skin with dermatologically tested formulas.Gentle, effective, and suitable for sensitive and acne-prone skin.</p>
                             </div>
                         </div>
                         <div className="feature-item">
                             <div className="feature-icon result-icon"></div>
                             <div className="feature-text">
                                 <h4 className="serif">Lasting Results</h4>
-                                <p>Achieving long-term clarity and a natural glow from within.</p>
+                                <p>Designed to deliver real improvements in skin clarity, smoothness, and overall health.</p>
                             </div>
                         </div>
                     </div>
