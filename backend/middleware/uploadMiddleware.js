@@ -65,7 +65,7 @@ const upload = multer({
 
 // Convenience wrappers
 const uploadSingle = (fieldName) => upload.single(fieldName);
-const uploadMultiple = (fieldName, maxCount = 5) =>
+const uploadMultiple = (fieldName, maxCount = 15) =>
     upload.array(fieldName, maxCount);
 
 module.exports = { upload, uploadSingle, uploadMultiple };

@@ -593,7 +593,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                     onClick={() => fileInputRef.current?.click()}
                                 >
                                     <Upload size={24} />
-                                    <p style={{ margin: '0.5rem 0 0' }}>Click to upload images (max 5)</p>
+                                    <p style={{ margin: '0.5rem 0 0' }}>Click to upload images (max 15)</p>
                                     <p style={{ fontSize: '0.75rem', opacity: 0.7 }}>JPEG, PNG, WebP — 50MB each</p>
                                 </div>
                                 <input
