@@ -1,5 +1,7 @@
 import React from 'react';
 import './BrandSection.css';
+import mainImage from '../assets/new images/main image.png';
+import secondaryImage from '../assets/new images/secondary image.png';
 
 const BrandSection = () => {
     return (
@@ -8,10 +10,10 @@ const BrandSection = () => {
                 <div className="brand-visual">
                     <div className="image-stack">
                         <div className="main-image">
-                            <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=1200" alt="Scientific Skincare" />
+                            <img src={mainImage} alt="Scientific Skincare" />
                         </div>
                         <div className="secondary-image floating-anim">
-                            <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=800" alt="Product Purity" />
+                            <img src={secondaryImage} alt="Product Purity" />
                         </div>
                     </div>
                 </div>
