@@ -1,6 +1,8 @@
 import React from 'react';
 import './HealthySkin.css';
 
+import healthyskin from '../assets/home img/imgs.png';
+
 const features = [
     {
         id: 1,
@@ -74,8 +76,7 @@ const HealthySkin = () => {
                 <div className="healthy-skin-visual fade-in">
                     <div className="trendy-image-wrapper">
                         <img
-                            src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=800"
-                            alt="Healthy Radiant Skin"
+                            src={healthyskin} alt="Healthy Radiant Skin"
                             className="healthy-skin-image"
                         />
                         <div className="color-blob"></div>
