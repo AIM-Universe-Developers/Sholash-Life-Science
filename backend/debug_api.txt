@@ -808,3 +808,30 @@ Request: {}
 Request: {}
 Request: {}
 Request: {}
+<<<<<<< HEAD
+=======
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+Request: {}
+>>>>>>> fa9e439 (feat: add ProductDetail page styling and backend debug utility file)

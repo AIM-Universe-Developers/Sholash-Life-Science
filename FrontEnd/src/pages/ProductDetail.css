@@ -691,6 +691,8 @@
     margin-bottom: 0.75rem;
     font-weight: 800;
     letter-spacing: -0.02em;
+    font-family: serif;
+    /* change */
 }
 
 .detail-meta {
