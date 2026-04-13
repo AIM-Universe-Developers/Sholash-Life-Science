@@ -1,7 +1,7 @@
 import React from 'react';
 import './BrandSection.css';
 import mainImage from '../assets/new images/main image.png';
-import mobileImage from '../assets/new images/all product.png';
+import mobileImage from '../assets/home img/img3.png';
 import secondaryImage from '../assets/new images/secondary image.png';
 
 const BrandSection = () => {
