@@ -198,12 +198,12 @@
 .pathway-visual img {
     width: 100%;
     display: block;
-    transition: transform 0.8s ease;
+    /* transition: transform 0.8s ease; */
 }
 
-.pathway-visual:hover img {
+/* .pathway-visual:hover img {
     transform: scale(1.05);
-}
+} */
 
 .quote-box {
     position: absolute;
