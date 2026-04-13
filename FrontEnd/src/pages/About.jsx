@@ -2,8 +2,8 @@ import React from 'react';
 import './About.css';
 
 // Using local assets if possible, falling back to high-quality unsplash for premium feel
-const glazziumImg = "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=800";
-const ceramoizImg = "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=800";
+import glazziumImg from '../assets/new images/main image.png';
+import ceramoizImg from '../assets/new images/secondary image.png';
 
 const About = () => {
     return (
