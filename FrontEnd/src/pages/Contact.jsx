@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import Allproducts from '../assets/new images/all product.png';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ const Contact = () => {
                 <div className="container contact-main-grid">
                     <div className="contact-visual fade-in">
                         <div className="glass-card product-showcase">
-                            <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=800" alt="Ceramoiz Product" />
+                            <img src={Allproducts} alt="Ceramoiz Product" />
                             <div className="visual-badge">Premium Care</div>
                         </div>
                     </div>
