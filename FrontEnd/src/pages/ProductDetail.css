@@ -920,7 +920,7 @@
     align-items: center;
     min-width: 24px;
     height: 24px;
-    background: #10b981; /* More vibrant emerald green */
+    background: #aaaaaa; /* More vibrant emerald green */
     color: #ffffff;
     border-radius: 6px; /* Boxy but rounded for a modern look */
     font-size: 0.8rem;
@@ -1196,7 +1196,7 @@
         width: 100%;
         position: relative;
         margin-bottom: 10px;
-        margin-left: -10px; /* Adjusts left margin to compensate for container padding */
+        margin-left: -5px; /* Adjusts left margin to compensate for container padding */
     }
 
     .swipe-track {
