@@ -920,7 +920,7 @@
     align-items: center;
     min-width: 24px;
     height: 24px;
-    background: #aaaaaa; /* More vibrant emerald green */
+    background: #05a058; /* More vibrant emerald green */
     color: #ffffff;
     border-radius: 6px; /* Boxy but rounded for a modern look */
     font-size: 0.8rem;
@@ -1248,7 +1248,7 @@
     }
     
     .swipe-dot.active {
-        background: var(--color-primary-brand, #000);
+        background: var(rgb(102, 100, 100), #000);
         width: 24px;
         border-radius: 10px;
     }
