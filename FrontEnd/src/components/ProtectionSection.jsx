@@ -1,6 +1,6 @@
 import React from 'react';
 import './ProtectionSection.css';
-import protection from "../assets/home img/img2.png";
+import protection from "../assets/home img/img2 (2).png";
 
 const protectionCategories = [
     {
