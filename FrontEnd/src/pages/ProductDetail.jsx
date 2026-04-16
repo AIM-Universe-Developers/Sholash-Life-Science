@@ -6,6 +6,7 @@ import ProductReviews from '../components/ProductReviews';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { slugify } from '../utils/slugify';
 import './ProductDetail.css';
+import styles from './ProductDetail.module.css';
 
 
 const ProductDetail = ({ onAddToCart, onBuyClick }) => {
@@ -27,11 +28,14 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
     const [showStickyBuy, setShowStickyBuy] = useState(false);
     const [showDesktopSticky, setShowDesktopSticky] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true);
     const purchaseRef = React.useRef(null);
     const detailInfoRef = React.useRef(null);
     const headerTriggerRef = React.useRef(null); // Reference to trigger desktop sticky bar
     const swipeTrackRef = React.useRef(null);
     const thumbColumnRef = React.useRef(null);
+    const relatedCarouselRef = React.useRef(null);
 
     // 🔥 Amazon-style scroll logic with IntersectionObserver
     useEffect(() => {
@@ -56,7 +60,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         return () => observer.disconnect();
     }, [product]);
 
-    // 🔥 Scroll progress tracker for smooth animations
+    // 🔥 Scroll progress tracker for smooth animations and progress bar
     useEffect(() => {
         const handleScroll = () => {
             if (!detailInfoRef.current) return;
@@ -147,19 +151,83 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         }
     }, [id, product]);
 
-    // ✅ Scroll active thumbnail into view
+    // 🔥 Amazon-style carousel scroll detection & arrow visibility
     useEffect(() => {
-        if (thumbColumnRef.current && currentImageIndex !== -1) {
-            const activeThumb = thumbColumnRef.current.children[currentImageIndex];
-            if (activeThumb) {
-                activeThumb.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'center'
-                });
-            }
+        const updateScrollArrows = () => {
+            if (!relatedCarouselRef.current) return;
+            const carousel = relatedCarouselRef.current;
+            const scrollLeft = carousel.scrollLeft;
+            const scrollWidth = carousel.scrollWidth;
+            const clientWidth = carousel.clientWidth;
+
+            // Show left arrow if scrolled right
+            setCanScrollLeft(scrollLeft > 0);
+            // Show right arrow if not at the end
+            setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+        };
+
+        const carousel = relatedCarouselRef.current;
+        if (carousel) {
+            updateScrollArrows();
+            carousel.addEventListener('scroll', updateScrollArrows);
+            window.addEventListener('resize', updateScrollArrows);
+
+            return () => {
+                carousel.removeEventListener('scroll', updateScrollArrows);
+                window.removeEventListener('resize', updateScrollArrows);
+            };
         }
-    }, [currentImageIndex]);
+    }, [allProducts]);
+
+    // Define galleryImages before the useEffect that uses it
+    const categoryName = typeof product?.category === 'object'
+        ? product.category?.name
+        : product?.category;
+
+    const galleryImages = product
+        ? (Array.isArray(product.images) && product.images.length ? product.images : [product.image]).map(getImageUrl).filter(Boolean)
+        : [];
+
+    const selectedImage = galleryImages[currentImageIndex] || galleryImages[0] || currentImage;
+
+    // 🔥 Enhanced scroll interaction for image changes
+    useEffect(() => {
+        if (!detailInfoRef.current || !galleryImages || galleryImages.length <= 1) return;
+
+        const handleScrollImageChange = () => {
+            const detailInfo = detailInfoRef.current;
+            const rect = detailInfo.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Calculate which section of the content we're in
+            const totalHeight = detailInfo.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const scrollProgress = Math.max(0, Math.min(1, (scrollTop - rect.top + viewportHeight) / (totalHeight + viewportHeight)));
+
+            // Change image based on scroll progress (divide content into segments)
+            const imageIndex = Math.min(galleryImages.length - 1, Math.floor(scrollProgress * galleryImages.length));
+
+            if (imageIndex !== currentImageIndex && imageIndex >= 0) {
+                setCurrentImageIndex(imageIndex);
+                setCurrentImage(galleryImages[imageIndex]);
+            }
+        };
+
+        // Throttle scroll events for better performance
+        let ticking = false;
+        const throttledScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleScrollImageChange();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', throttledScroll, { passive: true });
+        return () => window.removeEventListener('scroll', throttledScroll);
+    }, [galleryImages, currentImageIndex]);
 
     if (loading) {
         return (
@@ -180,21 +248,24 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         );
     }
 
-    const categoryName = typeof product.category === 'object'
-        ? product.category?.name
-        : product.category;
-
-    const galleryImages = product
-        ? (Array.isArray(product.images) && product.images.length ? product.images : [product.image]).map(getImageUrl).filter(Boolean)
-        : [];
-
-    const selectedImage = galleryImages[currentImageIndex] || galleryImages[0] || currentImage;
-
     const handleThumbnailClick = (index) => {
         if (!galleryImages.length) return;
         const nextImage = galleryImages[index] || galleryImages[0];
-        setCurrentImageIndex(index);
-        setCurrentImage(nextImage);
+        
+        // Add fade effect
+        const imageElement = document.querySelector('.detail-hero-image');
+        if (imageElement) {
+            imageElement.classList.add('fade-out');
+            setTimeout(() => {
+                setCurrentImageIndex(index);
+                setCurrentImage(nextImage);
+                imageElement.classList.remove('fade-out');
+                imageElement.classList.add('fade-in');
+            }, 150);
+        } else {
+            setCurrentImageIndex(index);
+            setCurrentImage(nextImage);
+        }
     };
 
     const showPrevImage = () => {
@@ -224,8 +295,26 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
         }
     };
 
+    // 🔥 Amazon-style carousel scroll handlers
+    const scrollCarousel = (direction) => {
+        if (!relatedCarouselRef.current) return;
+        const carousel = relatedCarouselRef.current;
+        const scrollAmount = 300; // Scroll by 300px per click
+        
+        carousel.scrollBy({
+            left: direction === 'left' ? -scrollAmount : scrollAmount,
+            behavior: 'smooth'
+        });
+    };
+
     return (
-        <div className="product-detail-page">
+        <div className={styles.productDetailPage}>
+            {/* Scroll Progress Indicator */}
+            <div 
+                className={styles.scrollProgress} 
+                style={{ transform: `scaleX(${scrollProgress})` }}
+            ></div>
+            
             <div className="container">
 
                 {/* Breadcrumb */}
@@ -235,11 +324,11 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     <span className="active"> {product.name}</span>
                 </div>
 
-                <div className="detail-container">
+                <div className={`${styles.detailContainer} detail-container`}>
 
                     {/* Image */}
-                    <div className="detail-visual fade-in">
-                        <div className="detail-gallery">
+                    <div className={`${styles.leftColumn} detail-visual`}>
+                        <div className="detail-gallery fade-in">
                             <div className="thumbnail-column" ref={thumbColumnRef}>
                                 {galleryImages.map((img, idx) => (
                                     <button
@@ -256,7 +345,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                                 <img
                                     src={selectedImage}
                                     alt={product.name}
-                                    className="detail-hero-image zoom-hover"
+                                    className="detail-hero-image zoom-hover fade-in"
                                 />
 
                                 {galleryImages.length > 1 && (
@@ -312,8 +401,9 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                     </div>
 
                     {/* Info */}
-                    <div className="detail-info fade-in" ref={detailInfoRef}>
-                        <span className="detail-category">{categoryName}</span>
+                    <div className={`${styles.rightColumn} detail-info`} ref={detailInfoRef}>
+                        <div className="fade-in">
+                            <span className="detail-category">{categoryName}</span>
                         <h1 className="product-title">{product.name}</h1>
                         <h2 className='tag'>{product.tagline}</h2>
 
@@ -385,6 +475,7 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
                             <button className="btn-add-large btn-buy" onClick={() => onBuyClick && onBuyClick(product)}>
                                 BUY
                             </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -397,22 +488,43 @@ const ProductDetail = ({ onAddToCart, onBuyClick }) => {
             <div className="related-products-section">
                 <div className="container">
                     <h2 className="related-title serif">Customers also viewed</h2>
-                    <div className="related-carousel">
-                        {allProducts.filter(p => (p._id || p.id) !== id).slice(0, 6).map(item => (
-                            <div 
-                                key={item._id || item.id} 
-                                className="related-card"
-                                onClick={() => {
-                                    const productId = item._id || item.id;
-                                    navigate(`/product/${slugify(item.name)}/${productId}`);
-                                    window.scrollTo(0, 0);
-                                }}
-                            >
-                                <img src={getImageUrl(item.image || (item.images && item.images[0]))} alt={item.name} />
-                                <h3>{item.name.split('–')[0]}</h3>
-                                <p>₹{item.price}</p>
-                            </div>
-                        ))}
+                    <div className="carousel-wrapper">
+                        {/* Left Arrow */}
+                        <button 
+                            className={`carousel-arrow carousel-arrow-left ${canScrollLeft ? 'visible' : ''}`}
+                            onClick={() => scrollCarousel('left')}
+                            aria-label="Scroll left"
+                        >
+                            ◀
+                        </button>
+
+                        {/* Carousel */}
+                        <div className="related-carousel" ref={relatedCarouselRef}>
+                            {allProducts.filter(p => (p._id || p.id) !== id).slice(0, 6).map(item => (
+                                <div 
+                                    key={item._id || item.id} 
+                                    className="related-card"
+                                    onClick={() => {
+                                        const productId = item._id || item.id;
+                                        navigate(`/product/${slugify(item.name)}/${productId}`);
+                                        window.scrollTo(0, 0);
+                                    }}
+                                >
+                                    <img src={getImageUrl(item.image || (item.images && item.images[0]))} alt={item.name} />
+                                    <h3>{item.name.split('–')[0]}</h3>
+                                    <p>₹{item.price}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Right Arrow */}
+                        <button 
+                            className={`carousel-arrow carousel-arrow-right ${canScrollRight ? 'visible' : ''}`}
+                            onClick={() => scrollCarousel('right')}
+                            aria-label="Scroll right"
+                        >
+                            ▶
+                        </button>
                     </div>
                 </div>
             </div>
