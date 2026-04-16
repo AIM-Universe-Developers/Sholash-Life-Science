@@ -1,5 +1,6 @@
 import React from 'react';
 import './ProtectionSection.css';
+import protection from "../assets/home img/img2 (2).png";
 
 const protectionCategories = [
     {
@@ -57,8 +58,7 @@ const ProtectionSection = () => {
                 <div className="protection-visual fade-in">
                     <div className="protection-image-wrapper">
                         <img
-                            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800"
-                            alt="Diverse Healthy Skin"
+                            src={protection}alt="Diverse Healthy Skin"
                             className="protection-image"
                         />
                         <div className="protection-blob"></div>

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const {
     getDashboardStats,
+    getRecentUpdates,
+    getRecentMessages,
     getUsers,
     deleteUser,
     blockUser,
@@ -19,6 +21,8 @@ router.use(isAdmin);
 
 // Dashboard – any admin
 router.get("/dashboard", getDashboardStats);
+router.get("/recent-updates", getRecentUpdates);
+router.get("/recent-messages", getRecentMessages);
 
 // Profile
 router.put("/profile", updateAdminProfile);

@@ -1,6 +1,7 @@
 import React from 'react';
 import './BrandSection.css';
 import mainImage from '../assets/new images/main image.png';
+import mobileImage from '../assets/home img/img3.png';
 import secondaryImage from '../assets/new images/secondary image.png';
 
 const BrandSection = () => {
@@ -10,7 +11,10 @@ const BrandSection = () => {
                 <div className="brand-visual">
                     <div className="image-stack">
                         <div className="main-image">
-                            <img src={mainImage} alt="Scientific Skincare" />
+                            <picture>
+                                <source srcSet={mobileImage} media="(max-width: 768px)" />
+                                <img src={mainImage} alt="Scientific Skincare" />
+                            </picture>
                         </div>
                         <div className="secondary-image floating-anim">
                             <img src={secondaryImage} alt="Product Purity" />
