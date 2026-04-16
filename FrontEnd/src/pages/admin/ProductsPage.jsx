@@ -162,7 +162,7 @@ const ProductsPage = () => {
                 </div>
             </div>
 
-            <div className={styles.tableCard}>
+            <div className={styles.tableView}>
                 {loading ? (
                     <div className={styles.loading}>Loading products...</div>
                 ) : filteredProducts.length === 0 ? (
@@ -172,91 +172,148 @@ const ProductsPage = () => {
                         <p>Try adjusting your search or add a new product.</p>
                     </div>
                 ) : (
-                    <table className={styles.productTable}>
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <>
+                        {/* Table View (Desktop) */}
+                        <div className={styles.tableCard}>
+                            <table className={styles.productTable}>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredProducts.map(product => (
+                                        <tr key={product._id} onClick={() => openEdit(product)}>
+                                            <td>
+                                                <div className={styles.productCell}>
+                                                    {product.images?.[0] ? (
+                                                        <img
+                                                            src={getImageUrl(product.images[0])}
+                                                            alt={product.name}
+                                                            className={styles.productThumb}
+                                                            onMouseEnter={(e) => {
+                                                                if (product.images[1]) e.target.src = getImageUrl(product.images[1]);
+                                                            }}
+                                                            onMouseLeave={(e) => {
+                                                                e.target.src = getImageUrl(product.images[0]);
+                                                            }}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setPreviewImage(e.target.src);
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <div className={styles.productThumb} style={{
+                                                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                                        }}>
+                                                            <ImageIcon size={18} style={{ color: 'var(--admin-text-muted)' }} />
+                                                        </div>
+                                                    )}
+                                                    <div className={styles.productNameWrap}>
+                                                        <span className={styles.productName}>{product.name}</span>
+                                                        {product.brand && (
+                                                            <span className={styles.productBrand}>{product.brand}</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span className={styles.categoryBadge}>
+                                                    {product.category?.name || '—'}
+                                                </span>
+                                            </td>
+                                            <td className={styles.priceCell}>₹{product.price}</td>
+                                            <td className={`${styles.stockCell} ${product.stock < 10 ? styles.stockLow : ''}`}>
+                                                {product.stock}
+                                            </td>
+                                            <td>
+                                                <span className={`${styles.statusBadge} ${product.isActive ? styles.statusActive : styles.statusInactive}`}>
+                                                    <span className={styles.statusDot}></span>
+                                                    {product.isActive ? 'Active' : 'Inactive'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div className={styles.actionBtns}>
+                                                    <button
+                                                        className={styles.actionBtn}
+                                                        onClick={(e) => { e.stopPropagation(); openEdit(product); }}
+                                                        title="Edit"
+                                                    >
+                                                        <Edit2 size={14} />
+                                                    </button>
+                                                    <button
+                                                        className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
+                                                        onClick={(e) => { e.stopPropagation(); setDeleteTarget(product); }}
+                                                        title="Delete"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Card View (Mobile) */}
+                        <div className={styles.mobileProductGrid}>
                             {filteredProducts.map(product => (
-                                <tr key={product._id}>
-                                    <td>
-                                        <div className={styles.productCell}>
+                                <div 
+                                    key={product._id} 
+                                    className={styles.productCard}
+                                    onClick={() => openEdit(product)}
+                                >
+                                    <div className={styles.cardHeader}>
+                                        <div className={styles.cardThumbWrap}>
                                             {product.images?.[0] ? (
-                                                <img
-                                                    src={getImageUrl(product.images[0])}
-                                                    alt={product.name}
-                                                    className={styles.productThumb}
-                                                    onMouseEnter={(e) => {
-                                                        if (product.images[1]) e.target.src = getImageUrl(product.images[1]);
-                                                    }}
-                                                    onMouseLeave={(e) => {
-                                                        e.target.src = getImageUrl(product.images[0]);
-                                                    }}
+                                                <img 
+                                                    src={getImageUrl(product.images[0])} 
+                                                    alt={product.name} 
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        // Preview currently displayed image (could be [1] if hovered)
-                                                        setPreviewImage(e.target.src);
+                                                        setPreviewImage(getImageUrl(product.images[0]));
                                                     }}
                                                 />
                                             ) : (
-                                                <div className={styles.productThumb} style={{
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                                }}>
-                                                    <ImageIcon size={18} style={{ color: 'var(--admin-text-muted)' }} />
-                                                </div>
+                                                <ImageIcon size={24} />
                                             )}
-                                            <div className={styles.productNameWrap}>
-                                                <span className={styles.productName}>{product.name}</span>
-                                                {product.brand && (
-                                                    <span className={styles.productBrand}>{product.brand}</span>
-                                                )}
-                                            </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <span className={styles.categoryBadge}>
-                                            {product.category?.name || '—'}
-                                        </span>
-                                    </td>
-                                    <td className={styles.priceCell}>₹{product.price}</td>
-                                    <td className={`${styles.stockCell} ${product.stock < 10 ? styles.stockLow : ''}`}>
-                                        {product.stock}
-                                    </td>
-                                    <td>
-                                        <span className={`${styles.statusBadge} ${product.isActive ? styles.statusActive : styles.statusInactive}`}>
-                                            <span className={styles.statusDot}></span>
-                                            {product.isActive ? 'Active' : 'Inactive'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div className={styles.actionBtns}>
-                                            <button
-                                                className={styles.actionBtn}
-                                                onClick={() => openEdit(product)}
-                                                title="Edit"
-                                            >
-                                                <Edit2 size={14} />
-                                            </button>
-                                            <button
-                                                className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
-                                                onClick={() => setDeleteTarget(product)}
-                                                title="Delete"
-                                            >
-                                                <Trash2 size={14} />
-                                            </button>
+                                        <div className={styles.cardTitleArea}>
+                                            <h4>{product.name}</h4>
+                                            <span className={styles.cardCategory}>{product.category?.name || 'No Category'}</span>
                                         </div>
-                                    </td>
-                                </tr>
+                                        <div className={styles.cardStatus}>
+                                            <span className={`${styles.statusDot} ${product.isActive ? styles.statusActiveDot : styles.statusInactiveDot}`}></span>
+                                        </div>
+                                    </div>
+                                    <div className={styles.cardBody}>
+                                        <div className={styles.cardStat}>
+                                            <span className={styles.statLabel}>Price</span>
+                                            <span className={styles.statValue}>₹{product.price}</span>
+                                        </div>
+                                        <div className={styles.cardStat}>
+                                            <span className={styles.statLabel}>Stock</span>
+                                            <span className={`${styles.statValue} ${product.stock < 10 ? styles.stockLow : ''}`}>{product.stock}</span>
+                                        </div>
+                                    </div>
+                                    <div className={styles.cardActions} onClick={e => e.stopPropagation()}>
+                                        <button onClick={() => openEdit(product)} className={styles.cardEditBtn}>
+                                            <Edit2 size={16} /> Edit Details
+                                        </button>
+                                        <button onClick={() => setDeleteTarget(product)} className={styles.cardDeleteBtn}>
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
+                                </div>
                             ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </>
                 )}
             </div>
 
@@ -546,7 +603,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                             {/* Promotional Text */}
                             <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
                                 <h3 style={{ margin: '1rem 0 0.5rem', fontSize: '1rem' }}>Promotional Feature Snippet</h3>
-                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                                <div className={styles.promoFieldsRow}>
                                     <div className={styles.formGroup} style={{ flex: 1 }}>
                                         <label>Promo Title</label>
                                         <input
@@ -569,7 +626,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                             </div>
                             <div className={styles.formGroup}>
                                 <label>Card Color</label>
-                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                <div className={styles.colorInputWrap}>
                                     <input
                                         type="color"
                                         value={form.color}
@@ -723,7 +780,7 @@ const ProductFormModal = ({ product, categories, saving, onSave, onClose, getIma
                                             </div>
                                             <div className={styles.nestedItems}>
                                                 {items.map((item, idx) => (
-                                                    <div key={item.id || idx} className={styles.nestedItemRow}>
+                                                    <div key={`${section}-${idx}-${item.id || 'item'}`} className={styles.nestedItemRow}>
                                                         <div className={styles.nestedInputs}>
                                                             <input
                                                                 value={item.title}

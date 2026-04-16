@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -7,6 +7,8 @@ import {
   Legend
 } from 'chart.js';
 import { ThemeContext } from '../../../context/ThemeContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
+import styles from './DashboardCharts.module.css';
 
 ChartJS.register(
   ArcElement,
@@ -17,6 +19,7 @@ ChartJS.register(
 const DeviceDonutChart = () => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === 'dark';
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const chartData = {
         labels: ['Mobile', 'Desktop', 'Tablet'],
@@ -30,18 +33,21 @@ const DeviceDonutChart = () => {
         ],
     };
 
-    const options = {
+    const options = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '65%',
+        cutout: isMobile ? '60%' : '65%',
         plugins: {
             legend: { 
                 position: 'bottom',
                 labels: { 
                     color: isDark ? '#94A3B8' : '#64748B', 
-                    font: { family: 'Outfit, sans-serif', size: 12 },
+                    font: { 
+                        family: 'Outfit, sans-serif', 
+                        size: isMobile ? 10 : 12 
+                    },
                     usePointStyle: true,
-                    padding: 20
+                    padding: isMobile ? 12 : 20
                 } 
             },
             tooltip: {
@@ -54,10 +60,10 @@ const DeviceDonutChart = () => {
                 cornerRadius: 8
             }
         }
-    };
+    }), [isDark, isMobile]);
 
     return (
-        <div style={{ height: '300px', width: '100%' }}>
+        <div className={styles.donutContainer}>
             <Doughnut data={chartData} options={options} />
         </div>
     );

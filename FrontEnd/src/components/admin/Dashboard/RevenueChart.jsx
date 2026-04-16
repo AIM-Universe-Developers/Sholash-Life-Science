@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -12,6 +12,8 @@ import {
   Filler
 } from 'chart.js';
 import { ThemeContext } from '../../../context/ThemeContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
+import styles from './RevenueChart.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +29,7 @@ ChartJS.register(
 const RevenueChart = ({ data, timeRange = 'Monthly' }) => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === 'dark';
+    const isMobile = useMediaQuery('(max-width: 768px)');
     const [hiddenDatasets, setHiddenDatasets] = React.useState({ revenue: false, prevYear: false });
 
     // Mock data patterns for different time ranges
@@ -72,12 +75,12 @@ const RevenueChart = ({ data, timeRange = 'Monthly' }) => {
                     gradient.addColorStop(1, 'rgba(96, 165, 250, 0)');
                     return gradient;
                 },
-                borderWidth: 3,
+                borderWidth: isMobile ? 2 : 3,
                 pointBackgroundColor: '#60A5FA',
                 pointBorderColor: isDark ? '#0F172A' : '#ffffff',
-                pointBorderWidth: 3,
-                pointRadius: 6,
-                pointHoverRadius: 8,
+                pointBorderWidth: isMobile ? 2 : 3,
+                pointRadius: isMobile ? 3 : 5,
+                pointHoverRadius: 7,
                 fill: true,
                 tension: 0.4,
                 hidden: hiddenDatasets.revenue
@@ -87,7 +90,7 @@ const RevenueChart = ({ data, timeRange = 'Monthly' }) => {
                 data: actualData.map(d => d.Revenue * 0.7 + Math.random() * (timeRange === 'Daily' ? 1000 : 5000)), 
                 borderColor: '#6366F1',
                 borderDash: [5, 5],
-                borderWidth: 2,
+                borderWidth: isMobile ? 1 : 2,
                 pointRadius: 0,
                 fill: false,
                 tension: 0.4,
@@ -96,13 +99,13 @@ const RevenueChart = ({ data, timeRange = 'Monthly' }) => {
         ],
     };
 
-    const options = {
+    const options = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
         layout: {
             padding: {
-                left: 0,
-                right: 0,
+                left: isMobile ? 5 : 0,
+                right: isMobile ? 5 : 0,
                 top: 0,
                 bottom: 5
             }
@@ -138,8 +141,11 @@ const RevenueChart = ({ data, timeRange = 'Monthly' }) => {
                 },
                 ticks: {
                     color: '#64748B',
-                    font: { family: 'Inter, sans-serif', size: 11 },
-                    padding: 10,
+                    font: { 
+                        family: 'Inter, sans-serif', 
+                        size: isMobile ? 10 : 11 
+                    },
+                    padding: isMobile ? 5 : 10,
                     callback: function(value) {
                         return value >= 1000 ? `${value / 1000}k` : value;
                     }
@@ -150,50 +156,35 @@ const RevenueChart = ({ data, timeRange = 'Monthly' }) => {
                 offset: false,
                 ticks: {
                     color: '#64748B',
-                    font: { family: 'Inter, sans-serif', size: 11 },
-                    padding: 10
+                    font: { 
+                        family: 'Inter, sans-serif', 
+                        size: isMobile ? 10 : 11 
+                    },
+                    padding: isMobile ? 5 : 10,
+                    maxRotation: 0,
+                    autoSkip: true,
+                    maxTicksLimit: isMobile ? 6 : 12
                 }
             }
         }
-    };
+    }), [isDark, isMobile]);
 
     return (
-        <div style={{ height: '300px', width: '100%', position: 'relative' }}>
-            <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                gap: '24px', 
-                marginBottom: '1rem', 
-                fontSize: '0.75rem', 
-                color: isDark ? '#94A3B8' : '#64748B' 
-            }}>
+        <div className={styles.chartWrapper}>
+            <div className={styles.legendContainer} style={{ color: isDark ? '#94A3B8' : '#64748B' }}>
                 <div 
                     onClick={() => toggleDataset('revenue')}
-                    style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px', 
-                        cursor: 'pointer',
-                        opacity: hiddenDatasets.revenue ? 0.4 : 1,
-                        transition: 'opacity 0.2s ease'
-                    }}
+                    className={`${styles.legendItem} ${hiddenDatasets.revenue ? styles.itemHidden : ''}`}
                 >
-                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#60A5FA' }}></div>
-                    <span style={{ fontWeight: hiddenDatasets.revenue ? 400 : 600 }}>Revenue</span>
+                    <div className={`${styles.legendDot} ${styles.revenueDot}`}></div>
+                    <span className={styles.legendText}>Revenue</span>
                 </div>
                 <div 
                     onClick={() => toggleDataset('prevYear')}
-                    style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px', 
-                        cursor: 'pointer',
-                        opacity: hiddenDatasets.prevYear ? 0.4 : 1,
-                        transition: 'opacity 0.2s ease'
-                    }}
+                    className={`${styles.legendItem} ${hiddenDatasets.prevYear ? styles.itemHidden : ''}`}
                 >
-                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', border: '2px solid #6366F1' }}></div>
-                    <span style={{ fontWeight: hiddenDatasets.prevYear ? 400 : 600 }}>Prev Year</span>
+                    <div className={`${styles.legendDot} ${styles.prevYearDot}`}></div>
+                    <span className={styles.legendText}>Prev Year</span>
                 </div>
             </div>
             <Line data={chartData} options={options} />

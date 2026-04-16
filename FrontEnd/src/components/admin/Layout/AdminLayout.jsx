@@ -29,6 +29,12 @@ const AdminLayout = () => {
             <div className={`${styles.orb} ${styles.orb3}`}></div>
 
             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            
+            {/* Mobile Backdrop */}
+            {isSidebarOpen && (
+                <div className={styles.backdrop} onClick={toggleSidebar}></div>
+            )}
+
             <div className={styles.mainContent}>
                 <Topbar toggleSidebar={toggleSidebar} />
                 <main className={styles.pageContainer}>

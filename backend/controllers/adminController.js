@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const Review = require("../models/Review");
 
 // ─── @desc   Get Dashboard Statistics
 // ─── @route  GET /api/admin/dashboard
@@ -102,6 +103,90 @@ const getDashboardStats = async (req, res, next) => {
     }
 };
 
+// ─── @desc   Get Recent Updates
+// ─── @route  GET /api/admin/recent-updates
+// ─── @access Private (Admin)
+const getRecentUpdates = async (req, res, next) => {
+    try {
+        const [users, orders, products] = await Promise.all([
+            User.find().sort({ createdAt: -1 }).limit(10),
+            Order.find().sort({ createdAt: -1 }).limit(10).populate("user", "name"),
+            Product.find().sort({ createdAt: -1 }).limit(10)
+        ]);
+
+        let updates = [];
+
+        users.forEach(u => updates.push({
+            id: u._id,
+            type: 'user',
+            title: 'New User Registered',
+            message: `${u.name} just created an account.`,
+            createdAt: u.createdAt,
+            read: false
+        }));
+
+        orders.forEach(o => updates.push({
+            id: o._id,
+            type: 'order',
+            title: 'New Order Placed',
+            message: `Order #${o._id.toString().substring(0,8)} from ${o.user?.name || 'Guest'} for ₹${o.totalPrice}.`,
+            createdAt: o.createdAt,
+            read: false
+        }));
+
+        products.forEach(p => updates.push({
+            id: p._id,
+            type: 'product',
+            title: 'New Product Added',
+            message: `${p.name} was added to the catalog.`,
+            createdAt: p.createdAt,
+            read: false
+        }));
+
+        updates.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const recentUpdates = updates.slice(0, 15);
+
+        res.status(200).json({
+            success: true,
+            message: "Recent updates fetched",
+            data: recentUpdates
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ─── @desc   Get Recent Messages (Reviews)
+// ─── @route  GET /api/admin/recent-messages
+// ─── @access Private (Admin)
+const getRecentMessages = async (req, res, next) => {
+    try {
+        const reviews = await Review.find()
+            .sort({ createdAt: -1 })
+            .limit(10)
+            .populate("user", "name email")
+            .populate("product", "name");
+
+        const messages = reviews.map(r => ({
+            id: r._id,
+            type: 'message',
+            title: r.user ? r.user.name : "Guest",
+            message: `Review on ${r.product ? r.product.name : "a product"}: "${r.comment || r.rating + ' stars'}"`,
+            createdAt: r.createdAt,
+            rating: r.rating,
+            read: false
+        }));
+
+        res.status(200).json({
+            success: true,
+            message: "Recent messages fetched",
+            data: messages
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // ─── @desc   Get All Users (Paginated)
 // ─── @route  GET /api/admin/users
 // ─── @access Private (Admin)
@@ -189,4 +274,4 @@ const blockUser = async (req, res, next) => {
     }
 };
 
-module.exports = { getDashboardStats, getUsers, deleteUser, blockUser };
+module.exports = { getDashboardStats, getRecentUpdates, getRecentMessages, getUsers, deleteUser, blockUser };
