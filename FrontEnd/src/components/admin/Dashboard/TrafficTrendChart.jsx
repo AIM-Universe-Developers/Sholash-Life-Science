@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -12,6 +12,8 @@ import {
   Filler
 } from 'chart.js';
 import { ThemeContext } from '../../../context/ThemeContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
+import styles from './DashboardCharts.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +29,7 @@ ChartJS.register(
 const TrafficTrendChart = ({ timeframe }) => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === 'dark';
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const dailyData = {
         labels: ['6am', '9am', '12pm', '3pm', '6pm', '9pm'],
@@ -74,11 +77,11 @@ const TrafficTrendChart = ({ timeframe }) => {
                     gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
                     return gradient;
                 },
-                borderWidth: 3,
+                borderWidth: isMobile ? 2 : 3,
                 pointBackgroundColor: '#06B6D4',
                 pointBorderColor: isDark ? '#1E293B' : '#ffffff',
-                pointBorderWidth: 2,
-                pointRadius: 5,
+                pointBorderWidth: isMobile ? 1 : 2,
+                pointRadius: isMobile ? 3 : 5,
                 pointHoverRadius: 7,
                 fill: true,
                 tension: 0.4
@@ -86,7 +89,7 @@ const TrafficTrendChart = ({ timeframe }) => {
         ],
     };
 
-    const options = {
+    const options = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -107,22 +110,29 @@ const TrafficTrendChart = ({ timeframe }) => {
                 grid: { color: isDark ? '#334155' : '#F1F5F9', drawBorder: false },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Inter, sans-serif' }
+                    font: { 
+                        family: 'Inter, sans-serif',
+                        size: isMobile ? 10 : 12 
+                    }
                 }
             },
             x: {
                 grid: { display: false, drawBorder: false },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Inter, sans-serif' }
+                    font: { 
+                        family: 'Inter, sans-serif',
+                        size: isMobile ? 10 : 12 
+                    },
+                    maxTicksLimit: isMobile ? 6 : 12
                 }
             }
         }
-    };
+    }), [isDark, isMobile]);
 
     return (
-        <div style={{ height: '300px', width: '100%' }}>
-            <Line data={chartData} options={options} key={timeframe} />
+        <div className={styles.chartContainer}>
+            <Line data={chartData} options={options} key={`${timeframe}-${isMobile}`} />
         </div>
     );
 };

@@ -183,7 +183,7 @@ const DashboardPage = () => {
                         </button>
                     }
                 >
-                    <div style={{ padding: '0.5rem 0' }}>
+                    <div className={styles.tableScrollWrapper}>
                         {stats?.recentOrders?.length > 0 ? (
                             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
                                 <thead>

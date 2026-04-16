@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { ThemeContext } from '../../../context/ThemeContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
+import styles from './DashboardCharts.module.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const SalesPieChart = ({ data }) => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === 'dark';
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     // Ensure we have data
     const chartDataRaw = data?.length > 0 ? data : [{ name: 'No Data', value: 1 }];
@@ -25,20 +28,20 @@ const SalesPieChart = ({ data }) => {
         ],
     };
 
-    const options = {
+    const options = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '70%',
+        cutout: isMobile ? '60%' : '70%',
         plugins: {
             legend: {
                 position: 'bottom',
                 labels: {
                     color: isDark ? '#94A3B8' : '#64748B',
                     usePointStyle: true,
-                    padding: 20,
+                    padding: isMobile ? 12 : 20,
                     font: {
                         family: 'Inter, sans-serif',
-                        size: 12
+                        size: isMobile ? 10 : 12
                     }
                 }
             },
@@ -52,10 +55,10 @@ const SalesPieChart = ({ data }) => {
                 cornerRadius: 8,
             }
         }
-    };
+    }), [isDark, isMobile]);
 
     return (
-        <div style={{ height: '280px', width: '100%' }}>
+        <div className={styles.chartContainer}>
             <Doughnut data={chartData} options={options} />
         </div>
     );

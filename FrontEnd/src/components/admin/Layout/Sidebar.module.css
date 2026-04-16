@@ -104,6 +104,9 @@
   .sidebar {
     position: fixed;
     transform: translateX(-100%);
+    margin: 0;
+    height: 100vh;
+    border-radius: 0;
   }
   
   .sidebar.open {

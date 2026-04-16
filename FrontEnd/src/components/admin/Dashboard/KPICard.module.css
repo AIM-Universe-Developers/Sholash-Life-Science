@@ -60,3 +60,28 @@
 .trend.negative {
   color: var(--admin-danger);
 }
+@media (max-width: 768px) {
+  .kpiCard {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .iconWrapper {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+  
+  .iconWrapper :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .value {
+    font-size: 1.5rem;
+  }
+  
+  .label {
+    font-size: 0.8rem;
+  }
+}

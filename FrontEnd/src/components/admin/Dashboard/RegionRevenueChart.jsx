@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -10,6 +10,8 @@ import {
   Legend
 } from 'chart.js';
 import { ThemeContext } from '../../../context/ThemeContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
+import styles from './DashboardCharts.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,7 @@ ChartJS.register(
 const RegionRevenueChart = () => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === 'dark';
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const chartData = {
         labels: ['India', 'UK', 'UAE', 'USA', 'KSA', 'SG'],
@@ -39,11 +42,13 @@ const RegionRevenueChart = () => {
                 },
                 borderRadius: 8,
                 borderSkipped: false,
+                barThickness: isMobile ? 20 : 'flex',
+                maxBarThickness: isMobile ? 25 : 35
             }
         ],
     };
 
-    const options = {
+    const options = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -64,21 +69,27 @@ const RegionRevenueChart = () => {
                 grid: { color: isDark ? '#334155' : '#F1F5F9', drawBorder: false },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Inter, sans-serif' }
+                    font: { 
+                        family: 'Inter, sans-serif',
+                        size: isMobile ? 10 : 12
+                    }
                 }
             },
             x: {
                 grid: { display: false, drawBorder: false },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Inter, sans-serif' }
+                    font: { 
+                        family: 'Inter, sans-serif',
+                        size: isMobile ? 10 : 12
+                    }
                 }
             }
         }
-    };
+    }), [isDark, isMobile]);
 
     return (
-        <div style={{ height: '300px', width: '100%' }}>
+        <div className={styles.chartContainer}>
             <Bar data={chartData} options={options} />
         </div>
     );

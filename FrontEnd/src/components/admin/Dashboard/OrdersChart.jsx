@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -10,6 +10,8 @@ import {
   Legend,
 } from 'chart.js';
 import { ThemeContext } from '../../../context/ThemeContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
+import styles from './DashboardCharts.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,7 @@ ChartJS.register(
 const OrdersChart = ({ data }) => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === 'dark';
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     // Mock data for weekly orders volume fallback
     const defaultData = [
@@ -45,13 +48,13 @@ const OrdersChart = ({ data }) => {
                 data: actualData.map(d => d.value),
                 backgroundColor: '#6366F1',
                 borderRadius: 6,
-                barThickness: 'flex',
-                maxBarThickness: 16
+                barThickness: isMobile ? 12 : 'flex',
+                maxBarThickness: isMobile ? 14 : 16
             }
         ],
     };
 
-    const options = {
+    const options = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -77,7 +80,10 @@ const OrdersChart = ({ data }) => {
                 },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Inter, sans-serif' }
+                    font: { 
+                        family: 'Inter, sans-serif',
+                        size: isMobile ? 10 : 12
+                    }
                 }
             },
             x: {
@@ -87,14 +93,17 @@ const OrdersChart = ({ data }) => {
                 },
                 ticks: {
                     color: isDark ? '#94A3B8' : '#64748B',
-                    font: { family: 'Inter, sans-serif' }
+                    font: { 
+                        family: 'Inter, sans-serif',
+                        size: isMobile ? 10 : 12
+                    }
                 }
             }
         }
-    };
+    }), [isDark, isMobile]);
 
     return (
-        <div style={{ height: '280px', width: '100%' }}>
+        <div className={styles.chartContainer}>
             <Bar data={chartData} options={options} />
         </div>
     );

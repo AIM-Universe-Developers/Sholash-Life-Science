@@ -711,16 +711,49 @@
   transform: none;
 }
 
+.promoFieldsRow {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.colorInputWrap {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+
 /* ─── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .productsPage {
+    padding: 0;
+  }
+
   .header {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .titleInfo h2 {
+    font-size: 1.5rem;
+  }
+
+  .headerActions {
+    width: 100%;
+  }
+
+  .btnPrimary {
+    width: 100%;
+    justify-content: center;
   }
 
   .controls {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .searchWrap {
@@ -728,20 +761,240 @@
   }
 
   .tabs {
+    display: flex;
     overflow-x: auto;
+    padding: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  .formGrid {
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ─── Mobile Table Container View Logic ─── */
+  .tableCard {
+    display: none;
+  }
+
+  .mobileProductGrid {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding-bottom: 2rem;
   }
 
+  /* ─── Product Card (Mobile) ─── */
+  .productCard {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 20px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: var(--admin-shadow-sm);
+  }
+
+  .productCard:active {
+    transform: scale(0.98);
+    background-color: var(--admin-surface-hover);
+  }
+
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cardThumbWrap {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--admin-border);
+    flex-shrink: 0;
+    background-color: var(--admin-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cardThumbWrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cardTitleArea {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .cardTitleArea h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--admin-text-main);
+    margin: 0;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .cardCategory {
+    font-size: 0.75rem;
+    color: var(--admin-primary);
+    font-weight: 600;
+  }
+
+  .cardStatus {
+    display: flex;
+    align-items: center;
+  }
+
+  .statusActiveDot { background-color: var(--admin-success); }
+  .statusInactiveDot { background-color: var(--admin-danger); }
+
+  .cardBody {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--admin-border);
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  .cardStat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .statLabel {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--admin-text-muted);
+    font-weight: 600;
+  }
+
+  .statValue {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--admin-text-main);
+  }
+
+  .cardActions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .cardEditBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    background-color: var(--admin-primary-light);
+    color: var(--admin-primary);
+    border: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .cardDeleteBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--admin-border);
+    background-color: var(--admin-surface);
+    color: var(--admin-danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* ─── Modal Optimization ─── */
   .modalContent {
     max-width: 100%;
+    margin: 1rem;
+    height: auto;
+    max-height: calc(100vh - var(--admin-topbar-h) - 4rem);
     border-radius: 16px;
   }
 
   .modalOverlay {
-    padding: 1rem;
+    padding: 0;
+    align-items: flex-start;
+    top: calc(var(--admin-topbar-h) + 2rem);
+    padding-bottom: 2rem;
+  }
+
+  .modalBody {
+    padding: 1.25rem;
+  }
+
+  .modalHeader, .modalFooter {
+    padding: 1rem 1.25rem;
+  }
+
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .formGroupFull {
+    grid-column: span 1;
+  }
+
+  .promoFieldsRow {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .promoFieldsRow > div {
+    flex: none !important;
+    width: 100%;
+  }
+
+  .colorInputWrap {
+    flex-direction: row; /* Keep color small */
+    flex-wrap: wrap;
+  }
+
+  .modalFooter {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    padding: 1.25rem;
+  }
+
+  .modalFooter button {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+
+/* ─── Desktop Fallback ─── */
+@media (min-width: 769px) {
+  .mobileProductGrid {
+    display: none;
   }
 }
 

@@ -154,7 +154,7 @@ const BannersPage = () => {
                                                 className={styles.bannerThumb}
                                             />
                                             <div className={styles.bannerInfo}>
-                                                <span className={styles.bannerTitle}>{banner.title || 'Untitled Banner'}</span>
+                                                <span className={styles.bannerTitle}>{banner.title}</span>
                                                 {banner.description && (
                                                     <span className={styles.bannerDesc}>{banner.description}</span>
                                                 )}

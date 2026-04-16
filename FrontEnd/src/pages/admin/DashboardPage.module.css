@@ -236,7 +236,69 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard {
+    gap: 1.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .chartsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .kpiGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dateNavigator {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .currentDate {
+    min-width: unset;
+    flex: 1;
+  }
+
+  /* Table responsiveness */
+  .recentOrdersGrid :global(table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Alternative for table scroll container */
+  .tableScrollWrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerActions {
+    flex-direction: column;
+  }
+
+  .btnExport {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dateNavigator {
+    width: 100%;
   }
 }
