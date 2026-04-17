@@ -2,6 +2,10 @@ import React from 'react';
 import './HealthySkin.css';
 
 import healthyskin from '../assets/home img/imgs.png';
+import aboutImg1 from '../assets/ICONS/clean-water.png';
+import aboutImg2 from '../assets/ICONS/skin-tone.png';
+import aboutImg3 from '../assets/ICONS/day-and-night.png';
+import aboutImg4 from '../assets/ICONS/exfoliant.png';
 
 const features = [
     {
@@ -9,9 +13,7 @@ const features = [
         title: "Hydration",
         description: "Maintains moisture balance, preventing dryness, flakiness, and irritation for smooth, supple skin.",
         icon: (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-            </svg>
+            <img src={aboutImg1} alt="Hydration" />
         )
     },
     {
@@ -19,9 +21,7 @@ const features = [
         title: "Nutrition",
         description: "Supports skin repair, elasticity, and glow with essential vitamins and minerals.",
         icon: (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z" />
-            </svg>
+            <img src={aboutImg2} alt="Nutrition" />
         )
     },
     {
@@ -29,9 +29,7 @@ const features = [
         title: "Protection",
         description: "Shields against UV rays, pollution, and harmful environmental factors, maintaining skin health.",
         icon: (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
+            <img src={aboutImg3} alt="protection" />
         )
     },
     {
@@ -39,10 +37,7 @@ const features = [
         title: "Exfoliation",
         description: "Removes dead cells, promoting cell turnover for a fresh, radiant complexion.",
         icon: (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
+            <img src={aboutImg4} alt="exfoliation" />
         )
     }
 ];

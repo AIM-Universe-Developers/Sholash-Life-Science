@@ -173,9 +173,9 @@
     opacity: 0.8;
 }
 
-.science-icon::before { background-image: url('https://cdn-icons-png.flaticon.com/512/3209/3209044.png'); }
+/* .science-icon::before { background-image: url('https://kommodo.ai/i/ad4esWM281qljUbj3hjU'); }
 .purity-icon::before { background-image: url('https://cdn-icons-png.flaticon.com/512/3067/3067566.png'); }
-.result-icon::before { background-image: url('https://cdn-icons-png.flaticon.com/512/1162/1162456.png'); }
+.result-icon::before { background-image: url('https://cdn-icons-png.flaticon.com/512/1162/1162456.png'); } */
 
 .feature-text h4 {
     font-size: 1.25rem;

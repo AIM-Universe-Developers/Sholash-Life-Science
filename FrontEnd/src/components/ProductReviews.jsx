@@ -38,11 +38,12 @@ const ProductReviews = () => {
         'Most Helpful'
     ];
     const customerPhotos = [
-        // 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop',
-        // 'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?q=80&w=200&auto=format&fit=crop',
-        // 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=200&auto=format&fit=crop',
-        // 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=200&auto=format&fit=crop',
-        // 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop'
+        { url: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400', user: 'Sarah J.', rating: 5 },
+        { url: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?q=80&w=400', user: 'Michael R.', rating: 5 },
+        { url: 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=400', user: 'Anita P.', rating: 4 },
+        { url: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400', user: 'David L.', rating: 5 },
+        { url: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=400', user: 'Elena S.', rating: 5 },
+        { url: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=400', user: 'Tom H.', rating: 4 }
     ];
 
     const storageKey = `sholash_reviews_${productId}`;
@@ -287,48 +288,49 @@ const ProductReviews = () => {
                 )}
 
                 <div className="reviews-media-section">
-                    <div className="media-left">
+                    <div className="gallery-top-row">
                         <h3 className="media-title">Customer photos &amp; videos</h3>
-                        <div className="media-grid">
-                            {customerPhotos.map((url, i) => (
-                                <div key={i} className="media-item" onClick={() => setSelectedImage(url)}>
-                                     <img src={url} alt={`Customer ${i}`} /> 
-                                </div>
-                            ))}
-                            {userBeforeImage && (
-                                <div className="media-item user-upload-item">
-                                    <div className="img-wrapper" onClick={() => setSelectedImage(userBeforeImage)}>
-                                        <img src={userBeforeImage} alt="My Photo" />
-                                        <span className="upload-label">My Photo</span>
-                                    </div>
-                                    <button className="remove-photo-btn" onClick={handleImageDelete} title="Remove Photo">
-                                        ✕
-                                    </button>
-                                </div>
-                            )}
-                            {user && (
-                                <label className="upload-btn" title="Add your photo">
-                                    <input type="file" accept="image/*" style={{display:'none'}} onChange={handleImageUpload} />
-                                    <span>＋</span><span className="upload-btn-text">Add Photo</span>
-                                </label>
-                            )}
-                        </div>
+                        <span className="photo-count-total">{customerPhotos.length + (userBeforeImage ? 1 : 0)}+ photos</span>
                     </div>
-                    <div className="media-right">
-                        <div className="transparency-badge">
-                            {/* <div className="badge-ring"> */}
-                                <div className="badge-inner">
-                                    {/* <svg viewBox="0 0 100 100" className="badge-svg">
-                                        <path id="curve" d="M 25, 50 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0" fill="transparent" />
-                                        <text className="badge-text" fontSize="10">
-                                            <textPath xlinkHref="#curve">SILVER TRANSPARENCY • </textPath>
-                                        </text>
-                                    </svg> */}
-                                    {/* <div className="badge-score">92.3</div>
-                                    <div className="badge-check">✔</div> */}
+
+                    <div className="media-grid">
+                        {customerPhotos.map((item, i) => (
+                            <div key={i} className="media-item" onClick={() => setSelectedImage(item.url)}>
+                                <img src={item.url} alt={`Customer ${i}`} loading="lazy" />
+                                <div className="media-card-overlay">
+                                    <span className="overlay-user">{item.user}</span>
+                                    <span className="overlay-stars">{'★'.repeat(item.rating)}</span>
                                 </div>
-                            {/* </div> */}
-                        </div>
+                            </div>
+                        ))}
+                        {userBeforeImage && (
+                            <div className="media-item user-upload-item">
+                                <div className="img-wrapper" style={{ height: '100%' }} onClick={() => setSelectedImage(userBeforeImage)}>
+                                    <img src={userBeforeImage} alt="My Photo" loading="lazy" />
+                                    <div className="media-card-overlay" style={{ opacity: 1 }}>
+                                        <span className="overlay-user">My Photo</span>
+                                        <span className="overlay-stars">★★★★★</span>
+                                    </div>
+                                </div>
+                                <button className="remove-photo-btn" onClick={handleImageDelete} title="Remove Photo" style={{ 
+                                    position: 'absolute', top: '5px', right: '5px', background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', zIndex: 5
+                                }}>
+                                    ✕
+                                </button>
+                            </div>
+                        )}
+                        {user && (
+                            <label className="upload-btn" title="Add your photo">
+                                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
+                                <span>＋</span><span className="upload-btn-text">Add Photo</span>
+                            </label>
+                        )}
+                    </div>
+
+                    <div className="view-all-photos-container">
+                        <button className="btn-view-all-photos" onClick={() => {/* Placeholder for view all */}}>
+                            View all photos
+                        </button>
                     </div>
                 </div>
 

@@ -3,6 +3,9 @@ import './BrandSection.css';
 import mainImage from '../assets/new images/main image.png';
 import mobileImage from '../assets/home img/img3.png';
 import secondaryImage from '../assets/new images/secondary image.png';
+import icons1 from '../assets/ICONS/atom.png';
+import icons2 from '../assets/ICONS/soap.png';
+import icons3 from '../assets/ICONS/flask.png';
 
 const BrandSection = () => {
     return (
@@ -32,21 +35,28 @@ const BrandSection = () => {
 
                     <div className="features-grid">
                         <div className="feature-item">
-                            <div className="feature-icon science-icon"></div>
+                            <div className="feature-icon science-icon">
+                                <img src={icons1} alt="Science-Driven Care" />
+
+                            </div>
                             <div className="feature-text">
                                 <h4 className="serif">Science-Driven Care</h4>
                                 <p>Formulated with clinically studied ingredients to improve hydration, texture, and skin resilience.</p>
                             </div>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon purity-icon"></div>
+                            <div className="feature-icon purity-icon">
+                                <img src={icons2} alt="Dermatologist-Tested Safety" />
+                            </div>
                             <div className="feature-text">
                                 <h4 className="serif">Dermatologist-Tested Safety</h4>
                                 <p>Protecting your skin with dermatologically tested formulas.Gentle, effective, and suitable for sensitive and acne-prone skin.</p>
                             </div>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon result-icon"></div>
+                            <div className="feature-icon result-icon">
+                                <img src={icons3} alt="Lasting Results" />
+                            </div>
                             <div className="feature-text">
                                 <h4 className="serif">Lasting Results</h4>
                                 <p>Designed to deliver real improvements in skin clarity, smoothness, and overall health.</p>
