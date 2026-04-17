@@ -446,6 +446,8 @@
 .formGroup input,
 .formGroup select,
 .formGroup textarea {
+  width: 100%;
+  box-sizing: border-box;
   background-color: var(--admin-surface-hover);
   border: 1px solid var(--admin-border);
   border-radius: 10px;
@@ -930,23 +932,30 @@
   }
 
   /* ─── Modal Optimization ─── */
-  .modalContent {
-    max-width: 100%;
-    margin: 1rem;
-    height: auto;
-    max-height: calc(100vh - var(--admin-topbar-h) - 4rem);
-    border-radius: 16px;
+  .modalOverlay {
+    padding: 1rem;
+    align-items: flex-start;
+    justify-content: center;
+    top: var(--admin-topbar-h, 60px);
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+    overflow-y: auto;
   }
 
-  .modalOverlay {
-    padding: 0;
-    align-items: flex-start;
-    top: calc(var(--admin-topbar-h) + 2rem);
-    padding-bottom: 2rem;
+  .modalContent {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    margin-top: 0.5rem;
+    height: auto;
+    max-height: calc(100vh - var(--admin-topbar-h, 60px) - 4rem);
+    border-radius: 16px;
+    box-sizing: border-box;
   }
 
   .modalBody {
     padding: 1.25rem;
+    box-sizing: border-box;
   }
 
   .modalHeader, .modalFooter {
