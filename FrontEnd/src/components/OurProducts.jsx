@@ -104,7 +104,7 @@ const OurProducts = ({ searchQuery = '' }) => {
                 </h2>
 
                 {products.length > 0 ? (
-                    <div className="our-products-grid">
+                    <div className="our-products-grid product-grid">
                         {products.map(product => {
                             const productId = product._id || product.id;
                             return (
