@@ -1012,12 +1012,7 @@
     align-items: center;
     min-width: 24px;
     height: 24px;
-<<<<<<< HEAD
-    background: #10b981;
-    /* More vibrant emerald green */
-=======
     background: #05a058; /* More vibrant emerald green */
->>>>>>> 4c05d3f8a16911f49a70e27c3e31accceeef7b5d
     color: #ffffff;
     border-radius: 6px;
     /* Boxy but rounded for a modern look */
@@ -1059,29 +1054,6 @@
 
     .purchase-controls .large.btn-add-cart {
         width: 100%;
-<<<<<<< HEAD
-        min-width: auto;
-        max-width: 100%;
-    }
-
-    .large {
-        display: flex;
-        justify-content: center;
-        border-radius: 20px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #000;
-        border-width: 0.5px;
-        font-family: serif;
-        margin-left: 30px;
-        padding: 12px 0;
-        width: 225px;
-        background-color: white;
-        color: #000;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-=======
         height: 52px;
         margin: 0;
         padding: 0;
@@ -1089,7 +1061,6 @@
         color: black;
         border: 1.5px solid black;
         font-family: inherit;
->>>>>>> 4c05d3f8a16911f49a70e27c3e31accceeef7b5d
         font-size: 0.85rem;
         letter-spacing: 1px;
         display: flex;
@@ -1399,18 +1370,9 @@
         gap: 1rem;
 
     }
-<<<<<<< HEAD
-
-    .purchase-controls {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-=======
     
     /* purchase-controls grid logic handled above */
     
->>>>>>> 4c05d3f8a16911f49a70e27c3e31accceeef7b5d
     .btn-add-large {
         padding: 15px;
     }

@@ -113,16 +113,16 @@ const ProductCard = ({
                     </div>
                 </div>
 
-                <h3 className="product-name">{name}</h3>
+                <h3 className="product-title">{name}</h3>
 
                 <p className="product-description">{description}</p>
 
                 <div className="product-footer">
-                    <button className="btn-cart" onClick={handleBuyClick}>
+                    <button className="product-btn" onClick={handleBuyClick}>
                         BUY
                     </button>
 
-                    <button className="btn-cart" onClick={handleAddToCartClick}>
+                    <button className="product-btn" onClick={handleAddToCartClick}>
                         ADD CART
                     </button>
                 </div>
