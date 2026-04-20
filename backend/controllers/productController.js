@@ -136,7 +136,11 @@ const getAllProducts = async (req, res, next) => {
             if (req.query.maxPrice) filter.price.$lte = Number(req.query.maxPrice);
         }
         if (req.query.search) {
-            filter.$text = { $search: req.query.search };
+            filter.$or = [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { brand: { $regex: req.query.search, $options: "i" } },
+                { description: { $regex: req.query.search, $options: "i" } },
+            ];
         }
 
         // Sorting
