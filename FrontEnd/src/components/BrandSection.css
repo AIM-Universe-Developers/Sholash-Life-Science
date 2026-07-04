@@ -124,7 +124,7 @@
 .brand-desc {
     font-size: 1.15rem;
     line-height: 1.8;
-    color: #4b5563;
+    color: black;
     max-width: 90%;
 }
 
@@ -132,6 +132,7 @@
     display: grid;
     gap: 30px;
     margin: 20px 0;
+    
 }
 
 .feature-item {
@@ -161,6 +162,7 @@
     align-items: center;
     position: relative;
     flex-shrink: 0;
+    
 }
 
 .feature-icon::before {
@@ -185,7 +187,7 @@
 
 .feature-text p {
     font-size: 1rem;
-    color: #6b7280;
+    color: black;
     line-height: 1.5;
 }
 
