@@ -83,10 +83,13 @@ const getAllProductsAdmin = async (req, res, next) => {
 
         if (req.query.category) filter.category = req.query.category;
         if (req.query.search) {
-            filter.$or = [
-                { name: { $regex: req.query.search, $options: "i" } },
-                { brand: { $regex: req.query.search, $options: "i" } },
-            ];
+            const searchWords = req.query.search.trim().split(/\s+/);
+            filter.$and = searchWords.map(word => ({
+                $or: [
+                    { name: { $regex: word, $options: "i" } },
+                    { brand: { $regex: word, $options: "i" } },
+                ]
+            }));
         }
         if (req.query.status === "active") filter.isActive = true;
         if (req.query.status === "inactive") filter.isActive = false;
@@ -136,11 +139,15 @@ const getAllProducts = async (req, res, next) => {
             if (req.query.maxPrice) filter.price.$lte = Number(req.query.maxPrice);
         }
         if (req.query.search) {
-            filter.$or = [
-                { name: { $regex: req.query.search, $options: "i" } },
-                { brand: { $regex: req.query.search, $options: "i" } },
-                { description: { $regex: req.query.search, $options: "i" } },
-            ];
+            const searchWords = req.query.search.trim().split(/\s+/);
+            // Match all words across name, brand, or description
+            filter.$and = searchWords.map(word => ({
+                $or: [
+                    { name: { $regex: word, $options: "i" } },
+                    { brand: { $regex: word, $options: "i" } },
+                    { description: { $regex: word, $options: "i" } },
+                ]
+            }));
         }
 
         // Sorting

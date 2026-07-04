@@ -55,6 +55,24 @@
   color: var(--admin-text-muted);
 }
 
+.clearSearch {
+  background: none;
+  border: none;
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.clearSearch:hover {
+  background-color: var(--admin-border);
+  color: var(--admin-text-main);
+}
+
 .rightSection {
   display: flex;
   align-items: center;

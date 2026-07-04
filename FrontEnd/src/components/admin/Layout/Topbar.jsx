@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Menu, Search, Bell, MessageSquare, Moon, Sun, LogOut, Package, ShoppingCart, User } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Search, Bell, MessageSquare, Moon, Sun, LogOut, Package, ShoppingCart, User, X } from 'lucide-react';
 import axios from 'axios';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useAdminAuth } from '../../../context/AdminAuthContext';
@@ -12,6 +13,9 @@ const Topbar = ({ toggleSidebar }) => {
     const dropdownRef = useRef(null);
     const messagesDropdownRef = useRef(null);
     
+    const navigate = useNavigate();
+    const location = useLocation();
+    
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
@@ -19,6 +23,8 @@ const Topbar = ({ toggleSidebar }) => {
     const [showMessages, setShowMessages] = useState(false);
     const [messages, setMessages] = useState([]);
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
+
+    const [adminSearch, setAdminSearch] = useState('');
 
     useEffect(() => {
         const fetchUpdates = async () => {
@@ -82,10 +88,32 @@ const Topbar = ({ toggleSidebar }) => {
                 <button className={styles.menuButton} onClick={toggleSidebar} aria-label="Toggle Sidebar">
                     <Menu size={24} />
                 </button>
-                <div className={styles.searchBar}>
+                <form 
+                    className={styles.searchBar} 
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        if (adminSearch.trim()) {
+                            navigate(`/admin/products?search=${encodeURIComponent(adminSearch.trim())}`);
+                        }
+                    }}
+                >
                     <Search size={18} color="var(--admin-text-muted)" />
-                    <input type="text" placeholder="Search orders, products, customers..." />
-                </div>
+                    <input 
+                        type="text" 
+                        placeholder="Search products..." 
+                        value={adminSearch}
+                        onChange={(e) => setAdminSearch(e.target.value)}
+                    />
+                    {adminSearch && (
+                        <button 
+                            type="button" 
+                            className={styles.clearSearch} 
+                            onClick={() => setAdminSearch('')}
+                        >
+                            <X size={14} />
+                        </button>
+                    )}
+                </form>
             </div>
 
             <div className={styles.rightSection}>

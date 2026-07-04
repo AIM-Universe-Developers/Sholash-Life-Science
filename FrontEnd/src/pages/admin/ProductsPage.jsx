@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import api, { BASE_URL } from '../../services/api';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Plus, Search, Edit2, Trash2, X, Upload, Package, Image as ImageIcon } from 'lucide-react';
@@ -8,6 +9,7 @@ import styles from './ProductsPage.module.css';
 
 const ProductsPage = () => {
     const { token } = useAdminAuth();
+    const location = useLocation();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -59,7 +61,14 @@ const ProductsPage = () => {
     useEffect(() => {
         fetchProducts();
         fetchCategories();
-    }, [token]);
+
+        // Check for search query in URL
+        const params = new URLSearchParams(location.search);
+        const search = params.get('search');
+        if (search) {
+            setSearchQuery(search);
+        }
+    }, [token, location.search]);
 
     // ─── Filter Logic ────────────────────────────────────────────────────
     const filteredProducts = products.filter(p => {

@@ -30,6 +30,8 @@ const Header = ({ cartCount, searchQuery, setSearchQuery, onAuthClick }) => {
     const handleSearchSubmit = (e) => {
         e.preventDefault();
 
+        const trimmedQuery = searchQuery.trim();
+
         // Mobile Expansion Logic
         if (window.innerWidth <= 768 && !isSearchExpanded) {
             setIsSearchExpanded(true);
